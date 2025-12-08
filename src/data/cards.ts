@@ -45,20 +45,20 @@ export const HERO_CARDS: Card[] = [
   {
     id: 'io_t1', name: 'Io, Mechanic', type: 'unit', tier: 1, cost: 2,
     stats: { atk: 1, hp: 4, maxHp: 4 },
-    text: 'TurnEnd: Give random ally +1 ATK.',
-    baseAsset: 'io', mechanics: ['buff']
+    text: 'Support: Give random ally +1 ATK.',
+    baseAsset: 'io', mechanics: ['support']
   },
   {
     id: 'io_t2', name: 'Io, Technomancer', type: 'unit', tier: 2, cost: 2,
     stats: { atk: 2, hp: 5, maxHp: 5 },
-    text: 'TurnEnd: Give random ally +1/+1.',
-    baseAsset: 'io', mechanics: ['buff']
+    text: 'Support: Give random ally +1/+1.',
+    baseAsset: 'io', mechanics: ['support']
   },
   {
     id: 'io_t3', name: 'Io, Architect', type: 'unit', tier: 3, cost: 3,
     stats: { atk: 3, hp: 6, maxHp: 6 },
-    text: 'TurnStart: All allies +1/+1 and Repair 1.',
-    baseAsset: 'io', mechanics: ['buff', 'repair']
+    text: 'Support: All allies +1/+1 and Repair 1.',
+    baseAsset: 'io', mechanics: ['support', 'repair']
   },
 
   // --- LYSITHEA ---

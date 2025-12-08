@@ -33,6 +33,7 @@ export interface UnitInstance {
   maxHp: number;
   owner: 'player' | 'enemy';
   ready: boolean; // Summon sickness check
+  attacksLeft: number; // For Windfury (can attack multiple times)
   mechanics: string[]; // copy of card mechanics
   shield: number;
 }
@@ -66,6 +67,7 @@ export interface GameState {
   turn: number;
   phase: 'player_turn' | 'enemy_turn' | 'game_over';
   winner?: 'player' | 'enemy';
+  scoutedCard?: Card | null; // For Elara's ability
   // Roguelite run state
   run: {
     node: number;

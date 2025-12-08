@@ -5,12 +5,13 @@ import { cn } from '../lib/utils';
 interface UnitProps {
   unit: UnitInstance;
   onClick?: () => void;
+  onContextMenu?: (e: React.MouseEvent) => void;
   isTarget?: boolean; // If being targeted
   canAttack?: boolean; // Green glow if ready
   className?: string;
 }
 
-export const Unit: React.FC<UnitProps> = ({ unit, onClick, isTarget, canAttack, className }) => {
+export const Unit: React.FC<UnitProps> = ({ unit, onClick, onContextMenu, isTarget, canAttack, className }) => {
   // We need to resolve the base asset from the ID or store extra metadata. 
   // Currently UnitInstance doesn't store baseAsset.
   // We might need to look it up or pass it. 
@@ -31,6 +32,7 @@ export const Unit: React.FC<UnitProps> = ({ unit, onClick, isTarget, canAttack, 
   return (
     <div
       onClick={onClick}
+      onContextMenu={onContextMenu}
       className={cn(
         "relative w-24 h-32 bg-slate-800 border-2 rounded-lg flex flex-col items-center p-1 cursor-pointer transition-all",
         unit.owner === 'player' ? "border-cyan-600" : "border-red-600",
