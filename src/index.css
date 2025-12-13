@@ -38,3 +38,8 @@ body {
   height: 100%;
 
 }
+
+img {
+  image-rendering: auto; /* Ensure smooth scaling */
+  -webkit-backface-visibility: hidden; /* Fix for some transform artifacts */
+}

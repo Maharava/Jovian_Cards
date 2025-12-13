@@ -1,11 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useGameStore } from '../store/gameStore';
-import { useMetaStore } from '../store/metaStore';
 
 export const VictoryScreen: React.FC = () => {
   const enterFactionSelect = useGameStore(state => state.enterFactionSelect);
-  const { credits, parts, bioSamples, psiCrystals } = useMetaStore();
+  const lastLoot = useGameStore(state => state.lastLoot);
+
+  const loot = lastLoot || { credits: 0, parts: 0, bio: 0, psi: 0 };
 
   return (
     <motion.div 
@@ -35,30 +36,30 @@ export const VictoryScreen: React.FC = () => {
             />
             
             <p className="text-xl text-slate-300 mb-12">
-                Hostiles neutralized. Salvage operations complete.
+                Hostiles neutralized. Resources secured.
             </p>
 
             <div className="grid grid-cols-4 gap-4 mb-12 bg-black/50 p-8 rounded-xl border border-white/10">
                  <div className="flex flex-col items-center border-r border-white/10 last:border-0">
                     <span className="text-[10px] text-slate-500 uppercase tracking-widest mb-2">Credits</span>
-                    <span className="text-3xl text-yellow-400 font-bold font-mono">{credits} </span> 
+                    <span className="text-3xl text-yellow-400 font-bold font-mono">+{loot.credits} </span> 
                  </div>
                  <div className="flex flex-col items-center border-r border-white/10 last:border-0">
                     <span className="text-[10px] text-slate-500 uppercase tracking-widest mb-2">Tech Parts</span>
-                    <span className="text-3xl text-emerald-400 font-bold font-mono">{parts}</span>
+                    <span className="text-3xl text-emerald-400 font-bold font-mono">+{loot.parts}</span>
                  </div>
                  <div className="flex flex-col items-center border-r border-white/10 last:border-0">
                     <span className="text-[10px] text-slate-500 uppercase tracking-widest mb-2">Bio-Samples</span>
-                    <span className="text-3xl text-red-400 font-bold font-mono">{bioSamples}</span>
+                    <span className="text-3xl text-red-400 font-bold font-mono">+{loot.bio}</span>
                  </div>
                  <div className="flex flex-col items-center">
                     <span className="text-[10px] text-slate-500 uppercase tracking-widest mb-2">Psi-Crystals</span>
-                    <span className="text-3xl text-purple-400 font-bold font-mono">{psiCrystals}</span>
+                    <span className="text-3xl text-purple-400 font-bold font-mono">+{loot.psi}</span>
                  </div>
             </div>
             
             <div className="text-xs text-slate-500 mb-8 uppercase tracking-widest">
-                * Values represent current total stockpile
+                * Recovered from enemy wreckage
             </div>
 
             <div className="flex gap-4 justify-center">

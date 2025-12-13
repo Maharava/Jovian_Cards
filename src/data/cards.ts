@@ -435,7 +435,7 @@ export const ENEMY_CARDS: Card[] = [
   {
     id: 'corp_medic', name: 'Field Medic', type: 'unit', tier: 1, cost: 2,
     stats: { atk: 1, hp: 3, maxHp: 3 }, subtype: 'Biological', rarity: 'Uncommon',
-    text: 'Turn End: Heal 2 (Random Ally).', faction: 'Megacorp', baseAsset: 'corp_medic', mechanics: [m('heal', 'onTurnEnd', 2, 'random_ally')]
+    text: 'Heal 2.', faction: 'Megacorp', baseAsset: 'corp_medic', mechanics: [m('heal', 'onTurnEnd', 2, 'random_ally')]
   },
   {
     id: 'corp_hound', name: 'Cyber-Hound', type: 'unit', tier: 1, cost: 2,

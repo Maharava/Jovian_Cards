@@ -1,12 +1,11 @@
 # Megacorp Faction File
 
 ## Overview
-**The Megacorps** represent the raw industrial and capitalist might of the Inner System, unfettered by the failing bureaucracy of the Republic. In the vacuum of governance past the Asteroid Belt, they are the de facto law, military, and economy.
+**The Megacorps** represent the raw industrial and capitalist might of billionair class. Outside of the Republic and new COnfederacy, they are the law - but law comes with a cost.
 
-While the Republic claims jurisdiction, **Ira Corp** and its subsidiaries enforce it—strictly for profit. They view the Jovian bio-hackers not as people, but as intellectual property theft waiting to be "reacquired."
+While the Republic claims jurisdiction, **Ira Corp** and its subsidiaries enforce it—strictly for profit. They view the Jovian bio-hackers not as people, but as intellectual property theft waiting to be "reacquired." Other megacorps, such as Solarin Industries, focus their efforts on harvesting the near-endless supplies and resources of the system, while Haxaway holds a monopoly on the systems Dyson Swarm and fusion matter facilities, supplying a third of the systems fuel and energy needs on their own.
 
 *   **Archetype:** Industrial Swarm / Aggro / Resource Denial
-*   **Motto:** "Efficiency. Acquisition. Control."
 *   **Visual Style:** Sleek matte-black composites, neon orange warning lights, faceless security helmets, swarms of utilitarian drones.
 
 ---
@@ -18,7 +17,7 @@ The primary antagonist force in the sector. Ira Corp specializes in "Hostile Acq
 *   **Specialty:** Cybernetics, Drones, Private Military Contracting.
 *   **Leader:** Director Kaelen Vance (a brain in a jar, though few know this).
 
-### 2. Tycho Heavy Industries
+### 2. Solarin Industries
 A subsidiary focusing on mining and heavy infrastructure. Their "Mining Drones" are easily repurposed into shrapnel bombs.
 *   **Specialty:** Ore extraction, automated defenses, orbital construction.
 
@@ -55,28 +54,28 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 #### Common (The Workforce)
 *   **Mining Drone Series** (Mech - Swarm)
     *   T1: **Mining Drone** (1/1, Cost 1) - No ability.
-    *   T2: **Excavator Drone** (2/2, Cost 1) - Rush.
-    *   T3: **Strip-Miner** (3/3, Cost 1) - Rush. Death: Deal 1 dmg to random enemy.
+    *   T2: **Quick Mining Drone** (2/2, Cost 1) - Rush.
+    *   T3: **Re-purposed Mining Miner** (3/3, Cost 1) - Rush. Death: Deal 1 dmg to random enemy.
 *   **Security Bot Series** (Mech - Defense)
     *   T1: **Security Bot** (1/2, Cost 2) - Guard.
     *   T2: **Riot Control Bot** (2/3, Cost 2) - Guard.
-    *   T3: **Pacifier Unit** (3/4, Cost 2) - Guard. Stun attacker.
+    *   T3: **Pacifier Unit** (3/4, Cost 2) - Guard. When attacking, stuns the target for 1 turn.
 *   **Corp Guard Series** (Bio - Meat Shield)
     *   T1: **Corp Guard** (1/2, Cost 2) - Guard.
-    *   T2: **Elite Guard** (2/2, Cost 2) - Guard. +1 ATK.
-    *   T3: **Site Warden** (3/3, Cost 2) - Guard. Adjacent allies have Guard.
+    *   T2: **Elite Guard** (2/3, Cost 2) - Guard.
+    *   T3: **Site Warden** (3/3, Cost 2) - Guard. Rally.
 *   **Cyber-Hound Series** (Mech - Fast Attack)
     *   T1: **Cyber-Hound** (2/1, Cost 2) - Rush.
     *   T2: **Hunter-Killer** (3/2, Cost 2) - Rush.
-    *   T3: **Alpha Model** (4/3, Cost 2) - Rush. Windfury.
+    *   T3: **Alpha Model** (5/2, Cost 2) - Rush. Double Attack.
 *   **Loader Series** (Mech - Heavy)
-    *   T1: **Heavy Loader** (3/5, Cost 4) - Slow (Attacks every other turn).
-    *   T2: **Siege Breaker** (4/6, Cost 4) - Slow.
-    *   T3: **Titan Hauler** (6/8, Cost 4) - Slow. Guard.
+    *   T1: **Heavy Loader** (1/5, Cost 4) - Slow (Attacks every other turn).
+    *   T2: **Siege Breaker** (2/6, Cost 4) - Slow.
+    *   T3: **Titan Hauler** (3/8, Cost 4) - Slow. Guard.
 *   **Logistics Series** (Bio - Support)
-    *   T1: **Field Medic** (1/3, Cost 2) - End Turn: Heal 2 random ally.
-    *   T2: **Trauma Team** (1/4, Cost 2) - End Turn: Heal 3 random ally.
-    *   T3: **Biotech Surgeon** (2/5, Cost 2) - End Turn: Fully heal random ally.
+    *   T1: **Field Medic** (1/3, Cost 2) - Heal 1.
+    *   T2: **Paramedic** (1/4, Cost 2) - Heal 2.
+    *   T3: **Biotech Surgeon** (2/4, Cost 2) - Heal 3/
 
 #### Uncommon (The Specialists)
 *   **Manager Series** (Bio - Buffer)

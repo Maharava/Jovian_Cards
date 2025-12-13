@@ -405,7 +405,8 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
 
           return { 
               enemy: { ...s.enemy, hp: 0 }, 
-              phase: 'victory'
+              phase: 'victory',
+              lastLoot: loot
           };
       }
       return { enemy: { ...s.enemy, hp: newHp } };
@@ -474,6 +475,9 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
                   meta.addResource('parts', loot.parts);
                   meta.addResource('bio', loot.bio);
                   meta.addResource('psi', loot.psi);
+                  
+                  // Save loot for victory screen
+                  (newState as any).lastLoot = loot;
               }
           } else if (targetUid) {
               const tIndex = enemyBoard.findIndex(u => u.uid === targetUid);

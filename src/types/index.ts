@@ -145,6 +145,7 @@ export interface GameState {
   phase: 'main_menu' | 'faction_select' | 'player_turn' | 'enemy_turn' | 'game_over' | 'victory' | 'hangar' | 'market' | 'workshop';
   winner?: 'player' | 'enemy';
   scoutedCard?: Card | null; // For Elara's ability
+  lastLoot?: { credits: number, parts: number, bio: number, psi: number } | null; // For Victory Screen
   
   // Animation State
   eventQueue: GameEvent[];

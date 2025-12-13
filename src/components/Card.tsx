@@ -156,7 +156,7 @@ export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, classN
       {/* Tooltips Container */}
       {showTooltip && activeMechanics.length > 0 && (
         <div className={cn(
-            "absolute opacity-0 group-hover:opacity-100 transition-opacity z-[999] pointer-events-none flex gap-2",
+            "absolute opacity-0 group-hover:opacity-100 transition-opacity z-[1000] pointer-events-none flex gap-2",
             tooltipPosition === 'top' 
                 ? "bottom-full left-1/2 -translate-x-1/2 mb-4 flex-row whitespace-nowrap" 
                 : "left-full ml-4 top-0 flex-col"
