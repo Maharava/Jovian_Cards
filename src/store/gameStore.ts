@@ -156,7 +156,8 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
                   hand: enemyHand, 
                   graveyard: [],
                   maxHp: enemyMaxHp,
-                  hp: enemyMaxHp
+                  hp: enemyMaxHp,
+                  faction: faction // Save faction
               },
               phase: 'player_turn',
               turn: 1,
@@ -280,7 +281,7 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
     set({ isProcessingQueue: true });
 
     const newUnit: UnitInstance = {
-        uid: generateId(),
+        uid: card.uid!, // Use card's UID for consistent layoutId
         cardId: card.id,
         name: card.name,
         baseAsset: card.baseAsset,
@@ -394,7 +395,7 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
   damageEnemy: (amount: number) => set(s => {
       const newHp = s.enemy.hp - amount;
       if (newHp <= 0) {
-          const loot = calculateLoot(s.run.difficulty);
+          const loot = calculateLoot(s.run.difficulty, s.enemy.faction || 'Republic');
           
           const meta = useMetaStore.getState();
           meta.addResource('credits', loot.credits);
@@ -467,7 +468,7 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
                   newState.enemy.hp = 0;
                   phase = 'victory';
                   
-                  const loot = calculateLoot(newState.run.difficulty);
+                  const loot = calculateLoot(newState.run.difficulty, newState.enemy.faction || 'Republic');
                   const meta = useMetaStore.getState();
                   meta.addResource('credits', loot.credits);
                   meta.addResource('parts', loot.parts);

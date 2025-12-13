@@ -122,6 +122,7 @@ export interface EnemyState {
   maxHp: number;
   energy: number;
   maxEnergy: number;
+  faction?: string; // Track which faction we are fighting
   deck: Card[]; // Abstracted usually, but good for tracking
   hand: Card[]; // Explicitly track hand for AI logic
   board: UnitInstance[];
