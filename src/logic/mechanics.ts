@@ -78,7 +78,14 @@ export class MechanicHandler {
                 targets = getEnemies();
                 break;
             case 'random_ally': {
-                const allies = getAllies().filter(u => u.uid !== sourceUnit.uid);
+                let allies = getAllies().filter(u => u.uid !== sourceUnit.uid);
+                // For healing, specifically prioritize damaged allies
+                if (mechanic.type === 'heal' || mechanic.type === 'repair') {
+                    const damagedAllies = allies.filter(u => u.hp < u.maxHp);
+                    if (damagedAllies.length > 0) {
+                        allies = damagedAllies;
+                    }
+                }
                 if (allies.length > 0) {
                     targets = [allies[Math.floor(Math.random() * allies.length)]];
                 }
