@@ -34,6 +34,13 @@ export type MechanicType =
   | 'fade'
   | 'hack' // New mechanic
   | 'rage' // New mechanic
+  | 'encourage'
+  | 'recycle'
+  | 'loot'
+  | 'first_strike'
+  | 'assassinate'
+  | 'regenerate'
+  | 'shield'
   | 'double_damage_undamaged' // Thebe T3 passive
   | 'add_random_tactic'; // Leda T1 ability // Return to hand
 

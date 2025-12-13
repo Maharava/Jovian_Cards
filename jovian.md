@@ -1,11 +1,9 @@
-# Jovian Confederation Faction File
+# Jovian Family
+The Jovian Sisters are the genertically-engineered children of Jupiter, the most brilliant genetecist to ever grace humanity. The first - and only - non-human sentient beings in the system, the Jovians are of intense interest. Though their baseline DNA is human, they were grown and born with genetic alterations and have matured into adulthood with no ill effects - regular humans cannot develop with genetic changes, and must get them later in life.
+The sister - despite have two boys, they're called the sisters - are each named after a moon of Jupiter. Though they know where their mother is - the most wanted criminal in the system - they won't give her up, and live amongst the free settlements and new Outer Confederacy amongst the moons of Jupiter and Saturn. So long as these settlements and new nation protect the Sisters and grant them some privacy, they are rewarded with incredible research and technology by Jupiter. Indeed, the initial refusal of the main colony on Europa to hand Europa Jovia over to the Republic triggered the formation of the confederacy, as Jupiter and her network delivered vast resources and new technologies to the moon, making it strong enough to stare down a Republic battleship.
 
-## Overview
-**The Jovian Confederation**, often referred to simply as "The Family," is a loose alliance of the independent moons of Jupiter (Europa, Ganymede, Callisto, Io). They are defined by their transhumanist philosophy, embracing the genetic and cybernetic advancements pioneered by the scientist **Jupiter**.
 
-Unlike the rigid hierarchy of the Republic or the profit-driven ruthlessness of the Megacorps, the Jovians operate on principles of mutual aid, individual liberty, and the protection of their own. They are the "heroes" of the story—misunderstood outcasts defending their home from exploitation.
-
-*   **Archetype:** Midrange / Synergy / Hero-Centric
+*   **Archetype:**  Diverse abilities.
 *   **Motto:** "Evolution is our birthright."
 *   **Visual Style:** Clean white medical aesthetic, bioluminescent blues and purples, organic curves, high-tech visors, and distinct character designs for each "Sister."
 

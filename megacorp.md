@@ -54,28 +54,28 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 #### Common (The Workforce)
 *   **Mining Drone Series** (Mech - Swarm)
     *   T1: **Mining Drone** (1/1, Cost 1) - No ability.
-    *   T2: **Quick Mining Drone** (2/2, Cost 1) - Rush.
-    *   T3: **Strip-Miner** (3/3, Cost 1) - Rush. Death: Deal 1 dmg to random enemy.
+    *   T2: **Quick Mining Drone** (2/2, Cost 1) - **Rush**.
+    *   T3: **Strip-Miner** (3/3, Cost 1) - **Rush**. Death: Deal 1 dmg to random enemy.
 *   **Security Bot Series** (Mech - Defense)
-    *   T1: **Security Bot** (1/2, Cost 2) - Guard.
-    *   T2: **Riot Control Bot** (2/3, Cost 2) - Guard.
-    *   T3: **Pacifier Unit** (3/4, Cost 2) - Guard. When attacking, **Stun** target for 1 turn.
+    *   T1: **Security Bot** (1/2, Cost 2) - **Guard**.
+    *   T2: **Riot Control Bot** (2/3, Cost 2) - **Guard**.
+    *   T3: **Pacifier Unit** (3/4, Cost 2) - **Guard**. When attacking, **Stun** target for 1 turn.
 *   **Corp Guard Series** (Bio - Meat Shield)
-    *   T1: **Corp Guard** (1/2, Cost 2) - Guard.
-    *   T2: **Elite Guard** (2/3, Cost 2) - Guard.
-    *   T3: **Site Warden** (3/3, Cost 2) - Guard. **Rally** (Buff allies).
+    *   T1: **Corp Guard** (1/2, Cost 2) - **Guard**.
+    *   T2: **Elite Guard** (2/3, Cost 2) - **Guard**.
+    *   T3: **Site Warden** (3/3, Cost 2) - **Guard**. **Rally** (Buff allies +1 HP/MaxHP).
 *   **Cyber-Hound Series** (Mech - Fast Attack)
-    *   T1: **Cyber-Hound** (2/1, Cost 2) - Rush.
-    *   T2: **Hunter-Killer** (3/2, Cost 2) - Rush.
-    *   T3: **Alpha Model** (5/2, Cost 3) - Rush. **Double Attack.**
+    *   T1: **Cyber-Hound** (2/1, Cost 2) - **Rush**.
+    *   T2: **Hunter-Killer** (3/2, Cost 2) - **Rush**.
+    *   T3: **Alpha Model** (5/2, Cost 3) - **Rush**. **Double Attack**.
 *   **Loader Series** (Mech - Heavy)
     *   T1: **Heavy Loader** (2/6, Cost 3) - **Slow** (Attacks every other turn).
-    *   T2: **Siege Breaker** (3/7, Cost 3) - **Slow.**
-    *   T3: **Titan Hauler** (4/9, Cost 3) - **Slow.** **Guard.**
+    *   T2: **Siege Breaker** (3/7, Cost 3) - **Slow**.
+    *   T3: **Titan Hauler** (4/9, Cost 3) - **Slow**. **Guard**.
 *   **Logistics Series** (Bio - Support)
-    *   T1: **Field Medic** (1/3, Cost 2) - Heal 1 (Random Ally).
-    *   T2: **Paramedic** (1/4, Cost 2) - Heal 2.
-    *   T3: **Biotech Surgeon** (2/4, Cost 2) - Heal 3.
+    *   T1: **Field Medic** (1/3, Cost 2) - **Heal 1** (Random Ally).
+    *   T2: **Paramedic** (1/4, Cost 2) - **Heal 2**.
+    *   T3: **Biotech Surgeon** (2/4, Cost 2) - **Heal 3**.
 
 #### Uncommon (The Specialists)
 *   **Manager Series** (Bio - Buffer)
@@ -83,60 +83,61 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
     *   T2: **Manager** (0/4, Cost 3) - **Encourage 2**.
     *   T3: **Director** (0/5, Cost 3) - **Encourage 2**, **Rally 1**.
 *   **Liquidator Series** (Bio - Damage)
-    *   T1: **Asset Liquidator** (4/2, Cost 4) - Stealth (Untargetable until attack).
-    *   T2: **Clean-Up Crew** (5/3, Cost 4) - **Loot 1** (On kill: Draw 1).
-    *   T3: **Black Ops Agent** (6/4, Cost 4) - **Loot 1**. **First Strike** (Take 0 dmg if killing target).
+    *   T1: **Asset Liquidator** (4/2, Cost 4) - No Ability.
+    *   T2: **Clean-Up Crew** (5/3, Cost 4) - **Loot 1** (On kill: Draw 1 card).
+    *   T3: **Black Ops Agent** (6/4, Cost 4) - **Loot 1**. **First Strike** (Take 0 dmg if killing target on attack).
 *   **Uplink Series** (Mech - Disruption)
-    *   T1: **Corrupted Uplink** (0/4, Cost 3) - End Turn: **Hack 1** (Random Enemy).
-    *   T2: **Signal Jammer** (0/5, Cost 3) - End Turn: **Hack 3**.
-    *   T3: **Network Hub** (0/6, Cost 3) - End Turn: **Hack 5**.
+    *   T1: **Corrupted Uplink** (0/4, Cost 3) - **Hack 1** (Random Enemy at Turn End).
+    *   T2: **Signal Jammer** (0/5, Cost 3) - **Hack 3**.
+    *   T3: **Network Hub** (0/6, Cost 3) - **Hack 5**.
 *   **Technician Series** (Bio - Repair)
-    *   T1: **Drone Mechanic** (2/2, Cost 3) - On Play: Summon 1/1 Drone.
-    *   T2: **Line Engineer** (3/3, Cost 3) - On Play: Summon 1/1 Drone. **Recycle 1** (Ally death: Gain 1 Energy/Draw).
-    *   T3: **Master Architect** (4/4, Cost 3) - On Play: Summon two 1/1 Drones. **Recycle 1**.
+    *   *Note: Summoned Drones are Neutral faction.*
+    *   T1: **Drone Mechanic** (2/2, Cost 3) - On Play: **Summon** 1/1 Drone.
+    *   T2: **Line Engineer** (3/3, Cost 3) - On Play: **Summon** 1/1 Drone. **Recycle 1** (Ally death: Draw 1 card).
+    *   T3: **Master Architect** (4/4, Cost 3) - On Play: **Summon** two 1/1 Drones. **Recycle 1**.
 *   **Slaver Series** (Bio - Control)
     *   T1: **Debt Collector** (2/3, Cost 4) - No ability.
-    *   T2: **Indentured Enforcer** (3/4, Cost 4) - On Play: **Disarm 2** (Random Enemy).
-    *   T3: **Contract Binder** (4/5, Cost 4) - On Play: **Disarm 2**. On Play: Steal control of enemy with <2 ATK.
+    *   T2: **Indentured Enforcer** (3/4, Cost 4) - **Disarm 2** (Random Enemy).
+    *   T3: **Contract Binder** (4/5, Cost 4) - **Disarm 2**. On Play: Steal control of enemy with <2 ATK.
 
 #### Rare (The Elite)
 *   **Solarin Control** (Mech - Economy)
     *   *The central AI of Solarin Industries.*
     *   T1: (0/4, Cost 3) - Start of Turn: Gain 1 Energy.
-    *   T2: (0/6, Cost 3) - Start of Turn: Gain 1 Energy. Draw 1.
-    *   T3: (0/8, Cost 3) - Start of Turn: Gain 2 Energy. Draw 2.
+    *   T2: (0/6, Cost 3) - Start of Turn: Gain 1 Energy. Repair 1 random Mech.
+    *   T3: (0/8, Cost 3) - Start of Turn: Gain 2 Energy.
 *   **Director Kiz** (Bio - Synergy)
     *   *Managing Director of Haxaway.*
-    *   T1: (2/3, Cost 4) - On Play: Give all other Mechs +1/+1.
-    *   T2: (3/4, Cost 4) - On Play: Give all other Mechs +1/+1 and **Rush**.
-    *   T3: (4/5, Cost 4) - On Play: Give all other Mechs +2/+2.
+    *   T1: (2/3, Cost 4) - On Play: Give all other **Megacorp** units +1/+1.
+    *   T2: (3/4, Cost 4) - On Play: Give all other **Megacorp** units +1/+1 and **Rush**.
+    *   T3: (4/5, Cost 4) - On Play: Give all other **Megacorp** units +2/+2.
 *   **Enforcer Lee** (Bio - Brawler)
     *   *Freelance mercenary.*
-    *   T1: (4/4, Cost 5) - **Rage.**
-    *   T2: (5/5, Cost 5) - **Rage.** **Heal 2** (Self/Turn).
-    *   T3: (6/6, Cost 5) - **Rage.** **Heal 4** (Self/Turn). **Double Attack.**
+    *   T1: (4/4, Cost 5) - **Rage**. **Regenerate**.
+    *   T2: (5/5, Cost 5) - **Rage**. **Regenerate**.
+    *   T3: (6/6, Cost 5) - **Rage**. **Regenerate**. **Double Attack**.
 *   **R0-VR** (Mech - Assassin)
     *   *Prototype Cyber-Hound.*
-    *   T1: (3/1, Cost 3) - **Rush.** **Shield** (Takes 0 damage from next instance).
-    *   T2: (4/2, Cost 3) - **Rush.** **Shield.**
-    *   T3: (6/3, Cost 3) - **Rush.** **Shield.** **Double Attack.**
+    *   T1: (3/1, Cost 3) - **Rush**. **Shield** (Ignores first instance of damage each turn).
+    *   T2: (4/2, Cost 3) - **Rush**. **Shield**.
+    *   T3: (6/3, Cost 3) - **Rush**. **Shield**. **Double Attack**.
 
 #### Legendary (Unique Characters)
 *   **"Director Vance"** (Bio/Cyber - Leader)
     *   *The CEO of Ira Corp.*
-    *   T1 (0/5, Cost 6): **Guard.** End of Turn: Summon random Megacorp unit.
-    *   T2 (0/7, Cost 6): **Guard.** End of Turn: Summon random Megacorp unit. It gains **Rush**.
-    *   T3 (0/10, Cost 6): **Guard.** End of Turn: Summon **two** random Megacorp units.
+    *   T1 (0/5, Cost 6): **Shield**. Passive: When you play a Megacorp unit, give it +1/+1.
+    *   T2 (0/7, Cost 6): **Shield**. Passive: When you play a Megacorp unit, give it +1/+1. **Recycle 1**.
+    *   T3 (0/10, Cost 6): **Shield**. Passive: When you play a Megacorp unit, give it +2/+2. **Recycle 2**.
 *   **"The Auditor"** (Bio - Assassin)
     *   *He fires you from life.*
-    *   T1 (3/4, Cost 5): **Snipe.** On Attack: **Disarm 2** target.
-    *   T2 (4/5, Cost 5): **Snipe.** On Attack: **Stun** target.
-    *   T3 (5/6, Cost 5): **Snipe.** On Attack: **Kill** target if it is damaged.
+    *   T1 (3/4, Cost 5): **Snipe**. On Attack: **Stun** target.
+    *   T2 (4/5, Cost 5): **Snipe**. On Attack: **Stun** target.
+    *   T3 (5/6, Cost 5): **Snipe**. **Assassinate** (Destroys target when attacking).
 *   **"Unit 734"** (Mech - Board Clear)
     *   *Walking Apocalypse.*
-    *   T1 (4/4, Cost 7): On Play: Deal 2 damage to **ALL** other units.
-    *   T2 (6/6, Cost 7): On Play: Deal 3 damage to **ALL** other units.
-    *   T3 (8/8, Cost 7): On Play: Deal 4 damage to **ALL** other units. Repeat once if any unit dies.
+    *   T1 (4/4, Cost 7): On Play: Deal 2 damage to all **Non-Megacorp** units.
+    *   T2 (6/6, Cost 7): On Play: Deal 3 damage to all **Non-Megacorp** units.
+    *   T3 (8/8, Cost 7): On Play: Deal 4 damage to all **Non-Megacorp** units. **Shield**.
 
 ### Tactics (10 Cards)
 
@@ -150,5 +151,5 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 | **Rapid Prototyping** | 2 | Give a unit +2/+2 and "Death: Draw a card". | "Burn bright, burn fast." |
 | **Cease and Desist** | 3 | **Stun** an enemy and **Disarm** it for 2 turns. | "Legal says 'No'." |
 | **Forced Arbitration** | 2 | **Silence** a unit and Draw a card. | "We found a loophole." |
-| **Liquidate Assets** | 1 | Destroy friendly unit. Deal its ATK directly to the enemy health. | "Sold for scrap." |
+| **Liquidate Assets** | 1 | Destroy friendly unit. Deal its ATK to enemy. | "Sold for scrap." |
 | **Market Crash** | 4 | Set ALL enemy units' Attack to 1 until next turn. | "The bubble burst." |

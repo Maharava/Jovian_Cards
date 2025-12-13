@@ -4,9 +4,9 @@ import type { Card } from '../types';
 const m = (
   type: import('../types').MechanicType, 
   trigger: import('../types').TriggerType = 'onPlay', 
-  value?: number, 
+  value?: number,
   target?: import('../types').Mechanic['target'], 
-  payload?: string, 
+  payload?: string,
   secondaryValue?: number
 ): import('../types').Mechanic => ({
   type, trigger, value, target, payload, secondaryValue
@@ -387,6 +387,49 @@ export const TACTIC_CARDS: Card[] = [
     text: 'Deal 1 damage to ALL units.', faction: 'Megacorp', rarity: 'Uncommon',
     baseAsset: 'corp_downsizing',
     mechanics: [m('damage', 'onPlay', 1, 'all_units')]
+  },
+  // New Tactics
+  {
+    id: 'tactic_hostile_takeover', name: 'Hostile Takeover', type: 'tactic', tier: 1, cost: 5,
+    text: 'Mind Control enemy unit with <= 3 ATK.', faction: 'Megacorp', rarity: 'Rare',
+    baseAsset: 'hostile_takeover',
+    mechanics: [] // Logic TBD
+  },
+  {
+    id: 'tactic_budget_cuts', name: 'Budget Cuts', type: 'tactic', tier: 1, cost: 0,
+    text: 'Destroy a friendly unit. Gain 2 Energy.', faction: 'Megacorp', rarity: 'Common',
+    baseAsset: 'budget_cuts',
+    mechanics: [] // Logic TBD
+  },
+  {
+    id: 'tactic_rapid_prototyping', name: 'Rapid Prototyping', type: 'tactic', tier: 1, cost: 2,
+    text: 'Give a unit +2/+2 and "Death: Draw a card".', faction: 'Megacorp', rarity: 'Common',
+    baseAsset: 'rapid_prototyping',
+    mechanics: [] // Logic TBD
+  },
+  {
+    id: 'tactic_cease_and_desist', name: 'Cease and Desist', type: 'tactic', tier: 1, cost: 3,
+    text: 'Stun an enemy and Disarm it for 2 turns.', faction: 'Megacorp', rarity: 'Uncommon',
+    baseAsset: 'cease_and_desist',
+    mechanics: [m('stun', 'onPlay', 1, 'target_enemy'), m('disarm', 'onPlay', 2, 'target_enemy')]
+  },
+  {
+    id: 'tactic_forced_arbitration', name: 'Forced Arbitration', type: 'tactic', tier: 1, cost: 2,
+    text: 'Silence a unit and Draw a card.', faction: 'Megacorp', rarity: 'Uncommon',
+    baseAsset: 'forced_arbitration',
+    mechanics: [] // Logic TBD (Silence not yet implemented)
+  },
+  {
+    id: 'tactic_liquidate_assets', name: 'Liquidate Assets', type: 'tactic', tier: 1, cost: 1,
+    text: 'Destroy friendly unit. Deal its ATK to enemy.', faction: 'Megacorp', rarity: 'Common',
+    baseAsset: 'liquidate_assets',
+    mechanics: [] // Logic TBD
+  },
+  {
+    id: 'tactic_market_crash', name: 'Market Crash', type: 'tactic', tier: 1, cost: 4,
+    text: 'Set ALL enemy units\' Attack to 1.', faction: 'Megacorp', rarity: 'Rare',
+    baseAsset: 'market_crash',
+    mechanics: [] // Logic TBD
   }
 ];
 
@@ -399,61 +442,320 @@ export const TOKEN_CARDS: Card[] = [
   }
 ];
 
-export const ENEMY_CARDS: Card[] = [
+export const MEGACORP_CARDS: Card[] = [
+  // Mining Drone (Common)
   {
     id: 'enemy_drone', name: 'Mining Drone', type: 'unit', tier: 1, cost: 1,
     stats: { atk: 1, hp: 1, maxHp: 1 }, subtype: 'Cybernetic', rarity: 'Common',
     text: '', faction: 'Megacorp', baseAsset: 'enemy_drone', mechanics: []
   },
   {
+    id: 'enemy_drone_t2', name: 'Quick Mining Drone', type: 'unit', tier: 2, cost: 1,
+    stats: { atk: 2, hp: 2, maxHp: 2 }, subtype: 'Cybernetic', rarity: 'Common',
+    text: 'Rush.', faction: 'Megacorp', baseAsset: 'enemy_drone', mechanics: [m('rush', 'constant')]
+  },
+  {
+    id: 'enemy_drone_t3', name: 'Strip-Miner', type: 'unit', tier: 3, cost: 1,
+    stats: { atk: 3, hp: 3, maxHp: 3 }, subtype: 'Cybernetic', rarity: 'Common',
+    text: 'Rush. Death: Deal 1 dmg to random enemy.', faction: 'Megacorp', baseAsset: 'enemy_drone', mechanics: [m('rush', 'constant'), m('damage', 'onDeath', 1, 'random_enemy')]
+  },
+
+  // Security Bot (Common)
+  {
     id: 'enemy_security', name: 'Security Bot', type: 'unit', tier: 1, cost: 2,
     stats: { atk: 1, hp: 2, maxHp: 2 }, subtype: 'Cybernetic', rarity: 'Common',
     text: 'Guard.', faction: 'Megacorp', baseAsset: 'enemy_bot', mechanics: [m('guard', 'constant')]
   },
   {
-    id: 'enemy_leech', name: 'Void Leech', type: 'unit', tier: 1, cost: 2,
-    stats: { atk: 2, hp: 1, maxHp: 1 }, subtype: 'Biological', rarity: 'Common',
-    text: 'Lifesteal.', faction: 'Voidborn', baseAsset: 'void_leech', mechanics: [m('lifesteal', 'constant')]
+    id: 'enemy_security_t2', name: 'Riot Control Bot', type: 'unit', tier: 2, cost: 2,
+    stats: { atk: 2, hp: 3, maxHp: 3 }, subtype: 'Cybernetic', rarity: 'Common',
+    text: 'Guard.', faction: 'Megacorp', baseAsset: 'enemy_bot', mechanics: [m('guard', 'constant')]
   },
   {
-    id: 'enemy_uplink', name: 'Corrupted Uplink', type: 'unit', tier: 1, cost: 3,
-    stats: { atk: 0, hp: 4, maxHp: 4 }, subtype: 'Cybernetic', rarity: 'Common',
-    text: 'Turn End: Hack 1 (Random Enemy).', faction: 'Megacorp', baseAsset: 'enemy_uplink', 
-    mechanics: [m('hack', 'onTurnEnd', 1, 'random_enemy')]
+    id: 'enemy_security_t3', name: 'Pacifier Unit', type: 'unit', tier: 3, cost: 2,
+    stats: { atk: 3, hp: 4, maxHp: 4 }, subtype: 'Cybernetic', rarity: 'Common',
+    text: 'Guard. Stun target on attack.', faction: 'Megacorp', baseAsset: 'enemy_bot', mechanics: [m('guard', 'constant'), m('stun', 'onAttack', 1, 'target_unit')]
   },
-  {
-    id: 'enemy_loader', name: 'Heavy Loader', type: 'unit', tier: 1, cost: 4,
-    stats: { atk: 3, hp: 5, maxHp: 5 }, subtype: 'Cybernetic', rarity: 'Uncommon',
-    text: 'Slow (Attacks every other turn).', faction: 'Megacorp', baseAsset: 'enemy_loader', mechanics: [m('slow', 'constant')]
-  },
-  // --- MEGACORP (New) ---
+
+  // Corp Guard (Common)
   {
     id: 'corp_guard', name: 'Corp Guard', type: 'unit', tier: 1, cost: 2,
     stats: { atk: 1, hp: 2, maxHp: 2 }, subtype: 'Biological', rarity: 'Common',
     text: 'Guard.', faction: 'Megacorp', baseAsset: 'corp_guard', mechanics: [m('guard', 'constant')]
   },
   {
-    id: 'corp_medic', name: 'Field Medic', type: 'unit', tier: 1, cost: 2,
-    stats: { atk: 1, hp: 3, maxHp: 3 }, subtype: 'Biological', rarity: 'Uncommon',
-    text: 'Heal 2.', faction: 'Megacorp', baseAsset: 'corp_medic', mechanics: [m('heal', 'onTurnEnd', 2, 'random_ally')]
+    id: 'corp_guard_t2', name: 'Elite Guard', type: 'unit', tier: 2, cost: 2,
+    stats: { atk: 2, hp: 3, maxHp: 3 }, subtype: 'Biological', rarity: 'Common',
+    text: 'Guard.', faction: 'Megacorp', baseAsset: 'corp_guard', mechanics: [m('guard', 'constant')]
   },
   {
+    id: 'corp_guard_t3', name: 'Site Warden', type: 'unit', tier: 3, cost: 2,
+    stats: { atk: 3, hp: 3, maxHp: 3 }, subtype: 'Biological', rarity: 'Common',
+    text: 'Guard. Rally.', faction: 'Megacorp', baseAsset: 'corp_guard', mechanics: [m('guard', 'constant'), m('rally', 'onTurnEnd', 1, 'all_allies')] // Rally logic simplified
+  },
+
+  // Cyber-Hound (Common)
+  {
     id: 'corp_hound', name: 'Cyber-Hound', type: 'unit', tier: 1, cost: 2,
-    stats: { atk: 2, hp: 2, maxHp: 2 }, subtype: 'Cybernetic', rarity: 'Common',
+    stats: { atk: 2, hp: 1, maxHp: 1 }, subtype: 'Cybernetic', rarity: 'Common',
     text: 'Rush.', faction: 'Megacorp', baseAsset: 'corp_hound', mechanics: [m('rush', 'constant')]
   },
   {
-    id: 'corp_manager', name: 'Project Manager', type: 'unit', tier: 2, cost: 3,
-    stats: { atk: 0, hp: 4, maxHp: 4 }, subtype: 'Biological', rarity: 'Uncommon',
-    text: 'Passive: Allies have +1 ATK. (Not impl. Using Rally for now)', faction: 'Megacorp', baseAsset: 'corp_manager', mechanics: [m('rally', 'onTurnEnd', 1, 'all_allies')] 
+    id: 'corp_hound_t2', name: 'Hunter-Killer', type: 'unit', tier: 2, cost: 2,
+    stats: { atk: 3, hp: 2, maxHp: 2 }, subtype: 'Cybernetic', rarity: 'Common',
+    text: 'Rush.', faction: 'Megacorp', baseAsset: 'corp_hound', mechanics: [m('rush', 'constant')]
   },
   {
-    id: 'corp_liquidator', name: 'Liquidation Squad', type: 'unit', tier: 2, cost: 4,
-    stats: { atk: 5, hp: 3, maxHp: 3 }, subtype: 'Biological', rarity: 'Rare',
-    text: 'High damage.', faction: 'Megacorp', baseAsset: 'corp_liquidator', mechanics: []
+    id: 'corp_hound_t3', name: 'Alpha Model', type: 'unit', tier: 3, cost: 3,
+    stats: { atk: 5, hp: 2, maxHp: 2 }, subtype: 'Cybernetic', rarity: 'Common',
+    text: 'Rush. Double Attack.', faction: 'Megacorp', baseAsset: 'corp_hound', mechanics: [m('rush', 'constant'), m('double_attack', 'constant')]
   },
 
-  // --- VOID BORN ---
+  // Heavy Loader (Common)
+  {
+    id: 'enemy_loader', name: 'Heavy Loader', type: 'unit', tier: 1, cost: 3,
+    stats: { atk: 2, hp: 6, maxHp: 6 }, subtype: 'Cybernetic', rarity: 'Common',
+    text: 'Slow.', faction: 'Megacorp', baseAsset: 'enemy_loader', mechanics: [m('slow', 'constant')]
+  },
+  {
+    id: 'enemy_loader_t2', name: 'Siege Breaker', type: 'unit', tier: 2, cost: 3,
+    stats: { atk: 3, hp: 7, maxHp: 7 }, subtype: 'Cybernetic', rarity: 'Common',
+    text: 'Slow.', faction: 'Megacorp', baseAsset: 'enemy_loader', mechanics: [m('slow', 'constant')]
+  },
+  {
+    id: 'enemy_loader_t3', name: 'Titan Hauler', type: 'unit', tier: 3, cost: 3,
+    stats: { atk: 4, hp: 9, maxHp: 9 }, subtype: 'Cybernetic', rarity: 'Common',
+    text: 'Slow. Guard.', faction: 'Megacorp', baseAsset: 'enemy_loader', mechanics: [m('slow', 'constant'), m('guard', 'constant')]
+  },
+
+  // Field Medic (Common)
+  {
+    id: 'corp_medic', name: 'Field Medic', type: 'unit', tier: 1, cost: 2,
+    stats: { atk: 1, hp: 3, maxHp: 3 }, subtype: 'Biological', rarity: 'Common',
+    text: 'Heal 1.', faction: 'Megacorp', baseAsset: 'corp_medic', mechanics: [m('heal', 'onTurnEnd', 1, 'random_ally')]
+  },
+  {
+    id: 'corp_medic_t2', name: 'Paramedic', type: 'unit', tier: 2, cost: 2,
+    stats: { atk: 1, hp: 4, maxHp: 4 }, subtype: 'Biological', rarity: 'Common',
+    text: 'Heal 2.', faction: 'Megacorp', baseAsset: 'corp_medic', mechanics: [m('heal', 'onTurnEnd', 2, 'random_ally')]
+  },
+  {
+    id: 'corp_medic_t3', name: 'Biotech Surgeon', type: 'unit', tier: 3, cost: 2,
+    stats: { atk: 2, hp: 4, maxHp: 4 }, subtype: 'Biological', rarity: 'Common',
+    text: 'Heal 3.', faction: 'Megacorp', baseAsset: 'corp_medic', mechanics: [m('heal', 'onTurnEnd', 3, 'random_ally')]
+  },
+
+  // Manager (Uncommon)
+  {
+    id: 'corp_manager', name: 'Supervisor', type: 'unit', tier: 1, cost: 3,
+    stats: { atk: 0, hp: 3, maxHp: 3 }, subtype: 'Biological', rarity: 'Uncommon',
+    text: 'Encourage 1.', faction: 'Megacorp', baseAsset: 'corp_manager', mechanics: [m('encourage', 'onTurnEnd', 1)]
+  },
+  {
+    id: 'corp_manager_t2', name: 'Manager', type: 'unit', tier: 2, cost: 3,
+    stats: { atk: 0, hp: 4, maxHp: 4 }, subtype: 'Biological', rarity: 'Uncommon',
+    text: 'Encourage 2.', faction: 'Megacorp', baseAsset: 'corp_manager', mechanics: [m('encourage', 'onTurnEnd', 2)]
+  },
+  {
+    id: 'corp_manager_t3', name: 'Director', type: 'unit', tier: 3, cost: 3,
+    stats: { atk: 0, hp: 5, maxHp: 5 }, subtype: 'Biological', rarity: 'Uncommon',
+    text: 'Encourage 2. Rally 1.', faction: 'Megacorp', baseAsset: 'corp_manager', mechanics: [m('encourage', 'onTurnEnd', 2), m('rally', 'onTurnEnd', 1)]
+  },
+
+  // Liquidator (Uncommon)
+  {
+    id: 'corp_liquidator', name: 'Asset Liquidator', type: 'unit', tier: 1, cost: 4,
+    stats: { atk: 4, hp: 2, maxHp: 2 }, subtype: 'Biological', rarity: 'Uncommon',
+    text: '', faction: 'Megacorp', baseAsset: 'corp_liquidator', mechanics: []
+  },
+  {
+    id: 'corp_liquidator_t2', name: 'Clean-Up Crew', type: 'unit', tier: 2, cost: 4,
+    stats: { atk: 5, hp: 3, maxHp: 3 }, subtype: 'Biological', rarity: 'Uncommon',
+    text: 'Loot 1.', faction: 'Megacorp', baseAsset: 'corp_liquidator', mechanics: [m('loot', 'constant', 1)]
+  },
+  {
+    id: 'corp_liquidator_t3', name: 'Black Ops Agent', type: 'unit', tier: 3, cost: 4,
+    stats: { atk: 6, hp: 4, maxHp: 4 }, subtype: 'Biological', rarity: 'Uncommon',
+    text: 'Loot 1. First Strike.', faction: 'Megacorp', baseAsset: 'corp_liquidator', mechanics: [m('loot', 'constant', 1), m('first_strike', 'constant')]
+  },
+
+  // Uplink (Uncommon)
+  {
+    id: 'enemy_uplink', name: 'Corrupted Uplink', type: 'unit', tier: 1, cost: 3,
+    stats: { atk: 0, hp: 4, maxHp: 4 }, subtype: 'Cybernetic', rarity: 'Uncommon',
+    text: 'Hack 1.', faction: 'Megacorp', baseAsset: 'enemy_uplink', mechanics: [m('hack', 'onTurnEnd', 1, 'random_enemy')]
+  },
+  {
+    id: 'enemy_uplink_t2', name: 'Signal Jammer', type: 'unit', tier: 2, cost: 3,
+    stats: { atk: 0, hp: 5, maxHp: 5 }, subtype: 'Cybernetic', rarity: 'Uncommon',
+    text: 'Hack 3.', faction: 'Megacorp', baseAsset: 'enemy_uplink', mechanics: [m('hack', 'onTurnEnd', 3, 'random_enemy')]
+  },
+  {
+    id: 'enemy_uplink_t3', name: 'Network Hub', type: 'unit', tier: 3, cost: 3,
+    stats: { atk: 0, hp: 6, maxHp: 6 }, subtype: 'Cybernetic', rarity: 'Uncommon',
+    text: 'Hack 5.', faction: 'Megacorp', baseAsset: 'enemy_uplink', mechanics: [m('hack', 'onTurnEnd', 5, 'random_enemy')]
+  },
+
+  // Technician (Uncommon)
+  {
+    id: 'corp_technician', name: 'Drone Mechanic', type: 'unit', tier: 1, cost: 3,
+    stats: { atk: 2, hp: 2, maxHp: 2 }, subtype: 'Biological', rarity: 'Uncommon',
+    text: 'Summon Drone.', faction: 'Megacorp', baseAsset: 'corp_technician', mechanics: [m('summon', 'onPlay', 1, 'self', 'enemy_drone')]
+  },
+  {
+    id: 'corp_technician_t2', name: 'Line Engineer', type: 'unit', tier: 2, cost: 3,
+    stats: { atk: 3, hp: 3, maxHp: 3 }, subtype: 'Biological', rarity: 'Uncommon',
+    text: 'Summon Drone. Recycle 1.', faction: 'Megacorp', baseAsset: 'corp_technician', mechanics: [m('summon', 'onPlay', 1, 'self', 'enemy_drone'), m('recycle', 'constant', 1)]
+  },
+  {
+    id: 'corp_technician_t3', name: 'Master Architect', type: 'unit', tier: 3, cost: 3,
+    stats: { atk: 4, hp: 4, maxHp: 4 }, subtype: 'Biological', rarity: 'Uncommon',
+    text: 'Summon 2 Drones. Recycle 1.', faction: 'Megacorp', baseAsset: 'corp_technician', mechanics: [m('summon', 'onPlay', 2, 'self', 'enemy_drone'), m('recycle', 'constant', 1)]
+  },
+
+  // Slaver (Uncommon)
+  {
+    id: 'corp_slaver', name: 'Debt Collector', type: 'unit', tier: 1, cost: 4,
+    stats: { atk: 2, hp: 3, maxHp: 3 }, subtype: 'Biological', rarity: 'Uncommon',
+    text: '', faction: 'Megacorp', baseAsset: 'corp_slaver', mechanics: []
+  },
+  {
+    id: 'corp_slaver_t2', name: 'Indentured Enforcer', type: 'unit', tier: 2, cost: 4,
+    stats: { atk: 3, hp: 4, maxHp: 4 }, subtype: 'Biological', rarity: 'Uncommon',
+    text: 'Disarm 2.', faction: 'Megacorp', baseAsset: 'corp_slaver', mechanics: [m('disarm', 'onPlay', 2, 'random_enemy')]
+  },
+  {
+    id: 'corp_slaver_t3', name: 'Contract Binder', type: 'unit', tier: 3, cost: 4,
+    stats: { atk: 4, hp: 5, maxHp: 5 }, subtype: 'Biological', rarity: 'Uncommon',
+    text: 'Disarm 2. Steal Control (<2 ATK).', faction: 'Megacorp', baseAsset: 'corp_slaver', mechanics: [m('disarm', 'onPlay', 2, 'random_enemy')]
+  },
+
+  // Solarin Control (Rare)
+  {
+    id: 'solarin_control', name: 'Solarin Control', type: 'unit', tier: 1, cost: 3,
+    stats: { atk: 0, hp: 4, maxHp: 4 }, subtype: 'Cybernetic', rarity: 'Rare',
+    text: 'Gain 1 Energy.', faction: 'Megacorp', baseAsset: 'solarin_control', mechanics: [] // Logic TBD
+  },
+  {
+    id: 'solarin_control_t2', name: 'Solarin Control', type: 'unit', tier: 2, cost: 3,
+    stats: { atk: 0, hp: 6, maxHp: 6 }, subtype: 'Cybernetic', rarity: 'Rare',
+    text: 'Gain 1 Energy. Repair 1 Mech.', faction: 'Megacorp', baseAsset: 'solarin_control', mechanics: [] // Logic TBD
+  },
+  {
+    id: 'solarin_control_t3', name: 'Solarin Control', type: 'unit', tier: 3, cost: 3,
+    stats: { atk: 0, hp: 8, maxHp: 8 }, subtype: 'Cybernetic', rarity: 'Rare',
+    text: 'Gain 2 Energy.', faction: 'Megacorp', baseAsset: 'solarin_control', mechanics: [] // Logic TBD
+  },
+
+  // Director Kiz (Rare)
+  {
+    id: 'director_kiz', name: 'Director Kiz', type: 'unit', tier: 1, cost: 4,
+    stats: { atk: 2, hp: 3, maxHp: 3 }, subtype: 'Biological', rarity: 'Rare',
+    text: 'Buff Megacorp +1/+1.', faction: 'Megacorp', baseAsset: 'director_kiz', mechanics: [] // Logic TBD
+  },
+  {
+    id: 'director_kiz_t2', name: 'Director Kiz', type: 'unit', tier: 2, cost: 4,
+    stats: { atk: 3, hp: 4, maxHp: 4 }, subtype: 'Biological', rarity: 'Rare',
+    text: 'Buff Megacorp +1/+1 & Rush.', faction: 'Megacorp', baseAsset: 'director_kiz', mechanics: [] // Logic TBD
+  },
+  {
+    id: 'director_kiz_t3', name: 'Director Kiz', type: 'unit', tier: 3, cost: 4,
+    stats: { atk: 4, hp: 5, maxHp: 5 }, subtype: 'Biological', rarity: 'Rare',
+    text: 'Buff Megacorp +2/+2.', faction: 'Megacorp', baseAsset: 'director_kiz', mechanics: [] // Logic TBD
+  },
+
+  // Enforcer Lee (Rare)
+  {
+    id: 'enforcer_lee', name: 'Enforcer Lee', type: 'unit', tier: 1, cost: 5,
+    stats: { atk: 4, hp: 4, maxHp: 4 }, subtype: 'Biological', rarity: 'Rare',
+    text: 'Rage. Regenerate.', faction: 'Megacorp', baseAsset: 'enforcer_lee', mechanics: [m('rage', 'onAttack', 1), m('regenerate', 'onTurnEnd')]
+  },
+  {
+    id: 'enforcer_lee_t2', name: 'Enforcer Lee', type: 'unit', tier: 2, cost: 5,
+    stats: { atk: 5, hp: 5, maxHp: 5 }, subtype: 'Biological', rarity: 'Rare',
+    text: 'Rage. Regenerate.', faction: 'Megacorp', baseAsset: 'enforcer_lee', mechanics: [m('rage', 'onAttack', 1), m('regenerate', 'onTurnEnd')]
+  },
+  {
+    id: 'enforcer_lee_t3', name: 'Enforcer Lee', type: 'unit', tier: 3, cost: 5,
+    stats: { atk: 6, hp: 6, maxHp: 6 }, subtype: 'Biological', rarity: 'Rare',
+    text: 'Rage. Regenerate. Double Attack.', faction: 'Megacorp', baseAsset: 'enforcer_lee', mechanics: [m('rage', 'onAttack', 1), m('regenerate', 'onTurnEnd'), m('double_attack', 'constant')]
+  },
+
+  // R0-VR (Rare)
+  {
+    id: 'r0vr', name: 'R0-VR', type: 'unit', tier: 1, cost: 3,
+    stats: { atk: 3, hp: 1, maxHp: 1 }, subtype: 'Cybernetic', rarity: 'Rare',
+    text: 'Rush. Shield.', faction: 'Megacorp', baseAsset: 'r0vr', mechanics: [m('rush', 'constant'), m('shield', 'constant')]
+  },
+  {
+    id: 'r0vr_t2', name: 'R0-VR', type: 'unit', tier: 2, cost: 3,
+    stats: { atk: 4, hp: 2, maxHp: 2 }, subtype: 'Cybernetic', rarity: 'Rare',
+    text: 'Rush. Shield.', faction: 'Megacorp', baseAsset: 'r0vr', mechanics: [m('rush', 'constant'), m('shield', 'constant')]
+  },
+  {
+    id: 'r0vr_t3', name: 'R0-VR', type: 'unit', tier: 3, cost: 3,
+    stats: { atk: 6, hp: 3, maxHp: 3 }, subtype: 'Cybernetic', rarity: 'Rare',
+    text: 'Rush. Shield. Double Attack.', faction: 'Megacorp', baseAsset: 'r0vr', mechanics: [m('rush', 'constant'), m('shield', 'constant'), m('double_attack', 'constant')]
+  },
+
+  // Director Vance (Legendary)
+  {
+    id: 'director_vance', name: 'Director Vance', type: 'unit', tier: 1, cost: 6,
+    stats: { atk: 0, hp: 5, maxHp: 5 }, subtype: 'Cybernetic', rarity: 'Legendary',
+    text: 'Shield. Passive: Played Megacorp units +1/+1.', faction: 'Megacorp', baseAsset: 'director_vance', mechanics: [m('shield', 'constant')] // Logic TBD
+  },
+  {
+    id: 'director_vance_t2', name: 'Director Vance', type: 'unit', tier: 2, cost: 6,
+    stats: { atk: 0, hp: 7, maxHp: 7 }, subtype: 'Cybernetic', rarity: 'Legendary',
+    text: 'Shield. Recycle 1. Passive: +1/+1.', faction: 'Megacorp', baseAsset: 'director_vance', mechanics: [m('shield', 'constant'), m('recycle', 'constant', 1)] // Logic TBD
+  },
+  {
+    id: 'director_vance_t3', name: 'Director Vance', type: 'unit', tier: 3, cost: 6,
+    stats: { atk: 0, hp: 10, maxHp: 10 }, subtype: 'Cybernetic', rarity: 'Legendary',
+    text: 'Shield. Recycle 2. Passive: +2/+2.', faction: 'Megacorp', baseAsset: 'director_vance', mechanics: [m('shield', 'constant'), m('recycle', 'constant', 2)] // Logic TBD
+  },
+
+  // The Auditor (Legendary)
+  {
+    id: 'the_auditor', name: 'The Auditor', type: 'unit', tier: 1, cost: 5,
+    stats: { atk: 3, hp: 4, maxHp: 4 }, subtype: 'Biological', rarity: 'Legendary',
+    text: 'Snipe. Stun on attack.', faction: 'Megacorp', baseAsset: 'the_auditor', mechanics: [m('snipe', 'constant'), m('stun', 'onAttack', 1, 'target_unit')]
+  },
+  {
+    id: 'the_auditor_t2', name: 'The Auditor', type: 'unit', tier: 2, cost: 5,
+    stats: { atk: 4, hp: 5, maxHp: 5 }, subtype: 'Biological', rarity: 'Legendary',
+    text: 'Snipe. Stun on attack.', faction: 'Megacorp', baseAsset: 'the_auditor', mechanics: [m('snipe', 'constant'), m('stun', 'onAttack', 1, 'target_unit')]
+  },
+  {
+    id: 'the_auditor_t3', name: 'The Auditor', type: 'unit', tier: 3, cost: 5,
+    stats: { atk: 5, hp: 6, maxHp: 6 }, subtype: 'Biological', rarity: 'Legendary',
+    text: 'Snipe. Assassinate.', faction: 'Megacorp', baseAsset: 'the_auditor', mechanics: [m('snipe', 'constant'), m('assassinate', 'constant')]
+  },
+
+  // Unit 734 (Legendary)
+  {
+    id: 'unit_734', name: 'Unit 734', type: 'unit', tier: 1, cost: 7,
+    stats: { atk: 4, hp: 4, maxHp: 4 }, subtype: 'Cybernetic', rarity: 'Legendary',
+    text: 'OnPlay: 2 Dmg to all non-Megacorp.', faction: 'Megacorp', baseAsset: 'unit_734', mechanics: [] // Logic TBD
+  },
+  {
+    id: 'unit_734_t2', name: 'Unit 734', type: 'unit', tier: 2, cost: 7,
+    stats: { atk: 6, hp: 6, maxHp: 6 }, subtype: 'Cybernetic', rarity: 'Legendary',
+    text: 'OnPlay: 3 Dmg to all non-Megacorp.', faction: 'Megacorp', baseAsset: 'unit_734', mechanics: [] // Logic TBD
+  },
+  {
+    id: 'unit_734_t3', name: 'Unit 734', type: 'unit', tier: 3, cost: 7,
+    stats: { atk: 8, hp: 8, maxHp: 8 }, subtype: 'Cybernetic', rarity: 'Legendary',
+    text: 'OnPlay: 4 Dmg to all non-Megacorp. Shield.', faction: 'Megacorp', baseAsset: 'unit_734', mechanics: [m('shield', 'constant')] // Logic TBD
+  }
+];
+
+export const VOIDBORN_CARDS: Card[] = [
+  {
+    id: 'enemy_leech', name: 'Void Leech', type: 'unit', tier: 1, cost: 2,
+    stats: { atk: 2, hp: 1, maxHp: 1 }, subtype: 'Biological', rarity: 'Common',
+    text: 'Lifesteal.', faction: 'Voidborn', baseAsset: 'void_leech', mechanics: [m('lifesteal', 'constant')]
+  },
   {
     id: 'void_voidling', name: 'Voidling', type: 'unit', tier: 1, cost: 1,
     stats: { atk: 1, hp: 1, maxHp: 1 }, subtype: 'Psionic', rarity: 'Common',
@@ -480,5 +782,7 @@ export const ENEMY_CARDS: Card[] = [
     text: 'OnAttack: Pollute 1.', faction: 'Voidborn', baseAsset: 'void_flayer', mechanics: [m('pollute', 'onAttack', 1)]
   }
 ];
+
+export const ENEMY_CARDS = [...MEGACORP_CARDS, ...VOIDBORN_CARDS];
 
 export const ALL_CARDS = [...HERO_CARDS, ...TACTIC_CARDS, ...ENEMY_CARDS, ...TOKEN_CARDS];
