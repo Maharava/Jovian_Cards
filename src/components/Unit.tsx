@@ -30,7 +30,9 @@ export const Unit: React.FC<UnitProps> = ({ unit, onClick, onContextMenu, isTarg
   const isAttacking = useGameStore(state => state.attackingUnitId === unit.uid);
   
   const folder = FACTION_FOLDERS[unit.faction] || 'neutral';
-  const imagePath = `/assets/cards/${folder}/${unit.baseAsset}_original.png`;
+  // Note: UnitInstance copies baseAsset from card.
+  // Card.tsx handles tiering. On board, we assume baseAsset is intended to be _tier1.
+  const imagePath = `/assets/cards/${folder}/${unit.baseAsset}_tier1.png`;
 
   return (
     <motion.div
@@ -69,7 +71,7 @@ export const Unit: React.FC<UnitProps> = ({ unit, onClick, onContextMenu, isTarg
             alt={unit.name}
             className="absolute inset-0 w-full h-full object-cover rounded-[4px]"
             onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
+                    (e.target as HTMLImageElement).src = `/assets/cards/${folder}/${unit.baseAsset}_tier1.png`; // Fallback to tier1
             }}
         />
         

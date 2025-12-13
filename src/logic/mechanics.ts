@@ -153,6 +153,7 @@ export class MechanicHandler {
                     t.maxHp += mechanic.value!;
                     t.hp += mechanic.value!;
                     logEvent('buff', { target: t.uid, type: 'rally', value: mechanic.value });
+                    animations.push({ from: sourceUnit.uid, to: t.uid, color: '#f59e0b', duration: 400 }); // Amber/Gold
                 });
              }
              break;

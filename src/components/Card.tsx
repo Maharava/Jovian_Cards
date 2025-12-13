@@ -62,7 +62,7 @@ const RARITY_COLORS = {
 
 export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, className, disabled, showTooltip = true, tooltipPosition = 'right', layoutId }) => {
   // Asset resolution logic
-  const assetSuffix = card.tier === 1 ? '_original' : `_tier${card.tier}`;
+  const assetSuffix = card.tier === 1 ? '_tier1' : `_tier${card.tier}`;
   const folder = FACTION_FOLDERS[card.faction] || 'neutral';
   const imagePath = `/assets/cards/${folder}/${card.baseAsset}${assetSuffix}.png`;
 
@@ -92,7 +92,7 @@ export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, classN
             alt={card.name} 
             className="absolute inset-0 w-full h-full object-cover z-0"
             onError={(e) => {
-                (e.target as HTMLImageElement).src = `/assets/cards/${folder}/${card.baseAsset}_original.png`;
+                (e.target as HTMLImageElement).src = `/assets/cards/${folder}/${card.baseAsset}_tier1.png`;
             }}
           />
 
@@ -159,7 +159,7 @@ export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, classN
             "absolute opacity-0 group-hover:opacity-100 transition-opacity z-[999] pointer-events-none flex gap-2",
             tooltipPosition === 'top' 
                 ? "bottom-full left-1/2 -translate-x-1/2 mb-4 flex-row whitespace-nowrap" 
-                : "-right-44 top-0 flex-col"
+                : "left-full ml-4 top-0 flex-col"
         )}>
           {activeMechanics.map(m => {
               const def = MECHANICS_DEFINITIONS[m];

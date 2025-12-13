@@ -49,9 +49,9 @@ export const Workshop: React.FC = () => {
         if (card.subtype === 'Biological') { resourceType = 'bio'; color = 'bg-green-600 border-green-400 text-white'; } 
         if (card.subtype === 'Psionic') { resourceType = 'psi'; color = 'bg-pink-500 border-pink-300 text-white'; } 
 
-        if (card.rarity === 'Common') cost = card.tier === 1 ? 5 : 15;
-        if (card.rarity === 'Uncommon') cost = card.tier === 1 ? 7 : 21;
-        if (card.rarity === 'Rare') cost = card.tier === 1 ? 10 : 30;
+        if (card.rarity === 'Common') cost = card.tier === 1 ? 3 : 8;
+        if (card.rarity === 'Uncommon') cost = card.tier === 1 ? 5 : 12;
+        if (card.rarity === 'Rare') cost = card.tier === 1 ? 8 : 20;
 
         return { nextId, nextCard, cost, resourceType, color };
     };

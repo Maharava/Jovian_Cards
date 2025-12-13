@@ -9,10 +9,10 @@ export function cn(...inputs: ClassValue[]) {
 export const calculateLoot = (difficulty: number) => {
     const safeDifficulty = (typeof difficulty === 'number' && !isNaN(difficulty) && difficulty > 0) ? difficulty : 1;
     return {
-        parts: Math.random() > CHANCES.LOOT_PARTS ? (Math.floor(Math.random() * (safeDifficulty + 1)) + 1) : 0,
-        bio: Math.random() > CHANCES.LOOT_BIO ? 1 : 0,
-        psi: Math.random() > CHANCES.LOOT_PSI ? 1 : 0,
-        credits: 50 * safeDifficulty + Math.floor(Math.random() * 20)
+        parts: (safeDifficulty * 2) + Math.floor(Math.random() * 3), // e.g., Diff 1 = 2-4 parts
+        bio: Math.random() > CHANCES.LOOT_BIO ? (Math.random() > 0.7 ? 2 : 1) : 0,
+        psi: Math.random() > CHANCES.LOOT_PSI ? (Math.random() > 0.7 ? 2 : 1) : 0,
+        credits: 70 * safeDifficulty + Math.floor(Math.random() * 40)
     };
 };
 

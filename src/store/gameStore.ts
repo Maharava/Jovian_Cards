@@ -146,6 +146,7 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
           });
           const enemyHand = enemyDeck.splice(0, 4);
 
+          const enemyMaxHp = 10 + (difficulty * 10);
           return {
               player,
               enemy: { 
@@ -154,7 +155,8 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
                   deck: enemyDeck, 
                   hand: enemyHand, 
                   graveyard: [],
-                  maxHp: 10 + (difficulty * 10) 
+                  maxHp: enemyMaxHp,
+                  hp: enemyMaxHp
               },
               phase: 'player_turn',
               turn: 1,

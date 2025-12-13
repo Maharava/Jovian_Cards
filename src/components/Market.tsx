@@ -28,22 +28,20 @@ export const Market: React.FC = () => {
     };
 
     const getCardPool = (rarity: Rarity, isVoidborn = false, isBio = false): CardType[] => {
-        let pool = ALL_CARDS.filter(c => c.rarity === rarity);
+        let pool = ALL_CARDS.filter(c => c.rarity === rarity && c.tier === 1);
         
         if (isVoidborn) {
-            const voidPool = ALL_CARDS.filter(c => c.faction === 'Voidborn' && c.rarity === rarity);
+            const voidPool = ALL_CARDS.filter(c => c.faction === 'Voidborn' && c.rarity === rarity && c.tier === 1);
             if (voidPool.length > 0) return voidPool;
             // Fallback to pool if no voidborn of that rarity found
         } 
         
         if (isBio) {
-            const bioPool = ALL_CARDS.filter(c => c.faction === 'Bio-horror' && c.rarity === rarity);
+            const bioPool = ALL_CARDS.filter(c => c.faction === 'Bio-horror' && c.rarity === rarity && c.tier === 1);
             if (bioPool.length > 0) return bioPool;
         }
 
         // Standard Pool: Exclude Voidborn AND Bio-horror (unless specifically requested via flags above failing to find any)
-        // Wait, if isVoidborn was true but returned nothing, we fall here.
-        // We should ideally exclude restricted factions from standard pool.
         return pool.filter(c => c.faction !== 'Voidborn' && c.faction !== 'Bio-horror');
     };
 
