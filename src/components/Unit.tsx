@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import type { UnitInstance } from '../types';
 import { cn } from '../lib/utils';
 import { useGameStore } from '../store/gameStore';
@@ -20,35 +21,38 @@ interface UnitProps {
   isTarget?: boolean; // If being targeted
   canAttack?: boolean; // Green glow if ready
   className?: string;
+  layoutId?: string;
 }
 
-export const Unit: React.FC<UnitProps> = ({ unit, onClick, onContextMenu, isTarget, canAttack, className }) => {
+export const Unit: React.FC<UnitProps> = ({ unit, onClick, onContextMenu, isTarget, canAttack, className, layoutId }) => {
   const isTaunt = unit.mechanics.some(m => m.type === 'guard');
   
   const isAttacking = useGameStore(state => state.attackingUnitId === unit.uid);
   
   const folder = FACTION_FOLDERS[unit.faction] || 'neutral';
-  // Note: We assume on-board units use the "original" (Tier 1 visual) or we could map tier if UnitInstance had it.
-  // Currently UnitInstance doesn't track tier, but baseAsset is usually the tier 1 name (e.g. 'elara').
-  // Some assets are explicitly '..._tier2' if baseAsset was set that way, but standard is baseAsset + suffix.
-  // Card.tsx appends suffix. We'll assume '_original' for board units for consistency/simplicity unless baseAsset includes it?
-  // Card.tsx: const assetSuffix = card.tier === 1 ? '_original' : `_tier${card.tier}`;
-  // UnitInstance copies baseAsset from card.
-  // So we default to '_original' here.
   const imagePath = `/assets/cards/${folder}/${unit.baseAsset}_original.png`;
 
   return (
-    <div
+    <motion.div
+      layoutId={layoutId}
+      initial={{ scale: 0.8, opacity: 0 }}
+      animate={{ 
+          scale: isTarget ? 1.1 : (isAttacking ? 1.1 : 1), 
+          opacity: 1,
+          x: isAttacking ? (unit.owner === 'player' ? 0 : 0) : 0, // X movement handled by parent logic if needed, or simple shake
+          y: isAttacking ? (unit.owner === 'enemy' ? 20 : -20) : 0
+      }}
+      exit={{ scale: 0, opacity: 0, filter: 'blur(10px)' }}
+      transition={{ type: "spring", stiffness: 300, damping: 25 }}
       onClick={onClick}
       onContextMenu={onContextMenu}
       className={cn(
-        "relative w-24 h-32 bg-slate-900 border-2 rounded-lg cursor-pointer transition-all duration-500 shadow-md group",
-        unit.owner === 'player' ? "border-cyan-600 animate-in slide-in-from-bottom-8 fade-in duration-500" : "border-red-600 animate-in slide-in-from-top-8 fade-in duration-700",
+        "relative w-24 h-32 bg-slate-900 border-2 rounded-lg cursor-pointer shadow-md group",
+        unit.owner === 'player' ? "border-cyan-600" : "border-red-600",
         isTaunt && "border-4 border-slate-300 shadow-[0_0_10px_white]",
         canAttack && "shadow-[0_0_15px_#00ffff] ring-2 ring-cyan-400",
-        isTarget && "ring-4 ring-red-500 scale-110",
-        isAttacking && (unit.owner === 'enemy' ? "translate-y-20 scale-110 z-50 shadow-2xl shadow-red-500" : "-translate-y-20 scale-110 z-50 shadow-2xl shadow-cyan-500"),
-        unit.dying && "opacity-0 translate-x-24 rotate-45 scale-50 blur-sm",
+        isTarget && "ring-4 ring-red-500",
+        isAttacking && "z-50 shadow-2xl",
         className
       )}
     >
@@ -86,6 +90,6 @@ export const Unit: React.FC<UnitProps> = ({ unit, onClick, onContextMenu, isTarg
             {(unit.status?.stun || 0) > 0 && <span className="bg-blue-500 text-white text-[10px] px-1 rounded font-bold shadow-sm animate-pulse border border-blue-400" title="Stunned">💫</span>}
             {(unit.status?.weak || 0) > 0 && <span className="bg-orange-500 text-black text-[10px] px-1 rounded font-bold shadow-sm border border-orange-400" title="Weakened">📉</span>}
         </div>
-    </div>
+    </motion.div>
   );
 };

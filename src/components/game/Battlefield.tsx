@@ -1,4 +1,5 @@
 import React from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { Unit } from '../Unit';
 import { cn } from '../../lib/utils';
 import type { PlayerState, EnemyState, UnitInstance, Card as CardType } from '../../types';
@@ -27,9 +28,11 @@ export const Battlefield: React.FC<BattlefieldProps> = ({
                 <div className="absolute -top-6 text-xs text-slate-500 font-mono">{enemy.board.length}/{MAX_BOARD_SLOTS} UNITS</div>
                 {enemy.board.length === 0 && <div className="text-white/20 font-mono text-sm absolute top-10">Empty Sector</div>}
                 
+                <AnimatePresence>
                 {enemy.board.map(u => (
                     <div key={u.uid} ref={(el) => setUnitRef(u.uid, el)}>
                         <Unit 
+                            layoutId={`card-${u.uid}`}
                             unit={u} 
                             onClick={() => onUnitClick(u)}
                             onContextMenu={(e) => onUnitRightClick(e, u)}
@@ -40,6 +43,7 @@ export const Battlefield: React.FC<BattlefieldProps> = ({
                         />
                     </div>
                 ))}
+                </AnimatePresence>
                 
                 {Array.from({ length: Math.max(0, MAX_BOARD_SLOTS - enemy.board.length) }).map((_, i) => (
                     <div key={`e-slot-${i}`} className="w-24 h-32 border-2 border-dashed border-slate-700/50 rounded-lg flex items-center justify-center opacity-30"></div>
@@ -54,9 +58,11 @@ export const Battlefield: React.FC<BattlefieldProps> = ({
                  <div className="absolute -bottom-6 text-xs text-slate-500 font-mono">{player.board.length}/{MAX_BOARD_SLOTS} UNITS</div>
                  {player.board.length === 0 && <div className="text-white/20 font-mono text-sm absolute top-10">Deploy Units Here</div>}
                  
+                 <AnimatePresence>
                  {player.board.map(u => (
                     <div key={u.uid} ref={(el) => setUnitRef(u.uid, el)}>
                         <Unit 
+                            layoutId={`card-${u.uid}`}
                             unit={u} 
                             onClick={() => onUnitClick(u)}
                             onContextMenu={(e) => onUnitRightClick(e, u)}
@@ -69,6 +75,7 @@ export const Battlefield: React.FC<BattlefieldProps> = ({
                         />
                     </div>
                  ))}
+                 </AnimatePresence>
                  
                  {Array.from({ length: Math.max(0, MAX_BOARD_SLOTS - player.board.length) }).map((_, i) => (
                     <div key={`p-slot-${i}`} className="w-24 h-32 border-2 border-dashed border-cyan-900/30 rounded-lg flex items-center justify-center opacity-30"></div>

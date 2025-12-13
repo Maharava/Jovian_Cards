@@ -1,4 +1,4 @@
-import type { GameState, UnitInstance, Card } from '../types';
+import type { GameState, UnitInstance } from '../types';
 import type { GameActions } from '../store/gameStore';
 import { MechanicHandler } from './mechanics';
 import { DELAYS, MAX_BOARD_SLOTS } from '../config/constants';
@@ -11,7 +11,7 @@ export const AI = {
     async runTurn(
         get: GetState, 
         set: SetState, 
-        drawCard: (n: number) => void, 
+        _drawCard: (n: number) => void, 
         cleanDeadUnits: () => Promise<void>
     ) {
         set({ isProcessingQueue: true });

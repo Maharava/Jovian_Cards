@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useGameStore } from './store/gameStore';
 import { GameBoard } from './components/GameBoard';
 import { MainMenu } from './components/MainMenu';

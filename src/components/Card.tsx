@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import type { Card as CardType } from '../types';
 import { cn } from '../lib/utils';
 import { MECHANICS_DEFINITIONS } from '../data/mechanics';
@@ -11,6 +12,7 @@ interface CardProps {
   disabled?: boolean;
   showTooltip?: boolean;
   tooltipPosition?: 'right' | 'top';
+  layoutId?: string;
 }
 
 const TIER_COLORS = {
@@ -58,7 +60,7 @@ const RARITY_COLORS = {
   'NA': 'text-transparent'
 };
 
-export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, className, disabled, showTooltip = true, tooltipPosition = 'right' }) => {
+export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, className, disabled, showTooltip = true, tooltipPosition = 'right', layoutId }) => {
   // Asset resolution logic
   const assetSuffix = card.tier === 1 ? '_original' : `_tier${card.tier}`;
   const folder = FACTION_FOLDERS[card.faction] || 'neutral';
@@ -68,11 +70,15 @@ export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, classN
   const activeMechanics = (card.mechanics || []).map(m => m.type).filter(m => MECHANICS_DEFINITIONS[m]);
 
   return (
-    <div
+    <motion.div
+      layoutId={layoutId}
       onClick={!disabled ? onClick : undefined}
       onContextMenu={onContextMenu}
+      whileHover={!disabled ? { scale: 1.05, y: -10, zIndex: 50 } : {}}
+      whileTap={!disabled ? { scale: 0.95 } : {}}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className={cn(
-        "relative w-48 h-64 flex flex-col select-none transition-transform hover:scale-105 cursor-pointer shadow-lg group bg-black rounded-xl",
+        "relative w-48 h-64 flex flex-col select-none cursor-pointer shadow-lg group bg-black rounded-xl",
         TIER_COLORS[card.tier],
         disabled && "opacity-50 grayscale cursor-not-allowed",
         className
@@ -172,6 +178,6 @@ export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, classN
         </div>
       )}
       
-    </div>
+    </motion.div>
   );
 };

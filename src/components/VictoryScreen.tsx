@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { useGameStore } from '../store/gameStore';
 import { useMetaStore } from '../store/metaStore';
 
@@ -7,12 +8,31 @@ export const VictoryScreen: React.FC = () => {
   const { credits, parts, bioSamples, psiCrystals } = useMetaStore();
 
   return (
-    <div className="absolute inset-0 bg-black/90 backdrop-blur-md z-50 flex flex-col items-center justify-center text-white animate-in fade-in duration-500">
-        <div className="bg-slate-900 border-2 border-cyan-500/50 p-12 rounded-2xl max-w-3xl w-full text-center shadow-[0_0_50px_rgba(6,182,212,0.3)]">
-            <h2 className="text-6xl font-black text-cyan-400 mb-2 font-mono tracking-tighter uppercase drop-shadow-lg">
+    <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="absolute inset-0 bg-black/90 backdrop-blur-md z-50 flex flex-col items-center justify-center text-white"
+    >
+        <motion.div 
+            initial={{ scale: 0.8, y: 50 }}
+            animate={{ scale: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            className="bg-slate-900 border-2 border-cyan-500/50 p-12 rounded-2xl max-w-3xl w-full text-center shadow-[0_0_50px_rgba(6,182,212,0.3)]"
+        >
+            <motion.h2 
+                initial={{ letterSpacing: "0em" }}
+                animate={{ letterSpacing: "0.1em" }}
+                transition={{ duration: 1 }}
+                className="text-6xl font-black text-cyan-400 mb-2 font-mono uppercase drop-shadow-lg"
+            >
                 Victory
-            </h2>
-            <div className="h-1 w-32 bg-cyan-500 mx-auto mb-8 shadow-[0_0_10px_rgba(0,255,255,0.8)]" />
+            </motion.h2>
+            <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: "8rem" }}
+                transition={{ duration: 0.8 }}
+                className="h-1 bg-cyan-500 mx-auto mb-8 shadow-[0_0_10px_rgba(0,255,255,0.8)]" 
+            />
             
             <p className="text-xl text-slate-300 mb-12">
                 Hostiles neutralized. Salvage operations complete.
@@ -42,14 +62,16 @@ export const VictoryScreen: React.FC = () => {
             </div>
 
             <div className="flex gap-4 justify-center">
-                <button 
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={enterFactionSelect}
-                  className="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-lg rounded shadow-lg transition-transform hover:scale-105 uppercase tracking-wider"
+                  className="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-lg rounded shadow-lg uppercase tracking-wider"
                 >
                   Return to Command
-                </button>
+                </motion.button>
             </div>
-        </div>
-    </div>
+        </motion.div>
+    </motion.div>
   );
 };

@@ -178,7 +178,6 @@ export const GameBoard: React.FC = () => {
                 isValidAttackTarget={!!selectedUnitId && isEnemyCommanderValidTarget()}
                 onCommanderClick={handleEnemyCommanderClick}
                 commanderRef={enemyCommanderRef}
-                playerBoardLength={player.board.length}
             />
 
             <Battlefield 

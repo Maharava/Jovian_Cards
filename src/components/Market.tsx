@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMetaStore } from '../store/metaStore';
 import { useGameStore } from '../store/gameStore';
-import { ALL_CARDS, ENEMY_CARDS } from '../data/cards';
+import { ALL_CARDS } from '../data/cards';
 import { Card } from './Card';
 import type { Card as CardType, Rarity } from '../types';
 import { cn } from '../lib/utils';
