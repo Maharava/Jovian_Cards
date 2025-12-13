@@ -1,11 +1,69 @@
 export type CardType = 'unit' | 'tactic';
 export type CardTier = 1 | 2 | 3;
+export type CardSubtype = 'Cybernetic' | 'Biological' | 'Psionic';
+
+export type MechanicType = 
+  | 'summon' 
+  | 'scout' 
+  | 'stun' 
+  | 'buff' 
+  | 'debuff' 
+  | 'damage' 
+  | 'heal' 
+  | 'draw' 
+  | 'reveal' 
+  | 'transform'
+  | 'guard'
+  | 'rush'
+  | 'windfury'
+  | 'snipe'
+  | 'lifesteal'
+  | 'glitch'
+  | 'slow'
+  | 'repair'
+  | 'support'
+  | 'bounce'
+  | 'swap'
+  | 'disarm'
+  | 'spark'
+  | 'decoy'
+  | 'rally'
+  | 'thorns'
+  | 'pollute'
+  | 'evolve'
+  | 'fade'
+  | 'hack' // New mechanic
+  | 'rage' // New mechanic
+  | 'double_damage_undamaged' // Thebe T3 passive
+  | 'add_random_tactic'; // Leda T1 ability // Return to hand
+
+export type TriggerType = 'onPlay' | 'onDeath' | 'onTurnEnd' | 'onTurnStart' | 'passive' | 'constant' | 'onDraw' | 'onAttack';
+
+export type Faction = 'Jovian' | 'Republic' | 'Megacorp' | 'Confederate' | 'Voidborn' | 'Bio-horror' | 'Neutral';
+export type Rarity = 'Common' | 'Uncommon' | 'Rare' | 'NA';
+
+export interface Mechanic {
+  type: MechanicType;
+  trigger: TriggerType;
+  target?: 'self' | 'enemy_unit' | 'enemy_hero' | 'ally_unit' | 'all_enemies' | 'random_enemy' | 'random_ally' | 'all_allies' | 'enemy_board_random' | 'all_units' | 'target_unit' | 'target_enemy' | 'target_ally' | 'player_commander' | 'target_enemy_commander';
+  value?: number; // Damage amount, buff amount, duration, etc.
+  secondaryValue?: number; // e.g. for +X/+Y buff
+  payload?: string; // cardId to summon, specific logic key
+  chance?: number; // 0-1 probability
+}
+
+export interface ResolutionResult {
+    stateUpdates: Partial<GameState>;
+    animations: Array<{ from: string; to: string; color: string; duration?: number }>;
+}
 
 export interface Card {
   id: string;
   name: string;
   type: CardType;
   tier: CardTier;
+  rarity: Rarity;
+  subtype?: CardSubtype;
   cost: number;
   // Units only
   stats?: {
@@ -15,12 +73,14 @@ export interface Card {
   };
   // Text description of ability
   text: string;
+  // Faction
+  faction: Faction;
   // Mechanics for logic
-  mechanics?: string[];
+  mechanics: Mechanic[];
   // Asset path (e.g. 'elara') - we will append _tierX.png
   baseAsset: string;
-  // Specific implementation hooks (optional for now, can be ID based)
-  abilityId?: string;
+  // Unique Instance ID (runtime only, for hand management)
+  uid?: string;
 }
 
 export interface UnitInstance {
@@ -28,14 +88,22 @@ export interface UnitInstance {
   cardId: string;
   name: string;
   baseAsset: string; // Visual asset path
+  faction: Faction;
+  subtype?: CardSubtype;
   atk: number;
   hp: number;
   maxHp: number;
   owner: 'player' | 'enemy';
   ready: boolean; // Summon sickness check
   attacksLeft: number; // For Windfury (can attack multiple times)
-  mechanics: string[]; // copy of card mechanics
+  mechanics: Mechanic[]; // copy of card mechanics
   shield: number;
+  dying?: boolean; // For death animation
+  status?: {
+      stun?: number; // Duration in turns
+      weak?: number; // Duration in turns (or value if -ATK)
+      originalAtk?: number; // To revert debuffs
+  };
 }
 
 export interface PlayerState {
@@ -47,8 +115,6 @@ export interface PlayerState {
   hand: Card[];
   board: UnitInstance[];
   graveyard: Card[];
-  credits: number;
-  parts: number;
 }
 
 export interface EnemyState {
@@ -57,17 +123,37 @@ export interface EnemyState {
   energy: number;
   maxEnergy: number;
   deck: Card[]; // Abstracted usually, but good for tracking
+  hand: Card[]; // Explicitly track hand for AI logic
   board: UnitInstance[];
+  graveyard: Card[]; // Added for symmetry
   nextMoveDescription: string;
+}
+
+export interface GameEvent {
+  type: 'attack' | 'damage' | 'heal' | 'death' | 'summon' | 'buff' | 'debuff';
+  sourceUid?: string;
+  targetUid?: string;
+  value?: number;
+  timestamp: number;
 }
 
 export interface GameState {
   player: PlayerState;
   enemy: EnemyState;
   turn: number;
-  phase: 'player_turn' | 'enemy_turn' | 'game_over';
+  phase: 'main_menu' | 'faction_select' | 'player_turn' | 'enemy_turn' | 'game_over' | 'victory' | 'hangar' | 'market' | 'workshop';
   winner?: 'player' | 'enemy';
   scoutedCard?: Card | null; // For Elara's ability
+  
+  // Animation State
+  eventQueue: GameEvent[];
+  isProcessingQueue: boolean;
+  
+  // Animation System
+  attackingUnitId?: string | null; 
+  attackVector?: { from: string; to: string } | null; 
+  effectVector?: { from: string; to: string; color: string } | null;
+  
   // Roguelite run state
   run: {
     node: number;

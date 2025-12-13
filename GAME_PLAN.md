@@ -254,3 +254,33 @@ type GameState = {
   };
 };
 ```
+
+# 11. **Tactics System Design (Proposed)**
+**Concept:** Single-use "Operation" cards representing command ship support.
+**Mechanics:**
+*   **Play:** Drag to target (Unit or Area).
+*   **Resolution:** Effect applies immediately, card goes to Graveyard.
+*   **Visuals:** Card dissolves/explodes at target location.
+
+**Core Tactics:**
+1.  **Orbital Strike (Damage):**
+    *   T1: Deal 2 damage to a unit.
+    *   T2: Deal 4 damage to a unit.
+    *   T3: Deal 5 damage to a unit and 2 to adjacent.
+2.  **Nano-Repair (Heal):**
+    *   T1: Restore 3 Health to a unit.
+    *   T2: Restore 5 Health. Draw 1.
+    *   T3: Fully heal a unit and give it Shield.
+3.  **EMP Blast (Control):**
+    *   T1: Stun an enemy.
+    *   T2: Stun an enemy and deal 1 damage.
+    *   T3: Stun ALL enemies.
+4.  **Supply Drop (Economy):**
+    *   T1: Draw 2 cards.
+    *   T2: Draw 3 cards.
+    *   T3: Restore 2 Energy and Draw 3.
+
+**Implementation:**
+*   **Type:** `Card.type = 'tactic'`.
+*   **Targeting:** Needs specific `targetType` in definition (e.g., `target: 'any_unit' | 'area'`).
+*   **Handler:** `playTactic` function in store similar to `playUnit` but skips board placement.
