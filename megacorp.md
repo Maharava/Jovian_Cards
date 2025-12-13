@@ -79,17 +79,17 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 
 #### Uncommon (The Specialists)
 *   **Manager Series** (Bio - Buffer)
-    *   T1: **Shift Supervisor** (0/3, Cost 3) - Passive: Allies +1 ATK.
-    *   T2: **Project Manager** (0/4, Cost 3) - Passive: Allies +1/+1.
-    *   T3: **Regional Director** (0/5, Cost 3) - Passive: Allies +2/+2.
+    *   T1: **Supervisor** (0/3, Cost 3) - Encourage 1 (+1 ATK to a random ally at end of turn)
+    *   T2: **Manager** (0/4, Cost 3) - Encourage 2
+    *   T3: **Director** (0/5, Cost 3) - Encourage 2, Rally 1
 *   **Liquidator Series** (Bio - Damage)
-    *   T1: **Asset Liquidator** (4/2, Cost 4) - Stealth (Untargetable until attack).
-    *   T2: **Clean-Up Crew** (5/3, Cost 4) - Stealth.
-    *   T3: **Black Ops Agent** (7/4, Cost 4) - Stealth. On Kill: Heal to full.
+    *   T1: **Asset Liquidator** (3/2, Cost 4) - Nothing
+    *   T2: **Clean-Up Crew** (4/3, Cost 4) - Recylce 1 (When this card kills an enemy hero, draw X cards)
+    *   T3: **Black Ops Agent** (5/4, Cost 4) - Recycle 1. Backstab (When attacking a hero, this card deals damage first. if it kills the target, the target deals no damage back)
 *   **Uplink Series** (Mech - Disruption)
-    *   T1: **Corrupted Uplink** (0/4, Cost 3) - End Turn: Hack 1 (Random Enemy).
-    *   T2: **Signal Jammer** (0/5, Cost 3) - End Turn: Hack 2 (Random Enemy).
-    *   T3: **Network Hub** (0/6, Cost 3) - End Turn: Hack 2 (All Enemies).
+    *   T1: **Corrupted Uplink** (0/4, Cost 3) - Hack 1.
+    *   T2: **Signal Jammer** (0/5, Cost 3) - Hack 3.
+    *   T3: **Network Hub** (0/6, Cost 3) - Hack 5.
 *   **Technician Series** (Bio - Repair)
     *   T1: **Drone Mechanic** (2/2, Cost 3) - On Play: Summon 1/1 Drone.
     *   T2: **Line Engineer** (3/3, Cost 3) - On Play: Summon two 1/1 Drones.

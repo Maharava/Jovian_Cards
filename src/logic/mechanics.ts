@@ -104,9 +104,7 @@ export class MechanicHandler {
              // Permanent +ATK to self (or target if specified, but Rage is usually self)
              targets.forEach(t => {
                  const amount = mechanic.value || 1;
-                 console.log(`Rage: Unit ${t.name} (UID: ${t.uid}) ATK before: ${t.atk}`);
                  t.atk += amount;
-                 console.log(`Rage: Unit ${t.name} (UID: ${t.uid}) ATK after: ${t.atk}`);
                  logEvent('buff', { target: t.uid, type: 'rage', amount });
                  animations.push({ from: t.uid, to: t.uid, color: 'red', duration: 300 }); // Flash red
              });

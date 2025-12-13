@@ -292,7 +292,7 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
         subtype: card.subtype,
         owner: 'player',
         ready: card.mechanics?.some(m => m.type === 'rush') || false,
-        attacksLeft: card.mechanics?.some(m => m.type === 'rush') ? (card.mechanics?.some(m => m.type === 'windfury') ? 2 : 1) : 0,
+        attacksLeft: card.mechanics?.some(m => m.type === 'rush') ? (card.mechanics?.some(m => m.type === 'double_attack') ? 2 : 1) : 0,
         mechanics: card.mechanics || [],
         shield: 0
     };
@@ -526,7 +526,7 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
          const playerBoard = state.player.board.map(u => {
               const unit = { ...u };
               unit.ready = true;
-              unit.attacksLeft = unit.mechanics.some(m => m.type === 'windfury') ? 2 : 1;
+              unit.attacksLeft = unit.mechanics.some(m => m.type === 'double_attack') ? 2 : 1;
               
                if (unit.status?.stun && unit.status.stun > 0) {
                     unit.ready = false;

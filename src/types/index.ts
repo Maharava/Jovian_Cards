@@ -15,7 +15,7 @@ export type MechanicType =
   | 'transform'
   | 'guard'
   | 'rush'
-  | 'windfury'
+  | 'double_attack'
   | 'snipe'
   | 'lifesteal'
   | 'glitch'

@@ -213,8 +213,8 @@ export const HERO_CARDS: Card[] = [
   {
     id: 'ganymede_t3', name: 'Ganymede, Warlord', type: 'unit', tier: 3, cost: 3,
     stats: { atk: 6, hp: 6, maxHp: 6 }, subtype: 'Biological', rarity: 'Rare',
-    text: 'Rush. Rage 1. Windfury.', faction: 'Jovian', baseAsset: 'ganymede',
-    mechanics: [m('rush', 'constant'), m('rage', 'onAttack', 1), m('windfury', 'constant')]
+    text: 'Rush. Rage 1. Double Attack.', faction: 'Jovian', baseAsset: 'ganymede',
+    mechanics: [m('rush', 'constant'), m('rage', 'onAttack', 1), m('double_attack', 'constant')]
   },
 
   {
