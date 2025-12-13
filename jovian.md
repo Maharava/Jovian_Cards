@@ -1,11 +1,15 @@
-# Jovian Family
-The Jovian Sisters are the genertically-engineered children of Jupiter, the most brilliant genetecist to ever grace humanity. The first - and only - non-human sentient beings in the system, the Jovians are of intense interest. Though their baseline DNA is human, they were grown and born with genetic alterations and have matured into adulthood with no ill effects - regular humans cannot develop with genetic changes, and must get them later in life.
-The sister - despite have two boys, they're called the sisters - are each named after a moon of Jupiter. Though they know where their mother is - the most wanted criminal in the system - they won't give her up, and live amongst the free settlements and new Outer Confederacy amongst the moons of Jupiter and Saturn. So long as these settlements and new nation protect the Sisters and grant them some privacy, they are rewarded with incredible research and technology by Jupiter. Indeed, the initial refusal of the main colony on Europa to hand Europa Jovia over to the Republic triggered the formation of the confederacy, as Jupiter and her network delivered vast resources and new technologies to the moon, making it strong enough to stare down a Republic battleship.
+# Jovian Sisters Faction File
 
+## Overview
+**The Jovian Sisters** (often called "The Family") are the genetically engineered children of **Jupiter**, the most brilliant geneticist to ever grace humanity. They are the first—and only—non-human sentient beings in the system. Though their baseline DNA is human, they were grown with radical genetic alterations that have matured into stable, functional post-human physiology—something regular humans can only approximate with crude surgery.
 
-*   **Archetype:**  Diverse abilities.
+They are not a government. They are refugees, mercenaries, and celebrities living under the protection of the **Outer Confederacy**, a coalition of independent moon settlements. In exchange for asylum and privacy, the Sisters provide the Confederacy with advanced technology from Jupiter's network, allowing this young "Space Western" nation to stand toe-to-toe with the Republic.
+
+While some Sisters work directly for the Confederacy military (like **Amalthea**) or local governments, most operate independently.
+
+*   **Archetype:** Midrange / Synergy / Hero-Centric
 *   **Motto:** "Evolution is our birthright."
-*   **Visual Style:** Clean white medical aesthetic, bioluminescent blues and purples, organic curves, high-tech visors, and distinct character designs for each "Sister."
+*   **Visual Style:** **Bio-Punk.** Clean white medical aesthetics, bioluminescent blues and purples, organic curves, and high-tech visors. They stand in stark contrast to the rugged, industrial look of their Confederate allies.
 
 ---
 
@@ -121,8 +125,8 @@ The Jovian playstyle focuses on **Unit Quality** and **Synergy**. Unlike the Meg
     *   T2 (4/4): **Rush.** **Rage 1.**
     *   T3 (6/6): **Rush.** **Rage 1.** **Double Attack.**
 
-### Tactics (Shared/Neutral Pool)
-Jovians utilize the "Neutral", "Republic", and "Confederate" tactic cards.
+### Tactics (Neutral Support)
+The Jovian Sisters do not have a standing army. They rely on support from the **Outer Confederacy** and local free settlements. These cards are "Neutral" faction.
 
 | Name | Effect | Flavor |
 | :--- | :--- | :--- |

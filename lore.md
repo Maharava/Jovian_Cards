@@ -1,7 +1,3 @@
-NOTES
-Jovian refers to Jupiter (the scientist) and her children. It RARELY refers to the Jovian system of Jupiter (the planet) and its moons.
-The Jovians are often called the Jovian Sisters, despite several males in the family. This is due to the majority being female and the males being nonbinary/femboys.
-
 # World of Jovian Cards: A Setting Guide
 
 ## The Solar System
@@ -17,13 +13,19 @@ The nominal government of humanity, centered on Earth.
 *   **Influence:** While they claim jurisdiction over the entire system, their actual power wanes significantly past the Asteroid Belt.
 *   **Stance:** They view the "Jovian" genetic modifications as a threat to human stability and maintain an active (though often incompetent) manhunt for the geneticist known as Jupiter.
 
-### 2. The Jovian Confederation (The "Family")
-Not a formal nation-state, but a loose alliance of the moons of Jupiter (Europa, Ganymede, Callisto, etc.), united by their protection of Jupiter's children.
-*   **Nature:** Technocratic, independent, and wealthy. They embraced the "children" of Jupiter and the advanced genetic/bio-hacking technology they brought.
-*   **Economy:** Booming due to patents on human engineering and biological hacking derived from Jupiter's research.
-*   **The Sisters:** Jupiter's genetically engineered children operate independantly. Some work for a nation-state or corporation, others just live their lives. All are of interest to greater humanity, effectively minor celebrities.
+### 2. The Outer Confederacy
+The only multi-planet government past the Asteroid Belt, formed from a coalition of independent settlements on the moons of Jupiter and Saturn.
+*   **Nature:** A young, scrappy, and rapidly militarizing federation of city-states. Think "Space Western" frontier towns evolved into a nation-state.
+*   **Role:** They provide asylum and protection to the **Jovian Sisters**. In exchange, they receive advanced technology from Jupiter's network, allowing them to punch far above their weight class against the Republic and Megacorps.
+*   **Visuals:** Utilitarian, rugged, industrial "frontier" aesthetic.
 
-### 3. The Corporations
+### 3. The Jovian Sisters ("The Family")
+The playable faction. They are **not** a government; they are a family of genetically engineered post-humans.
+*   **Nature:** The children of the scientist Jupiter. Each is unique, representing a different facet of transhuman evolution (Psychic, Cybernetic, Biological).
+*   **Relationship:** They live among the Confederacy but operate independently. Some work for the government, others are mercenaries, and some just want to be left alone.
+*   **Visuals:** Clean, medical, "Bio-punk," almost alien in their perfection. Bioluminescent accents and organic curves.
+
+### 4. The Corporations
 In the vacuum of effective Republic governance, mega-corporations wield state-like power.
 *   **Ira Corp:** A massive, shadowy conglomerate and a primary antagonist. They specialize in "Acquisitions"—stealing technology, ideas, and people. They are ruthlessly hunting the Jovian sisters to reverse-engineer their genetics.
 *   **Rogue Labs:** Independent "labs for hire" that operate in the lawless zones, developing banned tech like bioweapons (as seen in the *Europa Incident*).
@@ -33,7 +35,7 @@ In the vacuum of effective Republic governance, mega-corporations wield state-li
 **Jupiter** was a brilliant geneticist who unlocked the key to human psychic potential. Banned by the Republic, she went underground and detonated a "viral bomb" on **Ceres Station**.
 *   **The Virus:** It didn't kill; it rewrote DNA. Some became psychics immediately; others became carriers, birthing children with psychic power. Within thirty years, Psychics made up about 0.2% of the human population - plenty enough when Humanity numbers almost 100 billion.
 *   **Jupiters Children:** Years later, distinct "children" (the Jovians) emerged on different moons of Jupiter with unique genetic markers and powers. They were immediately hunted by the Republic. Jovian moons that sheltered the children found themselves the recipients of Jupiters technologies and research, turning some (such as Callisto, a backwater) into rivals for inner-system locations (Callisto now has one of greatest hospitals in the system, for example)
-*   **The Aftermath:** The Jovian moons granted asylum to these children. In return, the children helped elevate these colonies into powers capable of rivaling Earth.
+*   **The Aftermath:** The refusal of the main colony on Europa to hand over the first "Sister" triggered the formation of the Confederacy.
 
 ## Cosmic Mysteries & Metaphysics
 
@@ -52,7 +54,7 @@ A rogue bioweapon threat on Europa. **Elara** (scientist) and **Himalia** (prote
 ### The Ira Corp Abductions
 Ira Corp has moved from corporate espionage to direct hostile action, abducting sisters like **Thebe**, **Pasiphae**, and **Metis** to black sites on Titan. This has escalated the conflict from cold war to open skirmishes between the Jovians sisters and Ira Corp (the sisters were rescued)
 
-## The Jovians (The Sisters & Brothers)
+## The Jovian Sisters (Roster)
 *   **Europa:** The Eldest. Powerful psychic, burdened by leadership and cosmic whispers.
 *   **Ganymede:** The Fighter. "Psy-deaf" pugilist, loves a fight, deeply loyal.
 *   **Elara:** The Scientist. Gentle, nature-loving researcher of the group.
