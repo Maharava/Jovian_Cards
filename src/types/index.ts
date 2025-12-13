@@ -40,7 +40,7 @@ export type MechanicType =
 export type TriggerType = 'onPlay' | 'onDeath' | 'onTurnEnd' | 'onTurnStart' | 'passive' | 'constant' | 'onDraw' | 'onAttack';
 
 export type Faction = 'Jovian' | 'Republic' | 'Megacorp' | 'Confederate' | 'Voidborn' | 'Bio-horror' | 'Neutral';
-export type Rarity = 'Common' | 'Uncommon' | 'Rare' | 'NA';
+export type Rarity = 'Common' | 'Uncommon' | 'Rare' | 'Legendary' | 'NA';
 
 export interface Mechanic {
   type: MechanicType;

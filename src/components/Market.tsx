@@ -8,9 +8,9 @@ import { cn } from '../lib/utils';
 
 // Pack Definitions
 const PACKS = [
-    { id: 'surplus', name: 'Surplus Crate', cost: 100, count: 3, chances: { Common: 0.60, Uncommon: 0.35, Rare: 0.05 }, desc: 'Standard issue equipment. Reliable.', img: 'surplus_crate.png' },
-    { id: 'requisition', name: 'Requisition', cost: 250, count: 5, chances: { Common: 0.50, Uncommon: 0.40, Rare: 0.10 }, desc: 'High-grade military assets.', img: 'requisition.png' },
-    { id: 'contraband', name: 'Contraband', cost: 500, count: 5, chances: { Common: 0.50, Uncommon: 0.40, Rare: 0.10 }, desc: 'Risk of Void corruption. Exotic goods.', isExotic: true, img: 'contraband.png' },
+    { id: 'surplus', name: 'Surplus Crate', cost: 100, count: 3, chances: { Common: 0.60, Uncommon: 0.34, Rare: 0.05, Legendary: 0.01 }, desc: 'Standard issue equipment. Reliable.', img: 'surplus_crate.png' },
+    { id: 'requisition', name: 'Requisition', cost: 250, count: 5, chances: { Common: 0.45, Uncommon: 0.40, Rare: 0.12, Legendary: 0.03 }, desc: 'High-grade military assets.', img: 'requisition.png' },
+    { id: 'contraband', name: 'Contraband', cost: 500, count: 5, chances: { Common: 0.30, Uncommon: 0.45, Rare: 0.20, Legendary: 0.05 }, desc: 'Risk of Void corruption. Exotic goods.', isExotic: true, img: 'contraband.png' },
 ];
 
 export const Market: React.FC = () => {
@@ -20,10 +20,11 @@ export const Market: React.FC = () => {
     const [openedCards, setOpenedCards] = useState<{ card: CardType, isNew: boolean, partsGained?: { type: string, amount: number } }[] | null>(null);
     const [isOpening, setIsOpening] = useState(false);
 
-    const generateRarity = (chances: { Common: number, Uncommon: number, Rare: number }): Rarity => {
+    const generateRarity = (chances: { Common: number, Uncommon: number, Rare: number, Legendary: number }): Rarity => {
         const r = Math.random();
-        if (r < chances.Rare) return 'Rare';
-        if (r < chances.Rare + chances.Uncommon) return 'Uncommon';
+        if (r < chances.Legendary) return 'Legendary';
+        if (r < chances.Legendary + chances.Rare) return 'Rare';
+        if (r < chances.Legendary + chances.Rare + chances.Uncommon) return 'Uncommon';
         return 'Common';
     };
 
@@ -92,6 +93,7 @@ export const Market: React.FC = () => {
                     let amount = 1;
                     if (card.rarity === 'Uncommon') amount = 2;
                     if (card.rarity === 'Rare') amount = 3;
+                    if (card.rarity === 'Legendary') amount = 5;
 
                     addResource(partType as any, amount);
                     results.push({ card, isNew: false, partsGained: { type: partType, amount } });
@@ -178,8 +180,9 @@ export const Market: React.FC = () => {
                         <ul className="w-full text-xs text-slate-500 space-y-1 font-mono bg-black/20 p-2 rounded">
                             <li className="flex justify-between"><span>Cards:</span> <span className="text-white">{pack.count}</span></li>
                             <li className="flex justify-between"><span>Common:</span> <span>{pack.chances.Common * 100}%</span></li>
-                            <li className="flex justify-between"><span>Uncommon:</span> <span className="text-blue-400">{pack.chances.Uncommon * 100}%</span></li>
-                            <li className="flex justify-between"><span>Rare:</span> <span className="text-yellow-400">{pack.chances.Rare * 100}%</span></li>
+                            <li className="flex justify-between"><span>Uncommon:</span> <span className="text-blue-400">{Math.round(pack.chances.Uncommon * 100)}%</span></li>
+                            <li className="flex justify-between"><span>Rare:</span> <span className="text-yellow-400">{Math.round(pack.chances.Rare * 100)}%</span></li>
+                            <li className="flex justify-between"><span>Legendary:</span> <span className="text-orange-500">{Math.round(pack.chances.Legendary * 100)}%</span></li>
                         </ul>
 
                         <button 

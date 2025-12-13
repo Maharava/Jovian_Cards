@@ -57,6 +57,7 @@ const RARITY_COLORS = {
   'Common': 'text-slate-400',
   'Uncommon': 'text-blue-400',
   'Rare': 'text-yellow-400',
+  'Legendary': 'text-orange-500',
   'NA': 'text-transparent'
 };
 

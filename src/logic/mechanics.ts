@@ -188,7 +188,9 @@ export class MechanicHandler {
                  logEvent('debuff', { target: t.uid, type: 'weak', amount });
                  
                  if (mechanic.type === 'hack') {
-                     animations.push({ from: sourceUnit.uid, to: t.uid, color: '#00ff00', duration: 300 });
+                     animations.push({ from: sourceUnit.uid, to: t.uid, color: '#00ff00', duration: 300 }); // Green
+                 } else if (mechanic.type === 'disarm') {
+                     animations.push({ from: sourceUnit.uid, to: t.uid, color: '#94a3b8', duration: 300 }); // Slate/Silver
                  }
              });
              break;

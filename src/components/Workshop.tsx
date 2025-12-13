@@ -14,7 +14,7 @@ export const Workshop: React.FC = () => {
     const [rarityFilter, setRarityFilter] = useState<string>('All');
     const [isUpgrading, setIsUpgrading] = useState(false);
 
-    const rarities = ['All', 'Common', 'Uncommon', 'Rare'];
+    const rarities = ['All', 'Common', 'Uncommon', 'Rare', 'Legendary'];
 
     // Filter Collection for Upgradable Cards (Jovian Units, Tier < 3)
     const upgradableCards = useMemo(() => {
@@ -52,6 +52,7 @@ export const Workshop: React.FC = () => {
         if (card.rarity === 'Common') cost = card.tier === 1 ? 3 : 8;
         if (card.rarity === 'Uncommon') cost = card.tier === 1 ? 5 : 12;
         if (card.rarity === 'Rare') cost = card.tier === 1 ? 8 : 20;
+        if (card.rarity === 'Legendary') cost = card.tier === 1 ? 15 : 40;
 
         return { nextId, nextCard, cost, resourceType, color };
     };
