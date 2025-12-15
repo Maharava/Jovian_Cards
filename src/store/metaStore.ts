@@ -12,6 +12,7 @@ interface MetaState {
   collection: Record<string, number>; // Card ID -> Quantity owned
   savedDecks: SavedDeck[];
   activeDeckId: string | null;
+  marketRotationFaction: string; // New: Tracks the current faction for the Faction Pack
   
   // Resources
   credits: number;
@@ -24,6 +25,7 @@ interface MetaState {
   deleteDeck: (id: string) => void;
   setActiveDeck: (id: string) => void;
   resetProgress: () => void;
+  rotateMarketFaction: () => void; // New action
   
   addResource: (type: 'credits' | 'parts' | 'bio' | 'psi', amount: number) => void;
   spendCredits: (amount: number) => boolean; // Returns success
@@ -55,11 +57,18 @@ export const useMetaStore = create<MetaState>()(
           }
       ],
       activeDeckId: 'default_vanguard',
+      marketRotationFaction: 'Jovian',
       
       credits: 1000, // Starter credits
       parts: 100,
       bioSamples: 100,
       psiCrystals: 100,
+
+      rotateMarketFaction: () => set(() => {
+          const options = ['Jovian', 'Megacorp']; // Expandable list
+          const next = options[Math.floor(Math.random() * options.length)];
+          return { marketRotationFaction: next };
+      }),
 
       unlockCard: (id, amount = 1) => set((state) => {
           const current = state.collection[id] || 0;
@@ -170,6 +179,7 @@ export const useMetaStore = create<MetaState>()(
               cardIds: DEFAULT_DECK_CARDS.slice(0, 20) 
           }],
           activeDeckId: 'default_vanguard',
+          marketRotationFaction: 'Jovian',
           credits: 1000, parts: 0, bioSamples: 0, psiCrystals: 0
       })
     }),

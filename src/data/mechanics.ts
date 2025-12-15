@@ -184,5 +184,23 @@ export const MECHANICS_DEFINITIONS: Record<string, { title: string; desc: string
     desc: 'Gain X energy when this dies.',
     icon: '♻️',
     color: 'bg-green-500 text-black'
+  },
+  slow: {
+    title: 'Slow',
+    desc: 'This unit can only attack every other turn.',
+    icon: '🐢',
+    color: 'bg-stone-500 text-white'
+  },
+  first_strike: {
+    title: 'First Strike',
+    desc: 'Deals damage before taking damage in combat.',
+    icon: '⚡',
+    color: 'bg-yellow-600 text-white'
+  },
+  assassinate: {
+    title: 'Assassinate',
+    desc: 'Destroys any unit damaged by this unit.',
+    icon: '💀',
+    color: 'bg-slate-950 text-red-500'
   }
 };
