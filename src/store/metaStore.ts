@@ -32,18 +32,26 @@ interface MetaState {
   upgradeCard: (currentId: string, nextId: string, cost: number, resourceType: 'parts' | 'bio' | 'psi') => boolean;
 }
 
-// Initial unlocks: 2 copies of all Tier 1 Jovian Units & Tactics
-const INITIAL_COLLECTION: Record<string, number> = {};
-ALL_CARDS.forEach(c => {
-    if (c.tier === 1 && (c.type === 'tactic' || c.faction === 'Jovian')) {
-        INITIAL_COLLECTION[c.id] = 2;
-    }
-});
+// Initial unlocks: Strictly match the starting deck
+const DEFAULT_DECK_CARDS = [
+    'lysithea_t1', 'lysithea_t1',
+    'himalia_t1', 'himalia_t1',
+    'leda_t1', 'leda_t1',
+    'amalthea_t1', 'amalthea_t1',
+    'kore_t1', 'kore_t1',
+    'tactic_nano_repair', 'tactic_nano_repair',
+    'tactic_reinforce', 'tactic_reinforce',
+    'euporie_t1',
+    'callisto_t1',
+    'tactic_power_shot', 'tactic_power_shot',
+    'tactic_scramble',
+    'tactic_outsource'
+];
 
-const DEFAULT_DECK_CARDS = ALL_CARDS
-    .filter(c => c.tier === 1 && (c.type === 'tactic' || c.faction === 'Jovian'))
-    .slice(0, 10)
-    .flatMap(c => [c.id, c.id]); 
+const INITIAL_COLLECTION: Record<string, number> = {};
+DEFAULT_DECK_CARDS.forEach(id => {
+    INITIAL_COLLECTION[id] = (INITIAL_COLLECTION[id] || 0) + 1;
+}); 
 
 export const useMetaStore = create<MetaState>()(
   persist(
@@ -53,7 +61,7 @@ export const useMetaStore = create<MetaState>()(
           { 
               id: 'default_vanguard', 
               name: 'Vanguard Standard', 
-              cardIds: DEFAULT_DECK_CARDS.slice(0, 20) 
+              cardIds: DEFAULT_DECK_CARDS 
           }
       ],
       activeDeckId: 'default_vanguard',
@@ -176,7 +184,7 @@ export const useMetaStore = create<MetaState>()(
           savedDecks: [{ 
               id: 'default_vanguard', 
               name: 'Vanguard Standard', 
-              cardIds: DEFAULT_DECK_CARDS.slice(0, 20) 
+              cardIds: DEFAULT_DECK_CARDS 
           }],
           activeDeckId: 'default_vanguard',
           marketRotationFaction: 'Jovian',

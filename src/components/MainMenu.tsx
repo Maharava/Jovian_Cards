@@ -7,6 +7,7 @@ export const MainMenu: React.FC = () => {
   const enterHangar = useGameStore(state => state.enterHangar);
   const enterMarket = () => useGameStore.setState({ phase: 'market' });
   const enterWorkshop = () => useGameStore.setState({ phase: 'workshop' });
+  const enterSettings = () => useGameStore.setState({ phase: 'settings' });
 
   return (
     <div className="absolute inset-0 bg-black text-white flex flex-col items-center justify-center bg-[url('/assets/ui/main_menu_bg.jpg')] bg-cover bg-center overflow-hidden">
@@ -65,7 +66,7 @@ export const MainMenu: React.FC = () => {
                 >
                   MARKET
                 </motion.button>
-                <motion.button 
+                <motion.button
                   initial={{ y: 50, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.7 }}
@@ -77,6 +78,18 @@ export const MainMenu: React.FC = () => {
                   WORKSHOP
                 </motion.button>
             </div>
+
+            <motion.button
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.8 }}
+              whileHover={{ scale: 1.05, borderColor: '#64748b', color: '#94a3b8' }}
+              whileTap={{ scale: 0.95 }}
+              onClick={enterSettings}
+              className="w-full py-2 bg-slate-900/60 border border-slate-700 text-slate-400 font-mono tracking-wider text-xs rounded"
+            >
+              SETTINGS
+            </motion.button>
         </div>
 
         <motion.p 

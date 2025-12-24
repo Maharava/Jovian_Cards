@@ -137,15 +137,14 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
     }
 
     if (!deckToUse || deckToUse.length === 0) {
-        // TEST: Add one copy of every unique Jovian unit (Tier 1) + standard tactics
-        // We filter for Tier 1 Jovian units to get the base characters.
-        const jovianUnits = HERO_CARDS.filter(c => c.faction === 'Jovian' && c.tier === 1);
-
-        // Also ensure we have enough cards to play, so maybe add tactics too.
-        deckToUse = [
-            ...jovianUnits,
-            ...TACTIC_CARDS
-        ];
+      // Fallback to basic Jovian deck if nothing in store
+      deckToUse = [
+        'lysithea_t1', 'lysithea_t1', 'himalia_t1', 'himalia_t1',
+        'leda_t1', 'leda_t1', 'amalthea_t1', 'amalthea_t1',
+        'kore_t1', 'kore_t1', 'tactic_nano_repair', 'tactic_nano_repair',
+        'tactic_reinforce', 'tactic_reinforce', 'euporie_t1', 'callisto_t1',
+        'tactic_power_shot', 'tactic_power_shot', 'tactic_scramble', 'tactic_outsource'
+      ];
     }
     const shuffledDeck = shuffleArray(deckToUse);
 

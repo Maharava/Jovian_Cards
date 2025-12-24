@@ -8,6 +8,7 @@ import { Hangar } from './components/Hangar';
 import { Market } from './components/Market';
 
 import { Workshop } from './components/Workshop';
+import { Settings } from './components/Settings';
 
 function App() {
   const phase = useGameStore((state) => state.phase);
@@ -30,7 +31,9 @@ function App() {
       {phase === 'market' && <Market />}
 
       {phase === 'workshop' && <Workshop />}
-      
+
+      {phase === 'settings' && <Settings />}
+
       {(phase === 'player_turn' || phase === 'enemy_turn' || phase === 'game_over' || phase === 'victory') && (        <>
           <GameBoard />
           {phase === 'victory' && <VictoryScreen />}

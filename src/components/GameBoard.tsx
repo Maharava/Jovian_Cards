@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useGameStore } from '../store/gameStore';
+import { useMetaStore } from '../store/metaStore';
 import { cn } from '../lib/utils';
 import { Commander } from './Commander';
 
@@ -20,6 +21,10 @@ export const GameBoard: React.FC = () => {
       phase, turn, scoutedCards, isProcessingQueue,
       attackVector, effectVector, playTactic
     } = useGameStore();
+
+    const { savedDecks, activeDeckId } = useMetaStore();
+    const activeDeck = savedDecks.find(d => d.id === activeDeckId);
+    const deckName = activeDeck?.name || 'Vanguard';
   
     const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
     const [targetingCard, setTargetingCard] = useState<import('../types').Card | null>(null);
@@ -221,14 +226,14 @@ export const GameBoard: React.FC = () => {
 
             {/* Player Zone (Manual Layout for Commander + Hand) */}
             <div className="h-1/4 flex flex-col justify-end pb-2 relative z-20 px-8">
+                <div ref={playerCommanderRef} className="absolute left-[408px] bottom-4 mb-0">
+                    <Commander
+                        name={deckName} hp={player.hp} maxHp={player.maxHp}
+                        energy={player.energy} maxEnergy={player.maxEnergy} isPlayer
+                    />
+                </div>
+                
                 <div className="flex justify-between items-end w-full max-w-7xl mx-auto relative">
-                    <div ref={playerCommanderRef} className="absolute left-[420px] bottom-4 mb-0">
-                        <Commander
-                            name="Vanguard" hp={player.hp} maxHp={player.maxHp}
-                            energy={player.energy} maxEnergy={player.maxEnergy} isPlayer
-                        />
-                    </div>
-                    
                     <Hand 
                         player={player} phase={phase}
                         onPlayCard={handlePlayCard}

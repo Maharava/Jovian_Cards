@@ -30,7 +30,7 @@ export const EnemyZone: React.FC<EnemyZoneProps> = ({
                  if (enemy.board.length === 0) onCommanderClick();
             }}
         >
-            <div ref={commanderRef} className="absolute top-4 left-[420px] z-10">
+            <div ref={commanderRef} className="absolute top-4 left-[408px] z-10">
                 <Commander
                     name="Rogue AI"
                     hp={enemy.hp}
