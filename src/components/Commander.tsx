@@ -43,18 +43,50 @@ export const Commander: React.FC<CommanderProps> = ({
         </div>
       </div>
 
-      {/* Energy (Player only) */}
+      {/* Energy (Player only) - 10 total circles in 2 rows of 5 */}
       {isPlayer && energy !== undefined && maxEnergy !== undefined && (
-        <div className="flex gap-1">
-            {Array.from({ length: maxEnergy }).map((_, i) => (
-                <div 
-                    key={i} 
-                    className={cn(
-                        "w-3 h-3 rounded-full border border-cyan-700",
-                        i < energy ? "bg-cyan-400 shadow-[0_0_5px_#00ffff]" : "bg-slate-800"
-                    )}
-                />
-            ))}
+        <div className="flex flex-col gap-1">
+            {/* First row (circles 0-4) */}
+            <div className="flex gap-1">
+                {Array.from({ length: 5 }).map((_, i) => {
+                    const isFilledPermanent = i < Math.min(energy, maxEnergy);
+                    const isOvercharge = i < energy && i >= maxEnergy;
+                    const isEmpty = i >= energy;
+
+                    return (
+                        <div
+                            key={i}
+                            className={cn(
+                                "w-3 h-3 rounded-full border transition-all",
+                                isFilledPermanent && "bg-blue-400 border-blue-600 shadow-[0_0_5px_#3b82f6]",
+                                isOvercharge && "bg-yellow-400 border-yellow-600 shadow-[0_0_5px_#fbbf24]",
+                                isEmpty && "bg-transparent border-slate-600"
+                            )}
+                        />
+                    );
+                })}
+            </div>
+            {/* Second row (circles 5-9) */}
+            <div className="flex gap-1">
+                {Array.from({ length: 5 }).map((_, i) => {
+                    const circleIndex = i + 5;
+                    const isFilledPermanent = circleIndex < Math.min(energy, maxEnergy);
+                    const isOvercharge = circleIndex < energy && circleIndex >= maxEnergy;
+                    const isEmpty = circleIndex >= energy;
+
+                    return (
+                        <div
+                            key={circleIndex}
+                            className={cn(
+                                "w-3 h-3 rounded-full border transition-all",
+                                isFilledPermanent && "bg-blue-400 border-blue-600 shadow-[0_0_5px_#3b82f6]",
+                                isOvercharge && "bg-yellow-400 border-yellow-600 shadow-[0_0_5px_#fbbf24]",
+                                isEmpty && "bg-transparent border-slate-600"
+                            )}
+                        />
+                    );
+                })}
+            </div>
         </div>
       )}
     </div>

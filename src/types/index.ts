@@ -7,30 +7,29 @@ export type MechanicType =
   | 'scout' 
   | 'stun' 
   | 'buff' 
+  | 'bio_optimize'
   | 'debuff' 
   | 'damage' 
   | 'heal' 
   | 'draw' 
-  | 'reveal' 
-  | 'transform'
   | 'guard'
   | 'rush'
   | 'double_attack'
   | 'snipe'
   | 'lifesteal'
-  | 'glitch'
   | 'slow'
   | 'repair'
   | 'support'
-  | 'bounce'
-  | 'swap'
+  | 'bounce' // Legacy - use 'banish' instead
+  | 'swap' // Legacy - use 'redeploy' instead
+  | 'redeploy' // Return friendly unit to hand
+  | 'banish' // Return enemy unit to its owner's hand
   | 'disarm'
   | 'spark'
   | 'decoy'
   | 'rally'
   | 'thorns'
   | 'pollute'
-  | 'evolve'
   | 'fade'
   | 'hack' // New mechanic
   | 'rage' // New mechanic
@@ -41,10 +40,14 @@ export type MechanicType =
   | 'assassinate'
   | 'regenerate'
   | 'shield'
-  | 'double_damage_undamaged' // Thebe T3 passive
-  | 'add_random_tactic'; // Leda T1 ability // Return to hand
+  | 'add_random_tactic' // Leda T1 ability // Return to hand
+  | 'breach'
+  | 'mind_control'
+  | 'gain_energy'
+  | 'silence'
+  | 'cost_reduction';
 
-export type TriggerType = 'onPlay' | 'onDeath' | 'onTurnEnd' | 'onTurnStart' | 'passive' | 'constant' | 'onDraw' | 'onAttack';
+export type TriggerType = 'onPlay' | 'onDeath' | 'onTurnEnd' | 'onTurnStart' | 'passive' | 'constant' | 'onDraw' | 'onAttack' | 'onDamageTaken';
 
 export type Faction = 'Jovian' | 'Republic' | 'Megacorp' | 'Confederate' | 'Voidborn' | 'Bio-horror' | 'Neutral';
 export type Rarity = 'Common' | 'Uncommon' | 'Rare' | 'Legendary' | 'NA';
@@ -62,11 +65,14 @@ export interface Mechanic {
 export interface ResolutionResult {
     stateUpdates: Partial<GameState>;
     animations: Array<{ from: string; to: string; color: string; duration?: number }>;
+    damagedUnits?: string[]; // UIDs of units that took damage (for onDamageTaken triggers)
+    notifications?: Array<{ id: string; unitName: string; text: string; timestamp: number }>;
 }
 
 export interface Card {
   id: string;
   name: string;
+  title?: string; // Title for this tier (e.g., "Researcher", "The Biologist")
   type: CardType;
   tier: CardTier;
   rarity: Rarity;
@@ -80,6 +86,8 @@ export interface Card {
   };
   // Text description of ability
   text: string;
+  // Flavour text / Lore
+  lore?: string;
   // Faction
   faction: Faction;
   // Mechanics for logic
@@ -110,6 +118,9 @@ export interface UnitInstance {
       stun?: number; // Duration in turns
       weak?: number; // Duration in turns (or value if -ATK)
       originalAtk?: number; // To revert debuffs
+      rallied?: boolean; // Track if unit has been rallied
+      encouraged?: boolean; // Track if unit has been encouraged
+      turnsSincePlay?: number; // Track turns for slow mechanic
   };
 }
 
@@ -151,7 +162,7 @@ export interface GameState {
   turn: number;
   phase: 'main_menu' | 'faction_select' | 'player_turn' | 'enemy_turn' | 'game_over' | 'victory' | 'hangar' | 'market' | 'workshop';
   winner?: 'player' | 'enemy';
-  scoutedCard?: Card | null; // For Elara's ability
+  scoutedCards?: Card[] | null; // For scout abilities (can show multiple cards)
   lastLoot?: { credits: number, parts: number, bio: number, psi: number } | null; // For Victory Screen
   
   // Animation State
@@ -159,10 +170,12 @@ export interface GameState {
   isProcessingQueue: boolean;
   
   // Animation System
-  attackingUnitId?: string | null; 
-  attackVector?: { from: string; to: string } | null; 
+  attackingUnitId?: string | null;
+  attackVector?: { from: string; to: string } | null;
   effectVector?: { from: string; to: string; color: string } | null;
-  
+  abilityNotification?: { unitUid: string; text: string; timestamp: number } | null;
+  abilityNotifications: Array<{ id: string; unitName: string; text: string; timestamp: number }>;
+
   // Roguelite run state
   run: {
     node: number;

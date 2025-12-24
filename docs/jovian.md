@@ -75,7 +75,7 @@ The Jovian playstyle focuses on **Unit Quality** and **Synergy**. Unlike the Meg
 *   **Amalthea (The Soldier)** (Bio)
     *   T1 Recruit (3 Cost, 3/4): No ability.
     *   T2 Veteran (3 Cost, 4/5): **Guard.**
-    *   T3 The Soldier (3 Cost, 5/6): **Guard.** **Regenerate 1.**
+    *   T3 The Soldier (3 Cost, 5/6): **Guard.** Turn End: **Regenerate 1.**
 *   **Leda (The Thief)** (Bio)
     *   T1 Prowler (2 Cost, 2/3): No ability.
     *   T2 Burglar (3 Cost, 3/4): On Play: **Add Tactic** to hand.
@@ -85,13 +85,13 @@ The Jovian playstyle focuses on **Unit Quality** and **Synergy**. Unlike the Meg
     *   T2 White Hat (4 Cost, 2/3): **Hack 2**.
     *   T3 The Hacker (4 Cost, 3/3): **Hack 3**.
 *   **Kore (The Maiden)** (Bio)
-    *   T1 Party Girl (2 Cost, 1/3): Scout 1.
+    *   T1 Party Girl (2 Cost, 1/3): OnPlay: Scout 1.
     *   T2 Informant (2 Cost, 1/4): TurnStart: Scout 1.
     *   T3 The Maiden (2 Cost, 2/5): TurnStart: Scout 2.
 *   **Adrastea (The Provider)** (Bio)
-    *   T1 Nurse (3 Cost, 2/4): Heal 2.
-    *   T2 Field Medic (3 Cost, 3/5): Heal 3.
-    *   T3 The Provider (3 Cost, 4/6): Heal 3.
+    *   T1 Nurse (3 Cost, 2/4): OnPlay: Heal 2.
+    *   T2 Field Medic (3 Cost, 3/5): OnPlay: Heal 3.
+    *   T3 The Provider (3 Cost, 4/6): OnPlay: Heal 3.
 *   **Carpo (The Mechanic)** (Cyber)
     *   T1 Tinkerer (2 Cost, 1/3): Vanilla.
     *   T2 Engineer (2 Cost, 2/4): **Breach** (removes the Shield of an attacked card permanently).
@@ -99,13 +99,13 @@ The Jovian playstyle focuses on **Unit Quality** and **Synergy**. Unlike the Meg
 
 #### Uncommon (The Specialists)
 *   **Sinope (The Seducer)** (Bio)
-    *   T1 Tease (2 Cost, 1/4): **Disarm 2** (Random Enemy).
-    *   T2 Manipulator (3 Cost, 1/6): **Disarm 3**.
-    *   T3 The Seducer (5 Cost, 2/8): Disarm 3. Scout 2.
-*   **Euporie (The Medic)** (Bio)
-    *   T1 Intern (3 Cost, 2/4): Heal 3.
-    *   T2 Resident (3 Cost, 3/5): Heal 4.
-    *   T3 The Surgeon (3 Cost, 4/6): Heal 5.
+    *   T1 Tease (2 Cost, 1/4): OnPlay: **Disarm 2** (Random Enemy).
+    *   T2 Manipulator (3 Cost, 1/6): OnPlay: **Disarm 3**.
+    *   T3 The Seducer (5 Cost, 2/8): OnPlay: Disarm 3. OnPlay: Scout 2.
+*   **Euporie (The Nrse)** (Bio)
+    *   T1 Intern (3 Cost, 2/4): OnPlay: Heal 3.
+    *   T2 Nurse (3 Cost, 3/5): OnPlay: Heal 4.
+    *   T3 Healer (3 Cost, 4/6): OnPlay: Heal 5.
 *   **Callisto (The Gang Queen)** (Bio)
     *   T1 Street Fighter (3 Cost, 1/2): Summon a 1/1 thug.
     *   T2 Thug Boss (3 Cost, 2/3): Summon 2 1/1 thugs.
@@ -129,13 +129,13 @@ The Jovian playstyle focuses on **Unit Quality** and **Synergy**. Unlike the Meg
     *   T2 Operator (2 Cost, 2/5): Summon a 1/2 drone.
     *   T3 The Drone Master (3 Cost, 3/6): Turn Start: Summon a 1/2 drone.
 *   **Pasiphae (The Ace)** (Bio)
-    *   T1 Gamer (2 Cost, 3/2): **Swap.**
-    *   T2 Pilot (3 Cost, 4/3): **Rush.** **Swap.**
-    *   T3 The Ace (4 Cost, 6/4): **Rush.** **Swap.** Rally 1.
+    *   T1 Gamer (2 Cost, 3/2): OnPlay: **Swap.**
+    *   T2 Pilot (3 Cost, 4/3): **Rush.** OnPlay: **Swap.**
+    *   T3 The Ace (4 Cost, 6/4): **Rush.** OnPlay: **Swap.** Turn End: Rally 1.
 *   **Praxidike (The Trickster)** (Cyber)
     *   T1 Prankster (2 Cost, 1/1): On Play: **Decoy** (Summon 0/2 Taunt Holo).
     *   T2 Illusionist (3 Cost, 3/2): On Play: **Decoy.** 
-    *   T3 The Trickster (4 Cost, 4/4): On Play: **Decoy.** WhenAttacked: Decoy.
+    *   T3 The Trickster (4 Cost, 4/4): On Play: **Decoy** (Summon 1/4 Holo with Guard, Shield). WhenAttacked: Decoy.
 *   **Ganymede (The Pugilist)** (Bio)
     *   T1 Brawler (3 Cost, 3/3): **Rush.** 
     *   T2 Contender (4 Cost, 4/4): **Rush.** **Rage 1.**
@@ -143,17 +143,17 @@ The Jovian playstyle focuses on **Unit Quality** and **Synergy**. Unlike the Meg
 
 #### Legendary (The Myths)
 *   **Europa (The Mind Ocean)** (Psi)
-    *   T1 Diplomat (6 Cost, 2/5): OnPlay: **Stun All Enemies.**
-    *   T2 Matriarch (6 Cost, 3/6): OnPlay: **Stun All Enemies.** WhenAttacked: Rally 2.
-    *   T3 The Mind Ocean (6 Cost, 4/7): OnPlay: **Stun All Enemies.** WhenAttacked: Rally 2, Encourage 2.
+    *   T1 Diplomat (6 Cost, 2/5): OnPlay: **Stun All Enemies.** Turn End: **Heal** random ally 2.
+    *   T2 Matriarch (6 Cost, 3/6): OnPlay: **Stun All Enemies.** Turn End: **Heal** all allies 2.
+    *   T3 The Mind Ocean (6 Cost, 4/7): OnPlay: **Stun All Enemies.** Turn Start: **Draw 1.** Turn End: **Heal** all allies 3.
 *   **Metis (The Flare)** (Psi)
     *   T1 Hunter (6 Cost, 6/5): OnPlay: Spark 3.
     *   T2 Avenger (6 Cost, 7/6): OnPlay: Spark 3. WhenAttacked: Spark 3.
     *   T3 The Flare (6 Cost, 6/6): OnPlay: Destroy target enemy. WhenAttacked: Spark 3.
 *   **Thebe (The Apex)** (Bio)
-    *   T1 Ranger (6 Cost, 6/3): **Snipe.** **Ambush** (Deals double damage to undamaged targets).
-    *   T2 Stalker (6 Cost, 7/4): **Snipe.** **Ambush.** 
-    *   T3 The Apex (6 Cost, 7/7): **Snipe.** **Ambush.** Regenerate 3.
+    *   T1 Ranger (6 Cost, 6/3): **Snipe.** **Loot 1** (Draw 1 card when this kills an enemy).
+    *   T2 Stalker (6 Cost, 7/4): **Snipe.** **Loot 1.**
+    *   T3 The Apex (6 Cost, 7/7): **Snipe.** **Loot 1.** Turn End: Regenerate 2.
 
 ### Tactics (Neutral Support)
 The Jovian Sisters do not have a standing army. They rely on support from the **Outer Confederacy** and local free settlements. These cards are "Neutral" faction.

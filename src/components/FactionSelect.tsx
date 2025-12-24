@@ -14,7 +14,8 @@ export const FactionSelect: React.FC = () => {
 
   const FACTIONS = [
     { id: 'Megacorp', name: 'Megacorp', desc: 'Drone Swarms & Automation', active: true, color: 'bg-slate-800 border-slate-500', drop: 'High: Tech Parts' },
-    { id: 'Voidborn', name: 'Voidborn', desc: 'Cosmic Horror & Madness', active: false, color: 'bg-purple-900/50 border-purple-800', drop: 'High: Psi-Crystals' },
+    // VOIDBORN: Faction incomplete - hidden until implementation finished
+    { id: 'Voidborn', name: 'Voidborn', desc: 'Cosmic Horror & Madness [WIP]', active: false, color: 'bg-purple-900/50 border-purple-800', drop: 'High: Psi-Crystals' },
     { id: 'Biohorror', name: 'Bio-Horror', desc: 'Evolution & Mutation', active: false, color: 'bg-red-900/50 border-red-800', drop: 'High: Bio-Samples' },
     { id: 'Republic', name: 'Republic', desc: 'Order & Tactics', active: false, color: 'bg-blue-900/50 border-blue-800', drop: 'Balanced' },
   ];

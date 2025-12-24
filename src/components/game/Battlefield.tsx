@@ -61,12 +61,12 @@ export const Battlefield: React.FC<BattlefieldProps> = ({
                  <AnimatePresence>
                  {player.board.map(u => (
                     <div key={u.uid} ref={(el) => setUnitRef(u.uid, el)}>
-                        <Unit 
+                        <Unit
                             layoutId={`card-${u.uid}`}
-                            unit={u} 
+                            unit={u}
                             onClick={() => onUnitClick(u)}
                             onContextMenu={(e) => onUnitRightClick(e, u)}
-                            canAttack={u.ready && phase === 'player_turn'}
+                            canAttack={u.attacksLeft > 0 && u.atk > 0 && phase === 'player_turn'}
                             isTarget={selectedUnitId === u.uid}
                             className={cn(
                                 selectedUnitId === u.uid ? "ring-2 ring-yellow-400 scale-105" : "",

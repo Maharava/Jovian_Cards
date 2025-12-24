@@ -57,9 +57,11 @@ export const processPackOpening = (
         let factionFilter: string | undefined = undefined;
 
         if (pack.isExotic) {
+            // VOIDBORN: Removed until faction is complete
+            // if (Math.random() < 0.15) {
+            //     isVoid = true;
+            // } else
             if (Math.random() < 0.15) {
-                isVoid = true;
-            } else if (Math.random() < 0.15) { 
                 isBio = true;
             }
         }

@@ -30,20 +30,21 @@ export const EnemyZone: React.FC<EnemyZoneProps> = ({
                  if (enemy.board.length === 0) onCommanderClick();
             }}
         >
-            <div ref={commanderRef}>
-                <Commander 
-                    name="Rogue AI" 
-                    hp={enemy.hp} 
-                    maxHp={enemy.maxHp} 
-                    className="absolute top-4 left-8 z-10"
+            <div ref={commanderRef} className="absolute top-4 left-[420px] z-10">
+                <Commander
+                    name="Rogue AI"
+                    hp={enemy.hp}
+                    maxHp={enemy.maxHp}
+                    energy={enemy.energy}
+                    maxEnergy={enemy.maxEnergy}
                     onClick={onCommanderClick}
                     isTarget={isValidAttackTarget}
                 />
             </div>
 
-             {/* Enemy Hand Count */}
-             <div className="absolute top-8 right-12 flex gap-1">
-                 {Array.from({length: 5}).map((_,i) => (
+             {/* Enemy Hand Count - moved under turn counter */}
+             <div className="absolute top-24 right-8 flex gap-1">
+                 {Array.from({length: enemy.hand.length}).map((_,i) => (
                      <div key={i} className="w-12 h-16 bg-slate-800 border border-slate-600 rounded shadow-md relative group">
                          <div className="absolute inset-1 bg-red-900/50 rounded flex items-center justify-center text-[10px] text-red-500 font-mono">
                              AI

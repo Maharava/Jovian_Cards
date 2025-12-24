@@ -40,6 +40,6 @@ body {
 }
 
 img {
-  image-rendering: auto; /* Ensure smooth scaling */
+  image-rendering: high-quality; /* Attempt to fix pixelation artifacts */
   -webkit-backface-visibility: hidden; /* Fix for some transform artifacts */
 }

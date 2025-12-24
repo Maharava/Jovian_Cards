@@ -87,9 +87,9 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
     *   T2 Clean-Up Crew (4 Cost, 5/3): **Loot 1** (On kill: Draw 1 card).
     *   T3 Black Ops Agent (4 Cost, 6/4): **Loot 1**. **First Strike** (Take 0 dmg if killing target on attack).
 *   **Black Betty** (Mech - Disruption)
-    *   T1 Hacking Uplink (3 Cost, 0/4): **Hack 1** (Random Enemy at Turn End).
-    *   T2 AI Jammer (3 Cost, 0/5): **Hack 3**.
-    *   T3 Network Crasher (3 Cost, 0/6): **Hack 5**.
+    *   T1 Hacking Uplink (3 Cost, 0/4): Turn End: **Hack 1** (Random Enemy).
+    *   T2 AI Jammer (3 Cost, 0/5): Turn End: **Hack 3**.
+    *   T3 Network Crasher (3 Cost, 0/6): Turn End: **Hack 5**.
 *   **T4M3K0** (Bio - Repair)
     *   *Note: Summoned Drones are Neutral faction.*
     *   T1 Drone Mechanic (3 Cost, 2/2): OnPlay: **Summon** 1/1 Drone.
@@ -97,8 +97,8 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
     *   T3 Master Architect (3 Cost, 4/4): Costs (1) less for each Megacorp unit. OnPlay: **Summon X** Drones, where X = Megacorp units.
 *   **Mr Harrison** (Bio - Control)
     *   T1 Debt Collector (4 Cost, 2/3): No ability.
-    *   T2 Indentured Enforcer (4 Cost, 3/4): **Disarm 2** (Random Enemy).
-    *   T3 Contract Binder (4 Cost, 4/5): **Disarm 2**. On Play: Steal control of enemy with <2 ATK.
+    *   T2 Indentured Enforcer (4 Cost, 3/4): OnPlay: **Disarm 2** (Random Enemy).
+    *   T3 Contract Binder (4 Cost, 4/5): OnPlay: **Disarm 2**. On Play: Steal control of enemy with ATK <= 2.
 
 #### Rare (The Elite)
 *   **Solarin Control** (Mech - Economy)
@@ -110,9 +110,9 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
     *   T2 Director: Earth (4 Cost, 3/4): On Play: Give all other **Megacorp** units +1/+1 and **Rush**.
     *   T3 Director: War (4 Cost, 4/5): On Play: Give all other **Megacorp** units +2/+2.
 *   **Enforcer Lee** (Bio - Brawler)
-    *   T1 Enforcer (5 Cost, 4/4): **Rage**. **Regenerate**.
-    *   T2 Commander (5 Cost, 5/5): **Rage**. **Regenerate**.
-    *   T3 Enforcer General (5 Cost, 6/6): **Rage**. **Regenerate**. **Double Attack**.
+    *   T1 Enforcer (5 Cost, 4/4): OnAttack: **Rage**. Turn End: **Regenerate 2**.
+    *   T2 Commander (5 Cost, 5/5): OnAttack: **Rage**. Turn End: **Regenerate 2**.
+    *   T3 Enforcer General (5 Cost, 6/6): OnAttack: **Rage**. Turn End: **Regenerate 2**. **Double Attack**.
 *   **R0-VR** (Mech - Assassin)
     *   T1 Iteration One (3 Cost, 3/1): **Rush**. **Shield**. OnPlay: If you control another Megacorp unit, **Scout 2**.
     *   T2 Iteration Two (3 Cost, 4/2): **Rush**. **Shield**. OnPlay: **Scout X**, where X = Megacorp units you control.

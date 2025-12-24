@@ -10,13 +10,15 @@ import { EnemyZone } from './game/EnemyZone';
 import { TargetingOverlay } from './game/TargetingOverlay';
 import { InspectionModal } from './game/InspectionModal';
 import { ScoutModal } from './game/ScoutModal';
+import { AbilityNotification } from './AbilityNotification';
+import { DevPanel } from './DevPanel';
 
 export const GameBoard: React.FC = () => {
-    const { 
-      player, enemy, 
+    const {
+      player, enemy,
       playUnit, endPlayerTurn, attackTarget, closeScout,
-      phase, turn, scoutedCard, isProcessingQueue,
-      attackVector, effectVector, playTactic 
+      phase, turn, scoutedCards, isProcessingQueue,
+      attackVector, effectVector, playTactic
     } = useGameStore();
   
     const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
@@ -91,9 +93,34 @@ export const GameBoard: React.FC = () => {
 
     const handlePlayCard = async (card: import('../types').Card) => {
         if (phase !== 'player_turn') return;
-        const needsTarget = card.mechanics.some(m => ['target_unit', 'target_enemy', 'target_ally'].includes(m.target || ''));
+        // Only enter targeting mode for onPlay mechanics that need targets
+        const needsTarget = card.mechanics.some(m =>
+            m.trigger === 'onPlay' && ['target_unit', 'target_enemy', 'target_ally'].includes(m.target || '')
+        );
 
         if (needsTarget) {
+            // Check if there are any valid targets before entering targeting mode
+            const hasValidTargets = card.mechanics.some(m => {
+                if (m.target === 'target_ally') {
+                    // For target_ally, check if there are any allies on board (excluding the card being played if it's a unit)
+                    return player.board.length > 0;
+                }
+                if (m.target === 'target_enemy') {
+                    return enemy.board.length > 0;
+                }
+                if (m.target === 'target_unit') {
+                    return player.board.length > 0 || enemy.board.length > 0;
+                }
+                return false;
+            });
+
+            if (!hasValidTargets) {
+                // No valid targets, play card anyway and let mechanics resolve skip targeting
+                if (card.type === 'unit') await playUnit(card);
+                else await playTactic(card);
+                return;
+            }
+
             if (targetingCard?.id === card.id) setTargetingCard(null);
             else setTargetingCard(card);
         } else {
@@ -121,7 +148,8 @@ export const GameBoard: React.FC = () => {
         }
 
         if (unit.owner === 'player') {
-            if (!unit.ready) return;
+            // FIXED: Check attacksLeft and prevent 0 attack units from being selected
+            if (unit.attacksLeft <= 0 || unit.atk <= 0) return;
             if (selectedUnitId === unit.uid) setSelectedUnitId(null);
             else setSelectedUnitId(unit.uid);
         } else {
@@ -194,9 +222,9 @@ export const GameBoard: React.FC = () => {
             {/* Player Zone (Manual Layout for Commander + Hand) */}
             <div className="h-1/4 flex flex-col justify-end pb-2 relative z-20 px-8">
                 <div className="flex justify-between items-end w-full max-w-7xl mx-auto relative">
-                    <div ref={playerCommanderRef} className="absolute left-0 bottom-4 mb-0">
-                        <Commander 
-                            name="Vanguard" hp={player.hp} maxHp={player.maxHp} 
+                    <div ref={playerCommanderRef} className="absolute left-[420px] bottom-4 mb-0">
+                        <Commander
+                            name="Vanguard" hp={player.hp} maxHp={player.maxHp}
                             energy={player.energy} maxEnergy={player.maxEnergy} isPlayer
                         />
                     </div>
@@ -230,7 +258,10 @@ export const GameBoard: React.FC = () => {
             </div>
 
             {viewingUnit && <InspectionModal unit={viewingUnit} onClose={() => setViewingUnit(null)} />}
-            {scoutedCard && <ScoutModal card={scoutedCard} onClose={closeScout} />}
+            {scoutedCards && scoutedCards.length > 0 && <ScoutModal cards={scoutedCards} onClose={closeScout} />}
+
+            {/* Ability Notification */}
+            <AbilityNotification />
 
             {/* Game Over Overlay */}
             {(player.hp <= 0 || enemy.hp <= 0) && (
@@ -241,7 +272,7 @@ export const GameBoard: React.FC = () => {
                     <div className="text-xl text-slate-300 mb-8 font-mono">
                         {player.hp <= 0 ? "The Vanguard has fallen." : "Enemy threat neutralized."}
                     </div>
-                    <button 
+                    <button
                         onClick={() => window.location.reload()}
                         className="bg-white text-black font-bold py-4 px-12 rounded hover:scale-105 transition-transform"
                     >
@@ -249,6 +280,9 @@ export const GameBoard: React.FC = () => {
                     </button>
                 </div>
             )}
+
+            {/* Dev Panel */}
+            <DevPanel />
         </div>
     );
 };

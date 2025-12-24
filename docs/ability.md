@@ -15,7 +15,6 @@ This document defines the active keywords and mechanics in **Jovian Cards**.
 *   **Thorns [X]:** When this unit is attacked, deal [X] damage to the attacker.
 *   **Regenerate [X]:** Restores [X] HP to itself at the end of every turn.
 *   **Stealth:** Unit cannot be targeted until it attacks or takes damage. (Note: Implementation pending, rarely used).
-*   **Ambush:** Deals double damage to undamaged targets. (Implemented as `double_damage_undamaged`).
 
 ## Faction Mechanics (Jovian)
 
@@ -29,7 +28,7 @@ This document defines the active keywords and mechanics in **Jovian Cards**.
 *   **Disarm [X]:** Reduces an enemy's Attack by [X] immediately on play.
 *   **Breach:** Removes **Shield** from a target permanently.
 *   **Bio-Optimize [X]:** Grants +[X]/+[X] to a target unit (Buff).
-*   **Scout [X]:** Reveal the top [X] cards of your deck (or enemy deck).
+*   **Scout [X]:** Look at [X] random cards from the enemy's hand.
 *   **Mind Control:** Take control of an enemy unit.
 
 ## Faction Mechanics (Megacorp)

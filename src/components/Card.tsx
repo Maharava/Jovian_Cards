@@ -14,6 +14,7 @@ interface CardProps {
   showTooltip?: boolean;
   tooltipPosition?: 'right' | 'top';
   layoutId?: string;
+  artOnly?: boolean; // Hide all text overlays, show only art
 }
 
 const TIER_COLORS = {
@@ -62,7 +63,7 @@ const RARITY_COLORS = {
   'NA': 'text-transparent'
 };
 
-export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, className, disabled, showTooltip = true, layoutId }) => {
+export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, className, disabled, showTooltip = true, layoutId, artOnly = false }) => {
   const [tooltipPos, setTooltipPos] = React.useState<{ x: number; y: number } | null>(null);
   const cardRef = React.useRef<HTMLDivElement>(null);
 
@@ -110,44 +111,50 @@ export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, classN
       {/* Content Wrapper for Clipping */}
       <div className="absolute inset-0 rounded-xl overflow-hidden border-2 border-transparent flex flex-col justify-end pointer-events-none">
           {/* Background Image - Full Size (Absolute) */}
-          <img 
-            src={imagePath} 
-            alt={card.name} 
+          <img
+            src={imagePath}
+            alt={card.name}
             className="absolute inset-0 w-full h-full object-cover z-0"
             onError={(e) => {
-                (e.target as HTMLImageElement).src = `/assets/cards/${folder}/${card.baseAsset}_tier1.png`;
+                // Fallback: try tier1 only if card should have tier suffixes
+                const fallbackSuffix = (card.type === 'tactic' || card.rarity === 'NA') ? '' : '_tier1';
+                (e.target as HTMLImageElement).src = `/assets/cards/${folder}/${card.baseAsset}${fallbackSuffix}.png`;
             }}
           />
 
           {/* Overlay Gradient for readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60 z-10" />
+          {!artOnly && <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60 z-10" />}
 
-          {/* Header: Cost & Name (Absolute Top) */}
-          <div className="absolute top-0 left-0 right-0 z-20 flex justify-between items-start p-2">
-            <div className="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center font-bold text-black border border-cyan-300 shadow-[0_0_10px_rgba(0,255,255,0.5)]">
-              {card.cost}
-            </div>
-            <div className="text-right">
-              <div className={cn("text-xs font-mono uppercase tracking-wider font-bold drop-shadow-md", TIER_TEXT_COLORS[card.tier])}>
-                {card.name}
-              </div>
-              {card.title && (
-                <div className="text-[9px] text-slate-300 drop-shadow-md mt-0.5">
-                  {card.title}
+          {!artOnly && (
+            <>
+              {/* Header: Cost & Name (Absolute Top) */}
+              <div className="absolute top-0 left-0 right-0 z-20 flex justify-between items-start p-2">
+                <div className="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center font-bold text-black border border-cyan-300 shadow-[0_0_10px_rgba(0,255,255,0.5)]">
+                  {card.cost}
                 </div>
-              )}
-            </div>
-          </div>
-
-          {/* Subtype Badge (New) */}
-          {card.subtype && (
-              <div className="absolute top-10 right-2 z-20 bg-black/60 backdrop-blur rounded-full w-6 h-6 flex items-center justify-center border border-white/20 shadow-md" title={card.subtype}>
-                  <span className="text-xs">{SUBTYPE_ICONS[card.subtype]}</span>
+                <div className="text-right">
+                  <div className={cn("text-xs font-mono uppercase tracking-wider font-bold drop-shadow-md", TIER_TEXT_COLORS[card.tier])}>
+                    {card.name}
+                  </div>
+                  {card.title && (
+                    <div className="text-[9px] text-slate-300 drop-shadow-md mt-0.5">
+                      {card.title}
+                    </div>
+                  )}
+                </div>
               </div>
+
+              {/* Subtype Badge (New) */}
+              {card.subtype && (
+                  <div className="absolute top-10 right-2 z-20 bg-black/60 backdrop-blur rounded-full w-6 h-6 flex items-center justify-center border border-white/20 shadow-md" title={card.subtype}>
+                      <span className="text-xs">{SUBTYPE_ICONS[card.subtype]}</span>
+                  </div>
+              )}
+            </>
           )}
 
           {/* Description Box (Relative Bottom) */}
-          <div className="relative z-20 m-2 flex flex-col">
+          {!artOnly && <div className="relative z-20 m-2 flex flex-col">
               {/* Ability Text - only show if card has text */}
               {card.text && card.text.trim() !== '' && (
                 <div className="bg-black/80 backdrop-blur-sm p-2 rounded-t border border-white/10 border-b-0 text-[10px] leading-tight text-center text-gray-200 min-h-[2.5em] flex items-center justify-center">
@@ -200,7 +207,7 @@ export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, classN
                     </div>
                   </div>
               )}
-          </div>
+          </div>}
       </div>
 
     </motion.div>
@@ -208,17 +215,17 @@ export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, classN
     {/* Tooltips Container - Portal to body to escape overflow/stacking contexts */}
     {tooltipPos && showTooltip && activeMechanics.length > 0 && createPortal(
       <div
-        className="fixed z-[10003] pointer-events-none flex gap-2 flex-col"
+        className="fixed z-[10005] pointer-events-none flex gap-2 flex-col"
         style={{
           left: `${tooltipPos.x + 16}px`,
           top: `${tooltipPos.y}px`
         }}
       >
-        {activeMechanics.map(m => {
+        {activeMechanics.map((m, i) => {
             const def = MECHANICS_DEFINITIONS[m];
             if (!def) return null;
             return (
-                <div key={m} className="flex items-center gap-2 bg-black/90 text-white p-2 rounded border border-slate-600 shadow-xl min-w-[12rem]">
+                <div key={`${m}-${i}`} className="flex items-center gap-2 bg-black/90 text-white p-2 rounded border border-slate-600 shadow-xl min-w-[12rem]">
                      <div className={cn("w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-lg shadow-md border border-white/20", def.color)}>
                         {def.icon}
                      </div>

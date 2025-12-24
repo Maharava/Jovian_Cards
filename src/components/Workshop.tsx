@@ -142,7 +142,7 @@ export const Workshop: React.FC = () => {
                                     selectedCardId === item.cardId ? "ring-2 ring-yellow-500 rounded-xl scale-105 z-10" : ""
                                 )}
                             >
-                                <div className="scale-90 origin-top-left w-[111%] h-[111%] pointer-events-none">
+                                <div className="scale-90 origin-top-left w-[111%] h-[111%]">
                                     <Card card={item.def} />
                                 </div>
                                 <div className="absolute -bottom-2 -right-2 bg-slate-800 border border-slate-600 text-white text-xs px-2 py-1 rounded-full font-bold">

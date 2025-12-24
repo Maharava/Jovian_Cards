@@ -61,7 +61,7 @@ export interface GameActions {
   goToMainMenu: () => void;
   startBattle: (faction: string, difficulty: number) => void;
   drawCard: (count?: number) => void;
-  playUnit: (card: Card, targetUid?: string) => Promise<void>; 
+  playUnit: (card: Card, targetUid?: string) => Promise<void>;
   playTactic: (card: Card, targetUid?: string) => Promise<void>;
   endPlayerTurn: () => void;
   enemyAction: () => void;
@@ -70,8 +70,20 @@ export interface GameActions {
   damageEnemy: (amount: number) => void;
   attackTarget: (attackerUid: string, targetType: 'unit' | 'enemy', targetUid?: string) => void;
   closeScout: () => void;
+  addAbilityNotification: (unitName: string, abilityText: string) => void;
   cleanDeadUnits: () => Promise<void>;
   startPlayerTurn: () => Promise<void>;
+  // Dev mode actions
+  devSetPlayerHP: (hp: number) => void;
+  devSetEnemyHP: (hp: number) => void;
+  devSetUnitHP: (unitUid: string, hp: number) => void;
+  devSetUnitATK: (unitUid: string, atk: number) => void;
+  devSetPlayerEnergy: (energy: number) => void;
+  devSetMaxEnergy: (maxEnergy: number) => void;
+  devSpawnCard: (cardId: string) => void;
+  devSpawnEnemyCard: (cardId: string) => void;
+  devRemoveUnit: (unitUid: string) => void;
+  devClearBoard: (side: 'player' | 'enemy' | 'both') => void;
 }
 
 const INITIAL_PLAYER_STATE: PlayerState = {
@@ -95,6 +107,7 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
   run: { node: 1, difficulty: 1 },
   eventQueue: [],
   isProcessingQueue: false,
+  abilityNotifications: [],
 
   startGame: (playerDeck?: Card[]) => {
     let deckToUse = playerDeck;
@@ -104,13 +117,18 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
             const active = savedDecks.find(d => d.id === activeDeckId);
             if (active && active.cardIds.length > 0) {
                 // Use card map for O(1) lookup and validate cards exist
+                const missingCardIds: string[] = [];
                 deckToUse = active.cardIds
-                    .map(id => CARD_MAP.get(id))
+                    .map(id => {
+                        const card = CARD_MAP.get(id);
+                        if (!card) missingCardIds.push(id);
+                        return card;
+                    })
                     .filter((c): c is Card => c !== undefined);
 
                 // Warn if some cards were missing
                 if (deckToUse.length !== active.cardIds.length) {
-                    console.warn(`Deck contained ${active.cardIds.length - deckToUse.length} missing/invalid cards`);
+                    console.warn(`Deck contained ${active.cardIds.length - deckToUse.length} missing/invalid cards:`, missingCardIds);
                 }
             }
         } catch (e) {
@@ -259,7 +277,7 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
 
       for (const m of (card.mechanics || [])) {
           if (m.trigger === 'onPlay') {
-              const { stateUpdates, animations } = MechanicHandler.resolve(
+              const { stateUpdates, animations, damagedUnits } = MechanicHandler.resolve(
                   m, sourceUnit, { ...currentState, ...accumulatedStateUpdates } as GameState,
                   () => {},
                   targetUid
@@ -278,6 +296,41 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
               accumulatedStateUpdates = { ...accumulatedStateUpdates, ...stateUpdates };
               set(stateUpdates);
               currentState = get();
+
+              // Show ability notification for tactic
+              const abilityText = getMechanicDescription(m, card);
+              if (abilityText) {
+                  get().addAbilityNotification(card.name, abilityText);
+              }
+
+              // FIXED: Process onDamageTaken triggers for units that took damage from tactic
+              if (damagedUnits && damagedUnits.length > 0) {
+                  const postDamageState = get();
+                  const allUnits = [...postDamageState.player.board, ...postDamageState.enemy.board];
+
+                  for (const unitUid of damagedUnits) {
+                      const damagedUnit = allUnits.find(u => u.uid === unitUid);
+                      if (damagedUnit) { // Trigger even if fatal damage
+                          for (const triggerMech of damagedUnit.mechanics) {
+                              if (triggerMech.trigger === 'onDamageTaken') {
+                                  const { stateUpdates: triggerUpdates, animations: triggerAnims } = MechanicHandler.resolve(
+                                      triggerMech, damagedUnit, get(), () => {}
+                                  );
+
+                                  for (const anim of triggerAnims) {
+                                      set({ effectVector: { from: anim.from, to: anim.to, color: anim.color } });
+                                      await new Promise(r => setTimeout(r, DELAYS.ANIMATION_QUICK));
+                                  }
+                                  if (triggerAnims.length > 0) set({ effectVector: null });
+
+                                  accumulatedStateUpdates = { ...accumulatedStateUpdates, ...triggerUpdates };
+                                  set(triggerUpdates);
+                                  currentState = get();
+                              }
+                          }
+                      }
+                  }
+              }
           }
       }
       await get().cleanDeadUnits();
@@ -349,8 +402,13 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
     const hasRush = card.mechanics?.some(m => m.type === 'rush') || false;
     const hasDoubleAttack = card.mechanics?.some(m => m.type === 'double_attack') || false;
 
+    // CRITICAL FIX: Always generate a fresh unique UID for each unit to prevent Framer Motion layoutId conflicts
+    // Previously used card.uid which could cause multiple units to share IDs
+    // Each unit on the battlefield MUST have a globally unique UID
+    const unitUid = generateId();
+
     const newUnit: UnitInstance = {
-        uid: card.uid!, // Use card's UID for consistent layoutId
+        uid: unitUid,
         cardId: card.id,
         name: card.name,
         baseAsset: card.baseAsset,
@@ -372,15 +430,56 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
             energy: state.player.energy - actualCost,
             hand: state.player.hand.filter(c => c.uid !== card.uid),
             board: [...state.player.board, newUnit]
-        }
+        },
+        abilityNotifications: [
+            ...state.abilityNotifications,
+            {
+                id: generateId(),
+                unitName: 'Player',
+                text: `played ${card.name}${card.title ? ', ' + card.title : ''}`,
+                timestamp: Date.now()
+            }
+        ]
     }));
+
+    // Process passive buffs: Check if any units on board have passive buff mechanics
+    set(state => {
+        const updatedBoard = state.player.board.map(u => {
+            // Don't process the newly played unit's passive on itself
+            if (u.uid === newUnit.uid) return u;
+
+            // Check if this unit has a passive buff mechanic
+            const passiveBuff = u.mechanics.find(m => m.type === 'buff' && m.trigger === 'passive');
+            if (passiveBuff) {
+                // Apply buff to the newly played unit if it matches the criteria
+                const justPlayedUnit = state.player.board.find(unit => unit.uid === newUnit.uid);
+                if (justPlayedUnit) {
+                    // Check faction filter
+                    if (passiveBuff.payload && passiveBuff.payload.startsWith('faction:')) {
+                        const requiredFaction = passiveBuff.payload.split(':')[1];
+                        if (justPlayedUnit.faction === requiredFaction) {
+                            justPlayedUnit.atk += passiveBuff.value || 0;
+                            const hpBonus = passiveBuff.secondaryValue || 0;
+                            if (hpBonus) {
+                                justPlayedUnit.hp += hpBonus;
+                                justPlayedUnit.maxHp += hpBonus;
+                            }
+                        }
+                    }
+                }
+            }
+            return u;
+        });
+
+        return { player: { ...state.player, board: updatedBoard } };
+    });
 
     let currentState = get();
     let accumulatedStateUpdates: Partial<GameState> = {};
 
     for (const m of (card.mechanics || [])) {
         if (m.trigger === 'onPlay') {
-            const { stateUpdates, animations } = MechanicHandler.resolve(
+            const { stateUpdates, animations, damagedUnits, notifications } = MechanicHandler.resolve(
                 m, newUnit, { ...currentState, ...accumulatedStateUpdates } as GameState,
                 () => {},
                 targetUid
@@ -395,17 +494,69 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
                 await new Promise(r => setTimeout(r, DELAYS.ANIMATION_FAST));
             }
 
+            // Add detailed notifications from mechanic resolution
+            if (notifications && notifications.length > 0) {
+                set(state => ({
+                    abilityNotifications: [...state.abilityNotifications, ...notifications]
+                }));
+            }
+
             // Accumulate updates properly without resetting
             accumulatedStateUpdates = { ...accumulatedStateUpdates, ...stateUpdates };
             set(stateUpdates);
             currentState = get();
+
+            // Show ability notification
+            const abilityText = getMechanicDescription(m, card);
+            if (abilityText) {
+                get().addAbilityNotification(card.name, abilityText);
+            }
+
+            // FIXED: Process onDamageTaken triggers for units that took damage from unit's onPlay
+            if (damagedUnits && damagedUnits.length > 0) {
+                const postDamageState = get();
+                const allUnits = [...postDamageState.player.board, ...postDamageState.enemy.board];
+
+                for (const unitUid of damagedUnits) {
+                    const damagedUnit = allUnits.find(u => u.uid === unitUid);
+                    if (damagedUnit) { // Trigger even if fatal damage
+                        for (const triggerMech of damagedUnit.mechanics) {
+                            if (triggerMech.trigger === 'onDamageTaken') {
+                                const { stateUpdates: triggerUpdates, animations: triggerAnims } = MechanicHandler.resolve(
+                                    triggerMech, damagedUnit, get(), () => {}
+                                );
+
+                                for (const anim of triggerAnims) {
+                                    set({ effectVector: { from: anim.from, to: anim.to, color: anim.color } });
+                                    await new Promise(r => setTimeout(r, DELAYS.ANIMATION_QUICK));
+                                }
+                                if (triggerAnims.length > 0) set({ effectVector: null });
+
+                                accumulatedStateUpdates = { ...accumulatedStateUpdates, ...triggerUpdates };
+                                set(triggerUpdates);
+                                currentState = get();
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     await get().cleanDeadUnits();
     set({ isProcessingQueue: false });
   },
 
-  closeScout: () => set({ scoutedCard: null }),
+  closeScout: () => set({ scoutedCards: null }),
+
+  addAbilityNotification: (unitName: string, abilityText: string) => {
+    const id = `notif_${Date.now()}_${Math.random()}`;
+    set(state => ({
+      abilityNotifications: [
+        ...state.abilityNotifications,
+        { id, unitName, text: abilityText, timestamp: Date.now() }
+      ]
+    }));
+  },
 
   endPlayerTurn: () => {
     const { isProcessingQueue } = get();
@@ -444,11 +595,18 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
         });
 
         // Process onTurnEnd mechanics
-        state.player.board.forEach(unit => {
+        intermediateState.player.board.forEach(unit => {
             unit.mechanics.forEach(m => {
                 if (m.trigger === 'onTurnEnd') {
                     const { stateUpdates } = MechanicHandler.resolve(m, unit, intermediateState, () => {});
                     intermediateState = { ...intermediateState, ...stateUpdates };
+
+                    // Show ability notification
+                    const cardDef = ALL_CARDS.find(c => c.id === unit.cardId);
+                    const abilityText = getMechanicDescription(m, cardDef);
+                    if (abilityText && cardDef) {
+                        get().addAbilityNotification(cardDef.name, abilityText);
+                    }
                 }
             });
         });
@@ -549,7 +707,37 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
 
       const targetId = targetType === 'unit' ? targetUid! : (isPlayerAttacker ? 'enemy_commander' : 'player_commander');
       set({ attackingUnitId: attackerUid, attackVector: { from: attackerUid, to: targetId } });
-      
+
+      // Log the attack
+      if (targetType === 'unit' && targetUid) {
+          const target = defenderBoard.find(u => u.uid === targetUid);
+          if (target) {
+              set(state => ({
+                  abilityNotifications: [
+                      ...state.abilityNotifications,
+                      {
+                          id: generateId(),
+                          unitName: attacker.name,
+                          text: `attacked ${target.name}`,
+                          timestamp: Date.now()
+                      }
+                  ]
+              }));
+          }
+      } else if (targetType === 'enemy') {
+          set(state => ({
+              abilityNotifications: [
+                  ...state.abilityNotifications,
+                  {
+                      id: generateId(),
+                      unitName: attacker.name,
+                      text: `attacked ${isPlayerAttacker ? 'Enemy' : 'Player'}`,
+                      timestamp: Date.now()
+                  }
+              ]
+          }));
+      }
+
       await new Promise(r => setTimeout(r, DELAYS.ANIMATION_QUICK));
 
       // OnAttack (Attacker Triggers)
@@ -560,23 +748,39 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
       if (currentAttacker) {
           for (const m of currentAttacker.mechanics) {
               if (m.trigger === 'onAttack') {
-                  const { stateUpdates, animations } = MechanicHandler.resolve(m, currentAttacker, attackerState, () => {}, targetId); 
+                  const { stateUpdates, animations, notifications } = MechanicHandler.resolve(m, currentAttacker, attackerState, () => {}, targetId);
                   for (const anim of animations) {
                       set({ effectVector: { from: anim.from, to: anim.to, color: anim.color } });
                       await new Promise(r => setTimeout(r, DELAYS.ANIMATION_QUICK));
                   }
                   if (animations.length > 0) set({ effectVector: null });
                   set(stateUpdates);
+
+                  // Add detailed notifications from mechanic resolution
+                  if (notifications && notifications.length > 0) {
+                      set(state => ({
+                          abilityNotifications: [...state.abilityNotifications, ...notifications]
+                      }));
+                  }
+
+                  // Show ability notification
+                  const cardDef = ALL_CARDS.find(c => c.id === currentAttacker.cardId);
+                  const abilityText = getMechanicDescription(m, cardDef);
+                  if (abilityText && cardDef) {
+                      get().addAbilityNotification(cardDef.name, abilityText);
+                  }
               }
           }
       }
 
       // Damage Resolution
+      let damageTakenByDefender = 0; // Track if defender took damage for onDamageTaken trigger
+
       set((state) => {
           // Re-fetch everything to ensure state is fresh after OnAttack
           const pBoard = [...state.player.board];
           const eBoard = [...state.enemy.board];
-          
+
           const att = isPlayerAttacker ? pBoard.find(u => u.uid === attackerUid) : eBoard.find(u => u.uid === attackerUid);
           if (!att) return {};
 
@@ -622,9 +826,6 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
                   
                   // Attacker deals damage to Target
                   let damage = att.atk;
-                  if (att.mechanics.some(m => m.type === 'double_damage_undamaged') && target.hp === target.maxHp) {
-                      damage *= 2;
-                  }
 
                   // Shield check - shield mechanic prevents damage once
                   // Look for shield mechanic, not shield property
@@ -639,12 +840,37 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
                   }
 
                   target.hp -= damage;
+                  damageTakenByDefender = damage; // Track actual damage dealt
+
+                  // Log damage dealt
+                  if (damage > 0) {
+                      const damageNotifications = [...(newState.abilityNotifications || []), {
+                          id: generateId(),
+                          unitName: att.name,
+                          text: `dealt ${damage} damage to ${target.name}`,
+                          timestamp: Date.now()
+                      }];
+                      newState.abilityNotifications = damageNotifications;
+                  }
+
+                  // Assassinate: If attacker has assassinate and dealt damage, target dies instantly
+                  if (damage > 0 && att.mechanics.some(m => m.type === 'assassinate')) {
+                      target.hp = 0;
+                      target.dying = true;
+                  }
 
                   // Counter-attack (only if not stunned and target is alive)
                   // Fixed: Stun > 0 means stunned, <= 0 means not stunned
+                  // First Strike: If attacker has first_strike, target doesn't counter-attack if it dies
                   const isStunned = (target.status?.stun || 0) > 0;
+                  const hasFirstStrike = att.mechanics.some(m => m.type === 'first_strike');
+
                   if (!isStunned && target.hp > 0) {
                        // Attacker takes damage from counter-attack
+                       let counterDmg = target.atk;
+                       att.hp -= counterDmg;
+                  } else if (!isStunned && target.hp <= 0 && !hasFirstStrike) {
+                       // Target died but attacker doesn't have first strike, still counter-attack
                        let counterDmg = target.atk;
                        att.hp -= counterDmg;
                   }
@@ -655,9 +881,47 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
                       att.hp -= thorns.value;
                   }
                   
+                  const wasTargetAlive = target.hp > 0;
+                  const wasAttackerAlive = att.hp > 0;
+
                   if (target.hp <= 0) target.dying = true;
                   if (att.hp <= 0) att.dying = true;
-                  
+
+                  // Log card destruction
+                  if (wasTargetAlive && target.dying) {
+                      const destroyNotifications = [...(newState.abilityNotifications || []), {
+                          id: generateId(),
+                          unitName: att.name,
+                          text: `destroyed ${target.name}`,
+                          timestamp: Date.now()
+                      }];
+                      newState.abilityNotifications = destroyNotifications;
+                  }
+                  if (wasAttackerAlive && att.dying) {
+                      const destroyNotifications = [...(newState.abilityNotifications || []), {
+                          id: generateId(),
+                          unitName: target.name,
+                          text: `destroyed ${att.name}`,
+                          timestamp: Date.now()
+                      }];
+                      newState.abilityNotifications = destroyNotifications;
+                  }
+
+                  // Loot: If attacker has loot and killed the target, draw a card
+                  if (target.dying && att.mechanics.some(m => m.type === 'loot')) {
+                      const lootValue = att.mechanics.find(m => m.type === 'loot')?.value || 1;
+                      if (isPlayerAttacker) {
+                          // Player's unit killed an enemy, draw cards
+                          for (let i = 0; i < lootValue; i++) {
+                              if (newState.player.deck.length > 0 && newState.player.hand.length < 10) {
+                                  const card = newState.player.deck.shift()!;
+                                  newState.player.hand.push(card);
+                              }
+                          }
+                      }
+                      // Enemy loot would work here too if needed
+                  }
+
                   defBoard[tIndex] = target;
               }
           }
@@ -666,17 +930,22 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
           att.attacksLeft--;
           if (att.attacksLeft <= 0) att.ready = false;
 
+          // CRITICAL FIX: Update attacker back to their board (fixes counter-attack damage)
+          const attBoard = isPlayerAttacker ? pBoard : eBoard;
+          const aIndex = attBoard.findIndex(u => u.uid === attackerUid);
+          if (aIndex !== -1) {
+              attBoard[aIndex] = att;
+          }
+
           return { ...newState, phase };
       });
       
       // OnDamageTaken triggers (Post-combat) - specifically for Defender
+      // FIXED: Only trigger if defender actually took damage (damageTakenByDefender > 0)
       const postCombatState = get();
       const postCombatDefenderBoard = isPlayerAttacker ? postCombatState.enemy.board : postCombatState.player.board;
-      // We need to find the defender unit again. If it died, it might be in graveyard or marked dying?
-      // If it died, it's still in board but marked dying or HP <= 0.
-      // Or we check mechanics on the targetUid.
 
-      if (targetType === 'unit' && targetUid) {
+      if (targetType === 'unit' && targetUid && damageTakenByDefender > 0) {
           const defender = postCombatDefenderBoard.find(u => u.uid === targetUid);
           if (defender) {
                for (const m of defender.mechanics) {
@@ -705,6 +974,21 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
               const unit = { ...u };
               unit.ready = true;
               unit.attacksLeft = unit.mechanics.some(m => m.type === 'double_attack') ? 2 : 1;
+
+               // Slow mechanic: Can only attack every other turn
+               if (unit.mechanics.some(m => m.type === 'slow')) {
+                   if (!unit.status) unit.status = {};
+                   if (unit.status.turnsSincePlay === undefined) {
+                       unit.status.turnsSincePlay = 0;
+                   }
+                   unit.status.turnsSincePlay += 1;
+
+                   // Can attack only on odd turns after playing (turn 2, 4, 6 in game, which is turnsSincePlay 1, 3, 5)
+                   if (unit.status.turnsSincePlay % 2 === 0) {
+                       unit.ready = false;
+                       unit.attacksLeft = 0;
+                   }
+               }
 
                if (unit.status?.stun && unit.status.stun > 0) {
                     unit.ready = false;
@@ -739,8 +1023,8 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
                  // Show ability notification
                  const cardDef = ALL_CARDS.find(c => c.id === unit.cardId);
                  const abilityText = getMechanicDescription(m, cardDef);
-                 if (abilityText) {
-                     set({ abilityNotification: { unitUid: unit.uid, text: abilityText, timestamp: Date.now() } });
+                 if (abilityText && cardDef) {
+                     get().addAbilityNotification(cardDef.name, abilityText);
                  }
 
                  for (const anim of animations) {
@@ -801,6 +1085,13 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
                          // Accumulate updates properly without resetting
                          accumulatedUpdates = { ...accumulatedUpdates, ...stateUpdates };
                          set(stateUpdates);
+
+                         // Show ability notification
+                         const cardDef = ALL_CARDS.find(c => c.id === unit.cardId);
+                         const abilityText = getMechanicDescription(m, cardDef);
+                         if (abilityText && cardDef) {
+                             get().addAbilityNotification(cardDef.name, abilityText);
+                         }
                      } catch (e) {
                          console.error('Error resolving onDeath mechanic:', e);
                      }
@@ -813,6 +1104,8 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
             const eBoard = current.enemy.board.filter(u => !enemyDead.some(d => d.uid === u.uid));
 
             const pGraveyard = [...current.player.graveyard];
+            let playerEnergyGain = 0;
+
             playerDead.forEach(u => {
                  // Use card map for O(1) lookup
                  const cardDef = CARD_MAP.get(u.cardId);
@@ -820,6 +1113,12 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
                      pGraveyard.push({ ...cardDef, uid: generateId() });
                  } else {
                      console.warn(`Card ${u.cardId} not found in CARD_MAP for graveyard`);
+                 }
+
+                 // Recycle: Gain energy when this unit dies
+                 const recycleMech = u.mechanics.find(m => m.type === 'recycle');
+                 if (recycleMech && recycleMech.value) {
+                     playerEnergyGain += recycleMech.value;
                  }
             });
 
@@ -831,8 +1130,11 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
                  }
             });
 
+            // Apply recycle energy gain
+            const newPlayerEnergy = Math.min(current.player.maxEnergy, current.player.energy + playerEnergyGain);
+
             return {
-                player: { ...current.player, board: pBoard, graveyard: pGraveyard },
+                player: { ...current.player, board: pBoard, graveyard: pGraveyard, energy: newPlayerEnergy },
                 enemy: { ...current.enemy, board: eBoard, graveyard: eGraveyard }
             };
         });
@@ -843,6 +1145,211 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
     if (iterations >= MAX_DEATH_ITERATIONS) {
         console.error('Death processing exceeded maximum iterations - possible infinite loop detected');
     }
+  },
+
+  // ===== DEV MODE ACTIONS =====
+  devSetPlayerHP: (hp: number) => {
+    set(state => ({
+      player: {
+        ...state.player,
+        hp: Math.max(0, Math.min(hp, state.player.maxHp))
+      }
+    }));
+  },
+
+  devSetEnemyHP: (hp: number) => {
+    set(state => ({
+      enemy: {
+        ...state.enemy,
+        hp: Math.max(0, Math.min(hp, state.enemy.maxHp))
+      }
+    }));
+  },
+
+  devSetUnitHP: (unitUid: string, hp: number) => {
+    set(state => {
+      const playerUnit = state.player.board.find(u => u.uid === unitUid);
+      const enemyUnit = state.enemy.board.find(u => u.uid === unitUid);
+
+      if (playerUnit) {
+        return {
+          player: {
+            ...state.player,
+            board: state.player.board.map(u =>
+              u.uid === unitUid
+                ? { ...u, hp: Math.max(0, Math.min(hp, u.maxHp)) }
+                : u
+            )
+          }
+        };
+      } else if (enemyUnit) {
+        return {
+          enemy: {
+            ...state.enemy,
+            board: state.enemy.board.map(u =>
+              u.uid === unitUid
+                ? { ...u, hp: Math.max(0, Math.min(hp, u.maxHp)) }
+                : u
+            )
+          }
+        };
+      }
+      return {};
+    });
+  },
+
+  devSetUnitATK: (unitUid: string, atk: number) => {
+    set(state => {
+      const playerUnit = state.player.board.find(u => u.uid === unitUid);
+      const enemyUnit = state.enemy.board.find(u => u.uid === unitUid);
+
+      if (playerUnit) {
+        return {
+          player: {
+            ...state.player,
+            board: state.player.board.map(u =>
+              u.uid === unitUid ? { ...u, atk: Math.max(0, atk) } : u
+            )
+          }
+        };
+      } else if (enemyUnit) {
+        return {
+          enemy: {
+            ...state.enemy,
+            board: state.enemy.board.map(u =>
+              u.uid === unitUid ? { ...u, atk: Math.max(0, atk) } : u
+            )
+          }
+        };
+      }
+      return {};
+    });
+  },
+
+  devSetPlayerEnergy: (energy: number) => {
+    set(state => ({
+      player: {
+        ...state.player,
+        energy: Math.max(0, Math.min(energy, state.player.maxEnergy))
+      }
+    }));
+  },
+
+  devSetMaxEnergy: (maxEnergy: number) => {
+    set(state => ({
+      player: {
+        ...state.player,
+        maxEnergy: Math.max(1, Math.min(maxEnergy, MAX_ENERGY_CAP))
+      }
+    }));
+  },
+
+  devSpawnCard: (cardId: string) => {
+    set(state => {
+      const card = CARD_MAP.get(cardId);
+      if (!card) {
+        console.warn(`Card ${cardId} not found in CARD_MAP`);
+        return {};
+      }
+
+      if (state.player.hand.length >= 10) {
+        console.warn('Hand is full (10 cards), cannot spawn card');
+        return {};
+      }
+
+      return {
+        player: {
+          ...state.player,
+          hand: [...state.player.hand, { ...card, uid: generateId() }]
+        }
+      };
+    });
+  },
+
+  devSpawnEnemyCard: (cardId: string) => {
+    set(state => {
+      const card = CARD_MAP.get(cardId);
+      if (!card) {
+        console.warn(`Card ${cardId} not found in CARD_MAP`);
+        return {};
+      }
+      if (card.type !== 'unit') {
+        console.warn('Can only spawn unit cards for enemy');
+        return {};
+      }
+      if (state.enemy.board.length >= MAX_BOARD_SLOTS) {
+        console.warn('Enemy board is full, cannot spawn unit');
+        return {};
+      }
+
+      const newUnit: UnitInstance = {
+        uid: generateId(),
+        cardId: card.id,
+        name: card.name,
+        baseAsset: card.baseAsset,
+        faction: card.faction,
+        atk: card.stats?.atk || 0,
+        hp: card.stats?.hp || 1,
+        maxHp: card.stats?.hp || 1,
+        owner: 'enemy',
+        ready: true,
+        attacksLeft: 1,
+        mechanics: card.mechanics || [],
+        shield: 0
+      };
+
+      return {
+        enemy: {
+          ...state.enemy,
+          board: [...state.enemy.board, newUnit]
+        }
+      };
+    });
+  },
+
+  devRemoveUnit: (unitUid: string) => {
+    set(state => {
+      const playerUnit = state.player.board.find(u => u.uid === unitUid);
+      const enemyUnit = state.enemy.board.find(u => u.uid === unitUid);
+
+      if (playerUnit) {
+        return {
+          player: {
+            ...state.player,
+            board: state.player.board.filter(u => u.uid !== unitUid)
+          }
+        };
+      } else if (enemyUnit) {
+        return {
+          enemy: {
+            ...state.enemy,
+            board: state.enemy.board.filter(u => u.uid !== unitUid)
+          }
+        };
+      }
+
+      console.warn(`Unit ${unitUid} not found`);
+      return {};
+    });
+  },
+
+  devClearBoard: (side: 'player' | 'enemy' | 'both') => {
+    set(state => {
+      if (side === 'player') {
+        return {
+          player: { ...state.player, board: [] }
+        };
+      } else if (side === 'enemy') {
+        return {
+          enemy: { ...state.enemy, board: [] }
+        };
+      } else {
+        return {
+          player: { ...state.player, board: [] },
+          enemy: { ...state.enemy, board: [] }
+        };
+      }
+    });
   }
 
 }));

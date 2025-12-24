@@ -3,7 +3,6 @@ import { useMetaStore } from '../store/metaStore';
 import { useGameStore } from '../store/gameStore';
 import { ALL_CARDS } from '../data/cards';
 import { Card, FACTION_FOLDERS } from './Card';
-import type { Card as CardType } from '../types';
 import { cn } from '../lib/utils';
 import { PACKS } from '../data/market';
 import { processPackOpening, type OpenPackResult } from '../logic/market';
@@ -100,24 +99,50 @@ export const Market: React.FC = () => {
                         )}>
                             {pack.isExotic && <div className="absolute top-0 right-0 bg-purple-600 text-black font-bold text-xs px-2 py-1 z-20">VOID CHANCE</div>}
                             {isFaction && <div className="absolute top-0 right-0 bg-blue-600 text-white font-bold text-xs px-2 py-1 z-20">{marketRotationFaction.toUpperCase()}</div>}
-                            
-                            <div className="w-full h-48 bg-black/50 rounded flex items-center justify-center relative overflow-hidden">
-                                <img 
-                                    src={displayImg}
-                                    alt={displayName}
-                                    className="object-cover h-full w-full"
-                                    onError={(e) => {
-                                        (e.target as HTMLImageElement).style.display = 'none';
-                                    }}
-                                />
-                            </div>
-                            
-                            <div className="text-center">
-                                <h3 className={cn("text-2xl font-mono font-bold", pack.isExotic ? "text-purple-400" : (isFaction ? "text-blue-400" : "text-white"))}>
-                                    {displayName}
-                                </h3>
-                                <p className="text-xs text-slate-400 mt-2 min-h-[3em]">{displayDesc}</p>
-                            </div>
+
+                            {isFaction ? (
+                                // Faction pack: Image fills box with text overlaid
+                                <div className="w-full h-48 bg-black/50 rounded flex flex-col items-center justify-end relative overflow-hidden">
+                                    <img
+                                        src={displayImg}
+                                        alt={displayName}
+                                        className="absolute inset-0 object-cover h-full w-full z-0"
+                                        onError={(e) => {
+                                            (e.target as HTMLImageElement).style.display = 'none';
+                                        }}
+                                    />
+                                    {/* Gradient overlay for text readability */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
+
+                                    <div className="relative z-20 text-center p-4 w-full">
+                                        <h3 className="text-2xl font-mono font-bold text-blue-400 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+                                            {displayName}
+                                        </h3>
+                                        <p className="text-xs text-slate-200 mt-2 min-h-[3em] drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">{displayDesc}</p>
+                                    </div>
+                                </div>
+                            ) : (
+                                // Standard pack: Separate image and text sections
+                                <>
+                                    <div className="w-full h-48 bg-black/50 rounded flex items-center justify-center relative overflow-hidden">
+                                        <img
+                                            src={displayImg}
+                                            alt={displayName}
+                                            className="object-cover h-full w-full"
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).style.display = 'none';
+                                            }}
+                                        />
+                                    </div>
+
+                                    <div className="text-center">
+                                        <h3 className={cn("text-2xl font-mono font-bold", pack.isExotic ? "text-purple-400" : "text-white")}>
+                                            {displayName}
+                                        </h3>
+                                        <p className="text-xs text-slate-400 mt-2 min-h-[3em]">{displayDesc}</p>
+                                    </div>
+                                </>
+                            )}
 
                             <ul className="w-full text-xs text-slate-500 space-y-1 font-mono bg-black/20 p-2 rounded">
                                 <li className="flex justify-between"><span>Cards:</span> <span className="text-white">{pack.count}</span></li>
@@ -160,7 +185,7 @@ export const Market: React.FC = () => {
                                             
                                             {/* Card Display - Greyed if Duplicate */}
                                             <div className={cn("transition-all", item.isNew ? "hover:scale-110 hover:z-10" : "grayscale brightness-50 opacity-60")}>
-                                                <Card card={item.card} className="pointer-events-none" />
+                                                <Card card={item.card} />
                                             </div>
                                             
                                             {/* New Badge */}
