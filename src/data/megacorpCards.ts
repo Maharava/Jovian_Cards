@@ -280,21 +280,21 @@ export const MEGACORP_CARDS: Card[] = [
 
   // Director Kiz (Rare)
   {
-    id: 'director_kiz', name: 'Director: Mars', type: 'unit', tier: 1, cost: 4,
+    id: 'director_kiz', name: 'Kiz', title: 'Director: Mars', type: 'unit', tier: 1, cost: 4,
     stats: { atk: 2, hp: 3, maxHp: 3 }, subtype: 'Biological', rarity: 'Rare',
     text: 'OnPlay: Buff Megacorp +1/+1.', faction: 'Megacorp', baseAsset: 'director_kiz', 
     lore: "Head of Regional Operations.",
     mechanics: [m('buff', 'onPlay', 1, 'all_allies', 'faction:Megacorp', 1)] 
   },
   {
-    id: 'director_kiz_t2', name: 'Director: Earth', type: 'unit', tier: 2, cost: 4,
+    id: 'director_kiz_t2', name: 'Kiz', title: 'Director: Earth', type: 'unit', tier: 2, cost: 4,
     stats: { atk: 3, hp: 4, maxHp: 4 }, subtype: 'Biological', rarity: 'Rare',
     text: 'OnPlay: Buff Megacorp +1/+1 & Rush.', faction: 'Megacorp', baseAsset: 'director_kiz', 
     lore: "Head of Regional Operations.",
     mechanics: [m('buff', 'onPlay', 1, 'all_allies', 'faction:Megacorp', 1), m('buff', 'onPlay', 0, 'all_allies', 'keyword:rush')]
   },
   {
-    id: 'director_kiz_t3', name: 'Director: War', type: 'unit', tier: 3, cost: 4,
+    id: 'director_kiz_t3', name: 'Kiz', title: 'Director: War', type: 'unit', tier: 3, cost: 4,
     stats: { atk: 4, hp: 5, maxHp: 5 }, subtype: 'Biological', rarity: 'Rare',
     text: 'OnPlay: Buff Megacorp +2/+2.', faction: 'Megacorp', baseAsset: 'director_kiz', 
     lore: "Head of Regional Operations.",

@@ -2,7 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { useMetaStore } from '../store/metaStore';
 import { useGameStore } from '../store/gameStore';
 import { ALL_CARDS } from '../data/cards';
-import { Card, FACTION_FOLDERS } from './Card';
+import { Card } from './Card';
+import { FACTION_FOLDERS } from '../lib/assetUtils';
 import { cn } from '../lib/utils';
 import { PACKS } from '../data/market';
 import { processPackOpening, type OpenPackResult } from '../logic/market';
@@ -101,26 +102,26 @@ export const Market: React.FC = () => {
                             {isFaction && <div className="absolute top-0 right-0 bg-blue-600 text-white font-bold text-xs px-2 py-1 z-20">{marketRotationFaction.toUpperCase()}</div>}
 
                             {isFaction ? (
-                                // Faction pack: Image fills box with text overlaid
-                                <div className="w-full h-48 bg-black/50 rounded flex flex-col items-center justify-end relative overflow-hidden">
-                                    <img
-                                        src={displayImg}
-                                        alt={displayName}
-                                        className="absolute inset-0 object-cover h-full w-full z-0"
-                                        onError={(e) => {
-                                            (e.target as HTMLImageElement).style.display = 'none';
-                                        }}
-                                    />
-                                    {/* Gradient overlay for text readability */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10" />
+                                // Faction pack: Image scaled to fit with text below
+                                <>
+                                    <div className="w-full h-48 bg-black/50 rounded flex items-center justify-center relative overflow-hidden">
+                                        <img
+                                            src={displayImg}
+                                            alt={displayName}
+                                            className="object-contain h-full w-full"
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).style.display = 'none';
+                                            }}
+                                        />
+                                    </div>
 
-                                    <div className="relative z-20 text-center p-4 w-full">
-                                        <h3 className="text-2xl font-mono font-bold text-blue-400 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+                                    <div className="text-center">
+                                        <h3 className="text-2xl font-mono font-bold text-blue-400">
                                             {displayName}
                                         </h3>
-                                        <p className="text-xs text-slate-200 mt-2 min-h-[3em] drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">{displayDesc}</p>
+                                        <p className="text-xs text-slate-400 mt-2 min-h-[3em]">{displayDesc}</p>
                                     </div>
-                                </div>
+                                </>
                             ) : (
                                 // Standard pack: Separate image and text sections
                                 <>
@@ -179,12 +180,25 @@ export const Market: React.FC = () => {
                             <h2 className="text-3xl font-mono font-bold text-white mb-4">ACQUISITION COMPLETE</h2>
                             
                             <div className="flex gap-6 justify-center flex-wrap max-w-7xl pb-8">
-                                {openedCards?.map((item, i) => (
+                                {openedCards?.map((item, i) => {
+                                    // Rarity glow colors
+                                    const rarityGlow = {
+                                        'Common': 'drop-shadow-[0_0_8px_rgba(148,163,184,0.6)]',
+                                        'Uncommon': 'drop-shadow-[0_0_12px_rgba(96,165,250,0.8)]',
+                                        'Rare': 'drop-shadow-[0_0_16px_rgba(250,204,21,0.9)]',
+                                        'Legendary': 'drop-shadow-[0_0_20px_rgba(249,115,22,1.0)]',
+                                        'NA': ''
+                                    }[item.card.rarity] || '';
+
+                                    return (
                                     <div key={i} className="flex flex-col items-center gap-2 animate-in slide-in-from-bottom-12 fade-in" style={{ animationDelay: `${i * 100}ms` }}>
                                         <div className="relative group">
-                                            
-                                            {/* Card Display - Greyed if Duplicate */}
-                                            <div className={cn("transition-all", item.isNew ? "hover:scale-110 hover:z-10" : "grayscale brightness-50 opacity-60")}>
+
+                                            {/* Card Display - Greyed if Duplicate, Glow if New */}
+                                            <div className={cn(
+                                                "transition-all",
+                                                item.isNew ? `hover:scale-110 hover:z-10 ${rarityGlow}` : "grayscale brightness-50 opacity-60"
+                                            )}>
                                                 <Card card={item.card} />
                                             </div>
                                             
@@ -206,7 +220,8 @@ export const Market: React.FC = () => {
                                             )}
                                         </div>
                                     </div>
-                                ))}
+                                    );
+                                })}
                             </div>
 
                             <button 

@@ -1,12 +1,19 @@
 # Megacorp Faction File
 
 ## Overview
-**The Megacorps** represent the raw industrial and capitalist might of the billionaire class. Outside of the Republic and new Confederacy, they are the law—but law comes with a cost.
+**The Megacorps** represent the raw industrial and capitalist might of the billionaire class. Technically, they are chartered entities within the Republic, but they operate in the massive blind spots created by the Republic's crippling bureaucracy.
 
-While the Republic claims jurisdiction, **Ira Corp** and its subsidiaries enforce it—strictly for profit. They view the Jovian bio-hackers not as people, but as intellectual property theft waiting to be "reacquired." Other megacorps, such as **Solarin Industries**, focus their efforts on harvesting the near-endless supplies and resources of the system, while **Haxaway** holds a monopoly on the system's Dyson Swarm and fusion matter facilities, supplying a third of the system's fuel and energy needs on their own.
+Outside of the Core Worlds, they are the law. **Ira Corp** and its subsidiaries enforce their will strictly for profit. They view the Jovian bio-hackers not as people, but as intellectual property theft waiting to be "reacquired."
 
 *   **Archetype:** Industrial Swarm / Aggro / Resource Denial
 *   **Visual Style:** Sleek matte-black composites, neon orange warning lights, faceless security helmets, swarms of utilitarian drones.
+
+---
+
+## The Corporate-Republic Dynamic
+The CEOs of the major corps possess a dangerous arrogance. They believe they have outgrown the Republic.
+*   **The Reality:** They exist only because the Republic is too slow to regulate them. They exploit legal loopholes, bribe the right committees, and operate in the "grey zones" where Republic law takes years to arrive.
+*   **The Risk:** Should the Republic ever formulate a unified policy to break Corporate power, the Corps would be dismantled overnight. The Corps survive by ensuring that policy remains trapped in committee forever.
 
 ---
 
@@ -21,7 +28,11 @@ The primary antagonist force in the sector. Ira Corp specializes in "Hostile Acq
 A subsidiary focusing on mining and heavy infrastructure. Their "Mining Drones" are easily repurposed into shrapnel bombs.
 *   **Specialty:** Ore extraction, automated defenses, orbital construction.
 
-### 3. Omni-Medical Solutions
+### 3. Haxaway Energy
+Holds a near-monopoly on the system's fuel supply, managing the Dyson Swarm components and fusion matter facilities. Supplying a third of the system's energy gives them immense political leverage.
+*   **Specialty:** Energy weapons, fuel logistics, shielding.
+
+### 4. Omni-Medical Solutions
 The "friendly face" of corporate dominance. They provide the stims that keep workers awake for 20-hour shifts and the cybernetics that replace limbs lost in "workplace accidents."
 *   **Specialty:** Combat drugs, cybernetic prosthetics, biological containment.
 

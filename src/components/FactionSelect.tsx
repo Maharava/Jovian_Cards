@@ -113,23 +113,24 @@ export const FactionSelect: React.FC = () => {
                                 {[1, 2, 3, 4, 5].map(lvl => (
                                     <button
                                         key={lvl}
-                                        disabled={lvl !== 1} // Only Tier 1 active for now
                                         onClick={() => setDifficulty(lvl)}
                                         className={cn(
                                             "flex-1 py-4 text-xl font-bold border rounded transition-all clip-path-polygon relative overflow-hidden",
-                                            difficulty === lvl 
-                                                ? "bg-red-900/80 border-red-500 text-red-100 shadow-[0_0_10px_red]" 
-                                                : "bg-slate-800 border-slate-600 text-slate-500 hover:bg-slate-700",
-                                            lvl !== 1 && "opacity-50 cursor-not-allowed"
+                                            difficulty === lvl
+                                                ? "bg-red-900/80 border-red-500 text-red-100 shadow-[0_0_10px_red]"
+                                                : "bg-slate-800 border-slate-600 text-slate-400 hover:bg-slate-700 hover:border-red-600"
                                         )}
                                     >
                                         {lvl}
-                                        {lvl !== 1 && <span className="block text-[8px] uppercase">LOCKED</span>}
                                     </button>
                                 ))}
                             </div>
                             <p className="mt-4 text-sm text-slate-400 italic">
-                                {difficulty === 1 ? "Standard patrol forces. Basic units only." : "High threat level detected."}
+                                {difficulty === 1 && "Rookie AI - Makes frequent mistakes. Good for learning."}
+                                {difficulty === 2 && "Soldier AI - Recognizes lethal and value trades."}
+                                {difficulty === 3 && "Veteran AI - Plays defensively when threatened."}
+                                {difficulty === 4 && "Elite AI - Plans multi-move combos."}
+                                {difficulty === 5 && "Tactical AI - Near-perfect strategic play."}
                             </p>
                         </div>
 
@@ -137,7 +138,11 @@ export const FactionSelect: React.FC = () => {
                         <div className="flex-1">
                             <label className="text-sm text-cyan-500 font-mono uppercase tracking-widest mb-2 block">Intel</label>
                             <div className="bg-black/50 p-4 rounded text-sm text-slate-300 font-mono leading-relaxed border border-white/5">
-                                Enemy forces in this sector are comprised of Tier {difficulty} units. 
+                                {difficulty === 1 && 'Enemy forces will deploy basic units with minimal tactical coordination.'}
+                                {difficulty === 2 && 'Enemy forces will field T1-T2 units with basic strategic planning.'}
+                                {difficulty === 3 && 'Enemy forces will deploy T1-T3 units with coordinated tactics and synergies.'}
+                                {difficulty === 4 && 'Enemy forces will field optimized T1-T3 decks with advanced combo strategies.'}
+                                {difficulty === 5 && 'Enemy forces will deploy elite T3-heavy decks with perfect tactical execution.'}
                                 <br/><br/>
                                 <span className="text-red-400">WARNING:</span> Expect resistance from {FACTIONS.find(f => f.id === selectedFaction)?.name} automated systems.
                             </div>

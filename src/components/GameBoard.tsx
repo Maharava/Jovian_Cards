@@ -199,11 +199,18 @@ export const GameBoard: React.FC = () => {
                 )}
             </svg>
 
-            {/* Turn Info */}
-            <div className="absolute top-0 w-full flex justify-center py-2 z-10">
+            {/* Turn Info & Surrender */}
+            <div className="absolute top-0 w-full flex justify-between items-start py-2 px-8 z-10">
+                <div></div>
                 <div className="bg-slate-800 px-6 py-1 rounded-b-xl border border-t-0 border-slate-600 font-mono text-xl font-bold">
                     Turn {turn} — <span className={phase === 'player_turn' ? 'text-cyan-400' : 'text-red-400'}>{phase === 'player_turn' ? 'YOUR TURN' : 'ENEMY TURN'}</span>
                 </div>
+                <button
+                    onClick={() => useGameStore.getState().setPhase('main_menu')}
+                    className="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-6 rounded-lg shadow-lg border-2 border-red-400 transition-all active:scale-95"
+                >
+                    SURRENDER
+                </button>
             </div>
 
             <EnemyZone 
@@ -248,7 +255,7 @@ export const GameBoard: React.FC = () => {
                     />
 
                     <div className="flex flex-col gap-3 mb-4 min-w-[120px]">
-                        <button 
+                        <button
                             onClick={() => { setSelectedUnitId(null); endPlayerTurn(); }}
                             disabled={phase !== 'player_turn'}
                             className="bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg border-2 border-cyan-400 disabled:border-slate-600 transition-all active:scale-95"

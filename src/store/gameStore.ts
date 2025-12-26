@@ -1,11 +1,14 @@
 import { create } from 'zustand';
 import type { GameState, Card, UnitInstance, PlayerState, EnemyState } from '../types';
-import { ENEMY_CARDS, HERO_CARDS, TACTIC_CARDS, ALL_CARDS } from '../data/cards';
+import { ALL_CARDS } from '../data/cards';
 import { MechanicHandler } from '../logic/mechanics';
 import { useMetaStore } from './metaStore';
 import { MAX_BOARD_SLOTS, DEFAULT_PLAYER_HP, DEFAULT_ENERGY, MAX_ENERGY_CAP, DELAYS } from '../config/constants';
 import { generateId, calculateLoot } from '../lib/utils';
-import { AI } from '../logic/AI';
+import { DeckBuilder } from '../logic/ai/DeckBuilder';
+import { createAnimationSlice, type AnimationSlice } from './slices/animationSlice';
+import { createDeckSlice, type DeckSlice } from './slices/deckSlice';
+import { createCombatSlice, type CombatSlice } from './slices/combatSlice';
 
 // Helper to get mechanic description
 function getMechanicDescription(mechanic: import('../types').Mechanic, cardDef: Card | undefined): string {
@@ -59,6 +62,7 @@ export interface GameActions {
   enterFactionSelect: () => void;
   enterHangar: () => void;
   goToMainMenu: () => void;
+  setPhase: (phase: GameState['phase']) => void;
   startBattle: (faction: string, difficulty: number) => void;
   drawCard: (count?: number) => void;
   playUnit: (card: Card, targetUid?: string) => Promise<void>;
@@ -99,7 +103,13 @@ const INITIAL_ENEMY_STATE: EnemyState = {
   nextMoveDescription: 'Thinking...'
 };
 
-export const useGameStore = create<GameState & GameActions>((set, get) => ({
+export const useGameStore = create<GameState & GameActions & AnimationSlice & DeckSlice & CombatSlice>((set, get) => ({
+  // Compose slices
+  ...createAnimationSlice(set, get, {} as any),
+  ...createDeckSlice(set, get, {} as any),
+  ...createCombatSlice(set, get, {} as any),
+
+  // Core game state
   player: INITIAL_PLAYER_STATE,
   enemy: INITIAL_ENEMY_STATE,
   turn: 1,
@@ -138,13 +148,14 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
 
     if (!deckToUse || deckToUse.length === 0) {
       // Fallback to basic Jovian deck if nothing in store
-      deckToUse = [
+      const cardIds = [
         'lysithea_t1', 'lysithea_t1', 'himalia_t1', 'himalia_t1',
         'leda_t1', 'leda_t1', 'amalthea_t1', 'amalthea_t1',
         'kore_t1', 'kore_t1', 'tactic_nano_repair', 'tactic_nano_repair',
         'tactic_reinforce', 'tactic_reinforce', 'euporie_t1', 'callisto_t1',
         'tactic_power_shot', 'tactic_power_shot', 'tactic_scramble', 'tactic_outsource'
       ];
+      deckToUse = cardIds.map(id => CARD_MAP.get(id)).filter(Boolean) as Card[];
     }
     const shuffledDeck = shuffleArray(deckToUse);
 
@@ -159,6 +170,8 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
   enterHangar: () => set({ phase: 'hangar' }),
 
   goToMainMenu: () => set({ phase: 'main_menu' }),
+
+  setPhase: (phase) => set({ phase }),
 
   startBattle: (faction: string, difficulty: number) => {
       // Validate faction
@@ -183,56 +196,18 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
           player.hand = [];
           player.graveyard = [];
 
-          const initialEnemyBoard: UnitInstance[] = [];
-
-          let availableEnemyCards = ENEMY_CARDS.filter(c => c.faction === faction || c.faction === 'Megacorp'); 
-          
-          if (difficulty === 1) {
-              availableEnemyCards = availableEnemyCards.filter(c => c.tier === 1 && c.cost <= 3);
-          } else {
-              availableEnemyCards = availableEnemyCards.filter(c => c.tier <= difficulty);
-          }
-
-          if (availableEnemyCards.length === 0) {
-              availableEnemyCards = ENEMY_CARDS.filter(c => c.tier === 1); 
-          }
-
-          if (faction === 'Megacorp') {
-              const botCard = availableEnemyCards.find(c => c.id === 'enemy_security') || availableEnemyCards[0];
-              const droneCard = availableEnemyCards.find(c => c.id === 'corp_drone') || availableEnemyCards[0];
-              
-              if (botCard) {
-                  initialEnemyBoard.push({
-                      uid: generateId(), cardId: botCard.id, name: botCard.name, baseAsset: botCard.baseAsset,
-                      faction: botCard.faction,
-                      atk: botCard.stats?.atk || 0, hp: botCard.stats?.hp || 1, maxHp: botCard.stats?.hp || 1, subtype: botCard.subtype,
-                      owner: 'enemy', ready: true, attacksLeft: 1, mechanics: botCard.mechanics, shield: 0
-                  });
-              }
-              if (droneCard) {
-                   initialEnemyBoard.push({
-                      uid: generateId(), cardId: droneCard.id, name: droneCard.name, baseAsset: droneCard.baseAsset,
-                      faction: droneCard.faction,
-                      atk: droneCard.stats?.atk || 0, hp: droneCard.stats?.hp || 1, maxHp: droneCard.stats?.hp || 1, subtype: droneCard.subtype,
-                      owner: 'enemy', ready: true, attacksLeft: 1, mechanics: droneCard.mechanics, shield: 0
-                  });
-              }
-          }
-
-          const enemyDeck = Array.from({ length: 15 }).map(() => {
-              const c = availableEnemyCards[Math.floor(Math.random() * availableEnemyCards.length)];
-              return c;
-          });
-          const enemyHand = enemyDeck.splice(0, 4);
+          // Generate enemy deck using AI DeckBuilder
+          const enemyDeck = DeckBuilder.generateDeck(faction, difficulty);
+          const enemyHand = enemyDeck.splice(0, 5);
 
           const enemyMaxHp = 10 + (difficulty * 10);
           return {
               player,
-              enemy: { 
-                  ...INITIAL_ENEMY_STATE, 
-                  board: initialEnemyBoard, 
-                  deck: enemyDeck, 
-                  hand: enemyHand, 
+              enemy: {
+                  ...INITIAL_ENEMY_STATE,
+                  board: [],
+                  deck: enemyDeck,
+                  hand: enemyHand,
                   graveyard: [],
                   maxHp: enemyMaxHp,
                   hp: enemyMaxHp,
@@ -454,7 +429,7 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
                 const justPlayedUnit = state.player.board.find(unit => unit.uid === newUnit.uid);
                 if (justPlayedUnit) {
                     // Check faction filter
-                    if (passiveBuff.payload && passiveBuff.payload.startsWith('faction:')) {
+                    if (passiveBuff.payload && typeof passiveBuff.payload === 'string' && passiveBuff.payload.startsWith('faction:')) {
                         const requiredFaction = passiveBuff.payload.split(':')[1];
                         if (justPlayedUnit.faction === requiredFaction) {
                             justPlayedUnit.atk += passiveBuff.value || 0;
@@ -624,12 +599,20 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
   },
 
   enemyAction: async () => {
-    const { phase, isProcessingQueue } = get();
+    const { phase, isProcessingQueue, run } = get();
     if (phase !== 'enemy_turn') return;
-    if (isProcessingQueue) return; 
+    if (isProcessingQueue) return;
 
-    // Delegate to AI logic
-    await AI.runTurn(get, set, get().drawCard, get().cleanDeadUnits);
+    // Use new AI system
+    const { AIController } = await import('../logic/ai/AIController');
+    set({ isProcessingQueue: true });
+    try {
+      await AIController.runTurn(get, set, run.difficulty);
+    } catch (e) {
+      console.error("New AI Error", e);
+      set({ phase: 'player_turn' });
+    }
+    set({ isProcessingQueue: false });
   },
   
   damageUnit: () => { /* ... */ },

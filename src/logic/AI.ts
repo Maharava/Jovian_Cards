@@ -1,4 +1,4 @@
-import type { GameState, UnitInstance } from '../types';
+import type { GameState, UnitInstance, Card } from '../types';
 import type { GameActions } from '../store/gameStore';
 import { MechanicHandler } from './mechanics';
 import { DELAYS, MAX_BOARD_SLOTS } from '../config/constants';
@@ -6,6 +6,8 @@ import { generateId } from '../lib/utils';
 
 type SetState = (partial: GameState | Partial<GameState> | ((state: GameState) => GameState | Partial<GameState>)) => void;
 type GetState = () => GameState & GameActions;
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
  * AI Controller - Handles enemy turn logic
@@ -397,3 +399,261 @@ export const AI = {
         set({ isProcessingQueue: false });
     }
 };
+
+/**
+ * Exported helper functions for new AI system
+ */
+
+export async function playEnemyCard(
+    card: Card,
+    get: GetState,
+    set: SetState,
+    targetUid?: string
+): Promise<void> {
+    const hasRush = card.mechanics.some(m => m.type === 'rush');
+    const hasDoubleAttack = card.mechanics.some(m => m.type === 'double_attack');
+
+    const newUnit: UnitInstance = {
+        uid: generateId(),
+        cardId: card.id,
+        name: card.name,
+        baseAsset: card.baseAsset,
+        faction: card.faction,
+        atk: card.stats?.atk || 0,
+        hp: card.stats?.hp || 1,
+        maxHp: card.stats?.hp || 1,
+        subtype: card.subtype,
+        owner: 'enemy',
+        ready: hasRush,
+        attacksLeft: hasRush ? (hasDoubleAttack ? 2 : 1) : 0,
+        mechanics: card.mechanics || [],
+        shield: 0
+    };
+
+    set(state => {
+        const hand = [...state.enemy.hand];
+        const cardIndex = hand.findIndex(c => c.id === card.id);
+        if (cardIndex !== -1) hand.splice(cardIndex, 1);
+
+        return {
+            enemy: {
+                ...state.enemy,
+                energy: state.enemy.energy - card.cost,
+                hand,
+                board: [...state.enemy.board, newUnit]
+            },
+            abilityNotifications: [
+                ...state.abilityNotifications,
+                {
+                    id: generateId(),
+                    unitName: 'Enemy',
+                    text: `played ${card.name}${card.title ? ', ' + card.title : ''}`,
+                    timestamp: Date.now()
+                }
+            ]
+        };
+    });
+
+    let currentState = get();
+    for (const m of (card.mechanics || [])) {
+        if (m.trigger === 'onPlay') {
+            const { stateUpdates, animations } = MechanicHandler.resolve(
+                m, newUnit, currentState, () => {}, targetUid
+            );
+            for (const anim of animations) {
+                set({ effectVector: { from: anim.from, to: anim.to, color: anim.color } });
+                await delay(DELAYS.ANIMATION_DEFAULT);
+            }
+            if (animations.length > 0) {
+                set({ effectVector: null });
+                await delay(DELAYS.ANIMATION_FAST);
+            }
+            set(stateUpdates);
+            currentState = get();
+        }
+    }
+}
+
+export async function executeEnemyAttack(
+    attackerUid: string,
+    targetType: 'unit' | 'enemy',
+    targetUid: string | undefined,
+    get: GetState,
+    set: SetState
+): Promise<void> {
+    const current = get();
+    const attacker = current.enemy.board.find(u => u.uid === attackerUid);
+    if (!attacker) return;
+
+    const targetId = targetType === 'unit' ? targetUid! : 'player_commander';
+    const targetName = targetType === 'unit' && targetUid
+        ? current.player.board.find(u => u.uid === targetUid)?.name || 'Unknown'
+        : 'Player';
+
+    set(state => ({
+        attackingUnitId: attacker.uid,
+        attackVector: { from: attacker.uid, to: targetId },
+        abilityNotifications: [
+            ...state.abilityNotifications,
+            {
+                id: generateId(),
+                unitName: attacker.name,
+                text: `attacked ${targetName}`,
+                timestamp: Date.now()
+            }
+        ]
+    }));
+
+    await delay(DELAYS.AI_ATTACK_PRE);
+
+    set(state => {
+        const enemyBoard = [...state.enemy.board];
+        const playerBoard = [...state.player.board];
+        const uIndex = enemyBoard.findIndex(u => u.uid === attacker.uid);
+        if (uIndex === -1) return {};
+
+        const u = { ...enemyBoard[uIndex] };
+        let phase = state.phase;
+
+        if (targetType === 'unit' && targetUid) {
+            const tIndex = playerBoard.findIndex(p => p.uid === targetUid);
+            if (tIndex !== -1) {
+                const t = { ...playerBoard[tIndex] };
+
+                const hasShield = t.mechanics.some(m => m.type === 'shield');
+                if (hasShield) {
+                    t.mechanics = t.mechanics.filter(m => m.type !== 'shield');
+                    const counterDamage = t.atk;
+                    if (!(u.mechanics.some(m => m.type === 'first_strike'))) {
+                        u.hp -= counterDamage;
+                    }
+                } else {
+                    const attackerDamage = u.atk;
+                    const defenderDamage = t.atk;
+                    t.hp -= attackerDamage;
+                    if (!(u.mechanics.some(m => m.type === 'first_strike'))) {
+                        u.hp -= defenderDamage;
+                    }
+                }
+
+                const thorns = t.mechanics.find(m => m.type === 'thorns');
+                if (thorns && thorns.value) {
+                    u.hp -= thorns.value;
+                }
+
+                if (t.hp <= 0) t.dying = true;
+                playerBoard[tIndex] = t;
+            }
+        } else {
+            // Attack commander
+            const newPlayerHp = state.player.hp - u.atk;
+            const updatedPlayer = { ...state.player, hp: newPlayerHp };
+
+            if (u.mechanics.some(m => m.type === 'lifesteal')) {
+                state.enemy.hp = Math.min(state.enemy.maxHp, state.enemy.hp + u.atk);
+            }
+
+            if (newPlayerHp <= 0) {
+                updatedPlayer.hp = 0;
+                phase = 'game_over';
+            }
+
+            u.attacksLeft--;
+            if (u.attacksLeft <= 0) u.ready = false;
+            if (u.hp <= 0) u.dying = true;
+            enemyBoard[uIndex] = u;
+
+            return {
+                player: updatedPlayer,
+                enemy: { ...state.enemy, board: enemyBoard },
+                phase
+            };
+        }
+
+        u.attacksLeft--;
+        if (u.attacksLeft <= 0) u.ready = false;
+        if (u.hp <= 0) u.dying = true;
+        enemyBoard[uIndex] = u;
+
+        return {
+            player: { ...state.player, board: playerBoard },
+            enemy: { ...state.enemy, board: enemyBoard },
+            phase
+        };
+    });
+
+    await delay(DELAYS.AI_ATTACK_POST);
+
+    // Clean dead units
+    await get().cleanDeadUnits();
+    set({ attackingUnitId: null, attackVector: null });
+}
+
+export async function endEnemyTurn(get: GetState, set: SetState): Promise<void> {
+    // Process end-of-turn mechanics
+    let currentState = get();
+    const processedUnits = new Set<string>();
+
+    while (true) {
+        const unitToProcess = currentState.enemy.board.find(
+            u => !processedUnits.has(u.uid) && u.mechanics.some(m => m.trigger === 'onTurnEnd')
+        );
+
+        if (!unitToProcess) break;
+
+        processedUnits.add(unitToProcess.uid);
+
+        for (const m of unitToProcess.mechanics) {
+            if (m.trigger === 'onTurnEnd') {
+                const { stateUpdates, animations, notifications } = MechanicHandler.resolve(
+                    m, unitToProcess, currentState, () => {}
+                );
+
+                for (const anim of animations) {
+                    set({ effectVector: { from: anim.from, to: anim.to, color: anim.color } });
+                    await delay(DELAYS.ANIMATION_DEFAULT);
+                }
+                if (animations.length > 0) {
+                    set({ effectVector: null });
+                    await delay(DELAYS.ANIMATION_FAST);
+                }
+
+                if (notifications && notifications.length > 0) {
+                    set(state => ({
+                        abilityNotifications: [...state.abilityNotifications, ...notifications]
+                    }));
+                }
+
+                set(stateUpdates);
+                currentState = get();
+            }
+        }
+    }
+
+    // Decrement status effects
+    set((state) => {
+        const enemy = { ...state.enemy };
+        enemy.board = enemy.board.map(unit => {
+            const updatedUnit = { ...unit };
+
+            if (updatedUnit.status?.stun && updatedUnit.status.stun > 0) {
+                updatedUnit.status.stun -= 1;
+            }
+
+            if (updatedUnit.status?.weak && updatedUnit.status.weak > 0) {
+                updatedUnit.status.weak -= 1;
+                if (updatedUnit.status.weak === 0 && updatedUnit.status.originalAtk !== undefined) {
+                    updatedUnit.atk = updatedUnit.status.originalAtk;
+                    delete updatedUnit.status.originalAtk;
+                }
+            }
+
+            return updatedUnit;
+        });
+
+        return { enemy };
+    });
+
+    // Transition to player turn
+    await get().startPlayerTurn();
+}

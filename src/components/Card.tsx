@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import type { Card as CardType } from '../types';
 import { cn } from '../lib/utils';
 import { MECHANICS_DEFINITIONS } from '../data/mechanics';
+import { getCardAssetPath, getFallbackAssetPath } from '../lib/assetUtils';
 
 interface CardProps {
   card: CardType;
@@ -39,15 +40,6 @@ const FACTION_COLORS: Record<string, string> = {
   'Neutral': 'text-slate-500',
 };
 
-export const FACTION_FOLDERS: Record<string, string> = {
-  'Jovian': 'jovian',
-  'Megacorp': 'megacorp',
-  'Voidborn': 'voidborn',
-  'Bio-horror': 'biohorror',
-  'Republic': 'republic',
-  'Confederate': 'neutral',
-  'Neutral': 'neutral',
-};
 
 const SUBTYPE_ICONS: Record<string, string> = {
     'Cybernetic': '⚙️',
@@ -67,10 +59,7 @@ export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, classN
   const [tooltipPos, setTooltipPos] = React.useState<{ x: number; y: number } | null>(null);
   const cardRef = React.useRef<HTMLDivElement>(null);
 
-  // Asset resolution logic
-  const assetSuffix = (card.type === 'tactic' || card.rarity === 'NA') ? '' : (card.tier === 1 ? '_tier1' : `_tier${card.tier}`);
-  const folder = FACTION_FOLDERS[card.faction] || 'neutral';
-  const imagePath = `/assets/cards/${folder}/${card.baseAsset}${assetSuffix}.png`;
+  const imagePath = getCardAssetPath(card);
 
   // Mechanics Tooltips
   const activeMechanics = (card.mechanics || []).map(m => m.type).filter(m => MECHANICS_DEFINITIONS[m]);
@@ -116,9 +105,11 @@ export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, classN
             alt={card.name}
             className="absolute inset-0 w-full h-full object-cover z-0"
             onError={(e) => {
-                // Fallback: try tier1 only if card should have tier suffixes
-                const fallbackSuffix = (card.type === 'tactic' || card.rarity === 'NA') ? '' : '_tier1';
-                (e.target as HTMLImageElement).src = `/assets/cards/${folder}/${card.baseAsset}${fallbackSuffix}.png`;
+                (e.target as HTMLImageElement).src = getFallbackAssetPath(
+                  card.baseAsset,
+                  card.faction,
+                  card.type === 'tactic' || card.rarity === 'NA'
+                );
             }}
           />
 

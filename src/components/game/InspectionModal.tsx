@@ -42,7 +42,7 @@ export const InspectionModal: React.FC<InspectionModalProps> = ({ unit, onClose 
             <div className="relative" onClick={(e) => e.stopPropagation()}>
                 <Card
                   card={cardDef}
-                  className="w-80 h-[500px] hover:scale-100"
+                  className="w-80 h-[500px]"
                   disabled={false}
                   artOnly={artOnly}
                 />

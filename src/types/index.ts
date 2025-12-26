@@ -20,8 +20,6 @@ export type MechanicType =
   | 'slow'
   | 'repair'
   | 'support'
-  | 'bounce' // Legacy - use 'banish' instead
-  | 'swap' // Legacy - use 'redeploy' instead
   | 'redeploy' // Return friendly unit to hand
   | 'banish' // Return enemy unit to its owner's hand
   | 'disarm'
@@ -52,13 +50,37 @@ export type TriggerType = 'onPlay' | 'onDeath' | 'onTurnEnd' | 'onTurnStart' | '
 export type Faction = 'Jovian' | 'Republic' | 'Megacorp' | 'Confederate' | 'Voidborn' | 'Bio-horror' | 'Neutral';
 export type Rarity = 'Common' | 'Uncommon' | 'Rare' | 'Legendary' | 'NA';
 
+// Typed payload structures for type safety
+export interface MechanicPayload {
+  // Card ID for summons
+  cardId?: string;
+
+  // Filters
+  faction?: Faction;
+  excludeFaction?: Faction;
+  subtype?: CardSubtype;
+
+  // Scaling
+  scaling?: 'count_megacorp' | 'count_allies';
+  cap?: number;
+
+  // Conditional bonuses
+  megacorpBonus?: number;
+  megacorpRally?: number;
+  threshold?: { count: number; value: number };
+
+  // Keywords and flags
+  keyword?: 'rush';
+  once?: boolean;
+}
+
 export interface Mechanic {
   type: MechanicType;
   trigger: TriggerType;
   target?: 'self' | 'enemy_unit' | 'enemy_hero' | 'ally_unit' | 'all_enemies' | 'random_enemy' | 'random_ally' | 'all_allies' | 'enemy_board_random' | 'all_units' | 'target_unit' | 'target_enemy' | 'target_ally' | 'player_commander' | 'target_enemy_commander';
   value?: number; // Damage amount, buff amount, duration, etc.
   secondaryValue?: number; // e.g. for +X/+Y buff
-  payload?: string; // cardId to summon, specific logic key
+  payload?: string | MechanicPayload; // Backwards compatible: string for cardId, object for typed logic
   chance?: number; // 0-1 probability
 }
 
@@ -160,7 +182,7 @@ export interface GameState {
   player: PlayerState;
   enemy: EnemyState;
   turn: number;
-  phase: 'main_menu' | 'faction_select' | 'player_turn' | 'enemy_turn' | 'game_over' | 'victory' | 'hangar' | 'market' | 'workshop';
+  phase: 'main_menu' | 'faction_select' | 'player_turn' | 'enemy_turn' | 'game_over' | 'victory' | 'hangar' | 'market' | 'workshop' | 'settings';
   winner?: 'player' | 'enemy';
   scoutedCards?: Card[] | null; // For scout abilities (can show multiple cards)
   lastLoot?: { credits: number, parts: number, bio: number, psi: number } | null; // For Victory Screen

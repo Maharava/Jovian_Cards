@@ -83,8 +83,8 @@
 - [P] **Io T1/T2/T3** - Summon Drone
 
 **Movement/Generation:**
-- [ ] **Bounce** (Scramble) - Return unit to hand
-- [ ] **Swap** (Pasiphae) - Return hero to hand
+- [ ] **Banish** (Scramble) - Return unit to hand
+- [ ] **Redeploy** (Pasiphae) - Return hero to hand
 - [ ] **Add Random Tactic** (Leda) - Add Tactic to hand
 
 **Card Advantage:**

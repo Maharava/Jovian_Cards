@@ -1,8 +1,13 @@
-import type { GameState, Mechanic, UnitInstance, ResolutionResult, Card } from '../types';
+import type { GameState, Mechanic, UnitInstance, ResolutionResult, Card, MechanicPayload } from '../types';
 import { ENEMY_CARDS, ALL_CARDS, TACTIC_CARDS, TOKEN_CARDS } from '../data/cards';
 import { MAX_BOARD_SLOTS } from '../config/constants';
 
 const generateId = () => Math.random().toString(36).substr(2, 9);
+
+// Helper to check if payload is a string
+const isStringPayload = (payload: string | MechanicPayload | undefined): payload is string => {
+    return typeof payload === 'string';
+};
 
 export class MechanicHandler {
 
@@ -10,7 +15,7 @@ export class MechanicHandler {
     mechanic: Mechanic,
     sourceUnit: UnitInstance,
     state: GameState,
-    logEvent: (type: string, data: unknown) => void,
+    logEvent: (type: string, data: unknown) => void = () => {},
     targetUid?: string
   ): ResolutionResult {
 
@@ -118,7 +123,7 @@ export class MechanicHandler {
                 let allies = getAllies().filter(u => u.uid !== sourceUnit.uid);
 
                 // Filter by subtype if specified (e.g., 'subtype:Cybernetic')
-                if (mechanic.payload && mechanic.payload.startsWith('subtype:')) {
+                if (mechanic.payload && isStringPayload(mechanic.payload) && mechanic.payload.startsWith('subtype:')) {
                     const requiredSubtype = mechanic.payload.split(':')[1];
                     allies = allies.filter(u => u.subtype === requiredSubtype);
                 }
@@ -207,11 +212,11 @@ export class MechanicHandler {
 
                 // Handle Megacorp synergy scaling
                 if (mechanic.payload) {
-                    if (mechanic.payload.startsWith('count_megacorp')) {
+                    if (isStringPayload(mechanic.payload) && mechanic.payload.startsWith('count_megacorp')) {
                         const count = countMegacorpUnits(sourceUnit.owner);
 
                         // Check for max cap (e.g., 'count_megacorp:max_4')
-                        if (mechanic.payload.includes(':max_')) {
+                        if (isStringPayload(mechanic.payload) && mechanic.payload.includes(':max_')) {
                             const maxValue = parseInt(mechanic.payload.split('max_')[1]);
                             energyGain = Math.min(count, maxValue);
                         } else {
@@ -325,7 +330,7 @@ export class MechanicHandler {
             } else if (mechanic.value) {
                 targets.forEach(t => {
                      // Check for exclusions
-                     if (mechanic.payload && mechanic.payload.startsWith('exclude_faction:')) {
+                     if (mechanic.payload && isStringPayload(mechanic.payload) && mechanic.payload.startsWith('exclude_faction:')) {
                          const exclude = mechanic.payload.split(':')[1];
                          if (t.faction === exclude) return;
                      }
@@ -356,7 +361,7 @@ export class MechanicHandler {
                 if (mechanic.payload === 'count_megacorp') {
                     const count = countMegacorpUnits(sourceUnit.owner);
                     rallyAmount = count;
-                } else if (mechanic.payload && mechanic.payload.startsWith('count_other_megacorp')) {
+                } else if (mechanic.payload && isStringPayload(mechanic.payload) && mechanic.payload.startsWith('count_other_megacorp')) {
                     const count = countMegacorpUnits(sourceUnit.owner, sourceUnit.uid);
                     rallyAmount = count;
                 }
@@ -385,13 +390,13 @@ export class MechanicHandler {
 
                     // Handle Megacorp conditional bonuses
                     if (mechanic.payload) {
-                        if (mechanic.payload.startsWith('megacorp_bonus:')) {
+                        if (isStringPayload(mechanic.payload) && mechanic.payload.startsWith('megacorp_bonus:')) {
                             // If target is Megacorp, use bonus value instead
                             if (t.faction === 'Megacorp') {
                                 const bonusValue = parseInt(mechanic.payload.split(':')[1]);
                                 healAmount = bonusValue;
                             }
-                        } else if (mechanic.payload.startsWith('megacorp_rally:')) {
+                        } else if (isStringPayload(mechanic.payload) && mechanic.payload.startsWith('megacorp_rally:')) {
                             // If target is Megacorp, also apply rally buff
                             if (t.faction === 'Megacorp') {
                                 const rallyAmount = parseInt(mechanic.payload.split(':')[1]);
@@ -476,7 +481,7 @@ export class MechanicHandler {
         case 'support':
              targets.forEach(t => {
                  // Faction filter
-                 if (mechanic.payload && mechanic.payload.startsWith('faction:')) {
+                 if (mechanic.payload && isStringPayload(mechanic.payload) && mechanic.payload.startsWith('faction:')) {
                      const faction = mechanic.payload.split(':')[1];
                      if (t.faction !== faction) return;
                  }
@@ -494,19 +499,19 @@ export class MechanicHandler {
                              const count = countMegacorpUnits(sourceUnit.owner);
                              atkBonus = count;
                              hpBonus = count;
-                         } else if (mechanic.payload.startsWith('count_other_megacorp')) {
+                         } else if (isStringPayload(mechanic.payload) && mechanic.payload.startsWith('count_other_megacorp')) {
                              // Scale with OTHER Megacorp unit count (excluding source)
                              const count = countMegacorpUnits(sourceUnit.owner, sourceUnit.uid);
                              atkBonus = count;
                              hpBonus = count;
 
                              // Check for :once flag - prevent stacking
-                             if (mechanic.payload.includes(':once')) {
+                             if (isStringPayload(mechanic.payload) && mechanic.payload.includes(':once')) {
                                  if (!t.status) t.status = {};
                                  if (t.status.encouraged) return; // Skip if already encouraged
                                  t.status.encouraged = true; // Mark as encouraged
                              }
-                         } else if (mechanic.payload.startsWith('threshold_3:')) {
+                         } else if (isStringPayload(mechanic.payload) && mechanic.payload.startsWith('threshold_3:')) {
                              // If we have 3+ Megacorp units, use bonus value instead
                              const count = countMegacorpUnits(sourceUnit.owner);
                              if (count >= 3) {
@@ -664,11 +669,11 @@ export class MechanicHandler {
              });
              break;
 
-        // Legacy support - redirect old names to new ones
-        case 'swap':
-             return MechanicHandler.resolve({ ...mechanic, type: 'redeploy' }, sourceUnit, state, logEvent);
-        case 'bounce':
-             return MechanicHandler.resolve({ ...mechanic, type: 'banish' }, sourceUnit, state, logEvent);
+        break;
+
+      // -----------------------------------------------------
+      // DEBUFFS
+      // -----------------------------------------------------
 
         case 'decoy':
         case 'summon': {
@@ -705,11 +710,11 @@ export class MechanicHandler {
              } else if (payload) {
                  // Handle scaling summons (e.g., 'neutral_drone:count_megacorp')
                  let basePayload = payload;
-                 if (payload.includes(':count_megacorp')) {
+                 if (isStringPayload(payload) && payload.includes(':count_megacorp')) {
                      basePayload = payload.split(':')[0];
                  }
 
-                 if (basePayload.includes('hologram')) {
+                 if (isStringPayload(basePayload) && basePayload.includes('hologram')) {
                      // Parse hologram tier from payload (e.g., 'hologram_1', 'hologram_2', 'hologram_3')
                      let hologramStats = { atk: 0, hp: 3, maxHp: 3 };
                      let hologramMechanics: Mechanic[] = [ { type: 'guard', trigger: 'constant' } ];
@@ -738,7 +743,7 @@ export class MechanicHandler {
              if (cardDef && cardDef.stats) {
                  // Handle scaling summon count
                  let count = mechanic.value || 1;
-                 if (payload && payload.includes(':count_megacorp')) {
+                 if (payload && isStringPayload(payload) && payload.includes(':count_megacorp')) {
                      count = countMegacorpUnits(sourceUnit.owner);
                  }
 

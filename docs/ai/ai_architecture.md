@@ -6,7 +6,7 @@ We will move from a random-action script to a **Hybrid Decision Engine**. This c
 1.  **Behavior Trees (The "Why"):** A structured flowchart to determine the AI's current *priority* (e.g., "Seek Lethal", "Defend", "Develop Board").
 2.  **Utility Scoring (The "How"):** A mathematical evaluation to pick the best specific *action* to fulfill that priority (e.g., "Which unit do I attack to defend best?").
 
-**The Goal:** An AI that plays fairly (no cheating) but scales from a "clumsy rookie" (T1) to a "ruthless tactician" (T5) by unlocking deeper layers of logic and reducing its error rate.
+**The Goal:** An AI that plays fairly (no cheating) but scales from a "clumsy rookie" (L1) to a "ruthless tactician" (L5) by unlocking deeper layers of logic and reducing its error rate.
 
 **Current State (v0.4.2):** Simple random AI that plays 3 random affordable units per turn and attacks with 70% unit / 30% commander targeting.
 
@@ -225,13 +225,13 @@ class Evaluator {
 
 ## 3. The Logic Flow (The Behavior Tree)
 
-The AI thinks in a hierarchy. Lower tiers stop at earlier, simpler branches. Higher tiers traverse the full tree.
+The AI thinks in a hierarchy. Lower levels stop at earlier, simpler branches. Higher levels traverse the full tree.
 
 **Implementation:**
 ```typescript
 interface BehaviorNode {
   name: string;
-  minTier: number;  // Minimum difficulty tier to execute this node
+  minLevel: number;  // Minimum difficulty level to execute this node
   evaluate: (state: GameState, context: AIContext) => BehaviorResult;
 }
 
@@ -242,23 +242,23 @@ interface BehaviorResult {
 }
 
 interface AIContext {
-  tier: number;
+  level: number;
   owner: 'player' | 'enemy';
   lookahead: number;  // How many moves to simulate ahead
 }
 
 class BehaviorTree {
   private nodes: BehaviorNode[] = [
-    { name: 'Lethal', minTier: 2, evaluate: this.checkLethal },
-    { name: 'Crisis', minTier: 3, evaluate: this.checkCrisis },
-    { name: 'ValueTrade', minTier: 2, evaluate: this.checkValueTrade },
-    { name: 'Development', minTier: 1, evaluate: this.checkDevelopment }
+    { name: 'Lethal', minLevel: 2, evaluate: this.checkLethal },
+    { name: 'Crisis', minLevel: 3, evaluate: this.checkCrisis },
+    { name: 'ValueTrade', minLevel: 2, evaluate: this.checkValueTrade },
+    { name: 'Development', minLevel: 1, evaluate: this.checkDevelopment }
   ];
 
   execute(state: GameState, context: AIContext): AIMove {
     // Traverse nodes in order of priority
     for (const node of this.nodes) {
-      if (context.tier >= node.minTier) {
+      if (context.level >= node.minLevel) {
         const result = node.evaluate(state, context);
 
         // High priority nodes immediately return their move
@@ -282,8 +282,8 @@ class BehaviorTree {
     const allMoves = MoveGenerator.getAllMoves(state, context.owner);
 
     // Check if any sequence of moves leads to enemy HP <= 0
-    // For T2-T3: Only check single moves
-    // For T4-T5: Check move combinations (expensive!)
+    // For L2-L3: Only check single moves
+    // For L4-L5: Check move combinations (expensive!)
 
     for (const move of allMoves) {
       if (move.type === 'END_TURN') continue;
@@ -293,8 +293,8 @@ class BehaviorTree {
         return { priority: 100, move };  // IMMEDIATE EXECUTE
       }
 
-      // For T4+: Check if we can lethal with follow-up moves
-      if (context.tier >= 4 && context.lookahead > 0) {
+      // For L4+: Check if we can lethal with follow-up moves
+      if (context.level >= 4 && context.lookahead > 0) {
         const followUpMoves = MoveGenerator.getAllMoves(simResult.state, context.owner);
         for (const followUp of followUpMoves) {
           const finalResult = Simulator.simulate(simResult.state, followUp);
@@ -416,7 +416,7 @@ class BehaviorTree {
     scoredMoves.sort((a, b) => b.score - a.score);
 
     // Apply error rate for difficulty
-    const errorRate = this.getErrorRate(context.tier);
+    const errorRate = this.getErrorRate(context.level);
     const topN = Math.min(3, scoredMoves.length);
 
     if (Math.random() < errorRate && topN > 1) {
@@ -429,8 +429,8 @@ class BehaviorTree {
     return scoredMoves[0]?.move || { type: 'END_TURN' };
   }
 
-  private getErrorRate(tier: number): number {
-    switch(tier) {
+  private getErrorRate(level: number): number {
+    switch(level) {
       case 1: return 0.30;
       case 2: return 0.15;
       case 3: return 0.05;
@@ -444,17 +444,17 @@ class BehaviorTree {
 
 ---
 
-## 4. Difficulty Tiers (Archetypes)
+## 4. Difficulty Levels (Archetypes)
 
-We differentiate tiers by **Depth** (how much of the tree they use), **Error Rate** (probability of picking a sub-optimal move), and **Lookahead** (simulation depth).
+We differentiate levels by **Depth** (how much of the tree they use), **Error Rate** (probability of picking a sub-optimal move), and **Lookahead** (simulation depth).
 
-| Tier | Name | Tree Nodes | Lookahead | Error Rate | Simulation Budget | Behavior Description |
+| Level | Name | Tree Nodes | Lookahead | Error Rate | Simulation Budget | Behavior Description |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **T1** | **Rookie** | Development only | 0 moves | **30%** | 20 moves/turn | **Impulsive.** No strategic planning. Plays units randomly. Attacks randomly (face vs units). |
-| **T2** | **Soldier** | +Lethal, +ValueTrade | 0 moves | **15%** | 50 moves/turn | **Efficient.** Recognizes lethal and free kills. Plays on curve. No crisis planning. |
-| **T3** | **Veteran** | +Crisis | 1 move | **5%** | 100 moves/turn | **Smart.** Defensive when needed. Simulates immediate outcomes. Uses tactics logically. |
-| **T4** | **Elite** | Full Tree | 2 moves | **2%** | 200 moves/turn | **Predictive.** Simulates multi-move sequences. Holds resources for key moments. |
-| **T5** | **Tactical** | Full Tree | 3 moves | **0%** | 500 moves/turn | **Optimal.** Perfect play within simulation budget. Maximizes long-term value. |
+| **L1** | **Rookie** | Development only | 0 moves | **30%** | 20 moves/turn | **Impulsive.** No strategic planning. Plays units randomly. Attacks randomly (face vs units). |
+| **L2** | **Soldier** | +Lethal, +ValueTrade | 0 moves | **15%** | 50 moves/turn | **Efficient.** Recognizes lethal and free kills. Plays on curve. No crisis planning. |
+| **L3** | **Veteran** | +Crisis | 1 move | **5%** | 100 moves/turn | **Smart.** Defensive when needed. Simulates immediate outcomes. Uses tactics logically. |
+| **L4** | **Elite** | Full Tree | 2 moves | **2%** | 200 moves/turn | **Predictive.** Simulates multi-move sequences. Holds resources for key moments. |
+| **L5** | **Tactical** | Full Tree | 3 moves | **0%** | 500 moves/turn | **Optimal.** Perfect play within simulation budget. Maximizes long-term value. |
 
 **Simulation Budget:** Maximum number of moves to evaluate per turn (prevents infinite loops and ensures acceptable performance).
 
@@ -545,14 +545,14 @@ We differentiate tiers by **Depth** (how much of the tree they use), **Error Rat
 
 1. Implement `BehaviorTree.ts`:
    - `execute()` main method
-   - `checkLethal()` node (T2+)
-   - `checkCrisis()` node (T3+)
-   - `checkValueTrade()` node (T2+)
-   - `checkDevelopment()` node (T1+)
+   - `checkLethal()` node (L2+)
+   - `checkCrisis()` node (L3+)
+   - `checkValueTrade()` node (L2+)
+   - `checkDevelopment()` node (L1+)
    - `selectBestMove()` with error rate
 2. Optimize lethal detection:
-   - T2-T3: Single move lethal only
-   - T4-T5: Two-move lethal sequences
+   - L2-L3: Single move lethal only
+   - L4-L5: Two-move lethal sequences
    - **Budget:** Max 50 simulations for lethal check
 3. Write unit tests:
    - Test lethal detection finds obvious wins
@@ -590,16 +590,16 @@ We differentiate tiers by **Depth** (how much of the tree they use), **Error Rat
 1. **Performance:**
    - Profile simulation speed
    - Add move pruning (skip obviously bad moves)
-   - Implement simulation budgets per tier
+   - Implement simulation budgets per level
    - Cache evaluation results if state repeats
 2. **Dev Tools:**
    - Add debug mode showing AI's thought process
    - Console log: "Evaluating 47 moves... Best: PLAY Enforcer (score: +12.5)"
    - Add `/ai_debug` command to toggle
 3. **Balance:**
-   - Playtest all 5 tiers
+   - Playtest all 5 levels
    - Adjust weights and error rates
-   - Ensure T1 is beatable, T5 is challenging
+   - Ensure L1 is beatable, L5 is challenging
 
 **Deliverable:** Production-ready AI with debug tools.
 
@@ -609,7 +609,7 @@ We differentiate tiers by **Depth** (how much of the tree they use), **Error Rat
 **Goal:** Enhance AI with advanced techniques.
 
 1. **Opening Book:**
-   - Predefined strong opening sequences for T4-T5
+   - Predefined strong opening sequences for L4-L5
    - "If turn 1, always play Scout unit"
 2. **Faction-Specific Logic:**
    - Megacorp AI: Prioritize synergy scaling
@@ -627,7 +627,7 @@ We differentiate tiers by **Depth** (how much of the tree they use), **Error Rat
 
 ### Performance Concerns
 
-**Problem:** Simulating deep trees (T5) with 500+ moves can cause lag.
+**Problem:** Simulating deep trees (L5) with 500+ moves can cause lag.
 
 **Solutions:**
 1. **Early Pruning:**
@@ -635,7 +635,7 @@ We differentiate tiers by **Depth** (how much of the tree they use), **Error Rat
    - Skip attacks where attacker dies and defender survives (unless forced)
    - Skip playing cards that do nothing (heal when at full HP)
 2. **Budget Enforcement:**
-   - Stop evaluating after N moves (tier-dependent)
+   - Stop evaluating after N moves (level-dependent)
    - Return best move found so far
 3. **Async Processing:**
    - Run simulations in micro-batches with `await` breaks
@@ -645,9 +645,9 @@ We differentiate tiers by **Depth** (how much of the tree they use), **Error Rat
    - Main thread only handles rendering
 
 **Target Performance:**
-- T1-T3: <100ms per turn
-- T4: <300ms per turn
-- T5: <1000ms per turn
+- L1-L3: <100ms per turn
+- L4: <300ms per turn
+- L5: <1000ms per turn
 
 ---
 
@@ -734,7 +734,7 @@ We differentiate tiers by **Depth** (how much of the tree they use), **Error Rat
    - Log AI's reasoning: "Playing X because score +12 (best of 47 moves)"
    - Shows why AI makes decisions
 3. **Playtesting Metrics:**
-   - Track win rates: T1 should have ~70% player win rate, T5 should have ~30%
+   - Track win rates: L1 should have ~70% player win rate, L5 should have ~30%
    - Adjust error rates and weights accordingly
 4. **Per-Faction Tuning:**
    - Different factions may need different weights
@@ -805,7 +805,7 @@ static resolve(
    - Lethal detection finds obvious wins
    - Crisis mode activates at low HP
    - Error rate produces expected distribution
-   - Tier restrictions work (T1 skips lethal check)
+   - Level restrictions work (L1 skips lethal check)
 
 ### Integration Tests
 
@@ -821,14 +821,14 @@ static resolve(
 ### Manual Playtesting
 
 1. **Difficulty Curve:**
-   - Play 10 games against each tier
+   - Play 10 games against each level
    - Track win rate and game length
    - Adjust difficulty parameters
 
 2. **Decision Quality:**
-   - Observe AI missing obvious lethal (should be rare for T2+)
-   - Observe AI making bad trades (should be common for T1)
-   - Observe AI playing defensively when low HP (T3+)
+   - Observe AI missing obvious lethal (should be rare for L2+)
+   - Observe AI making bad trades (should be common for L1)
+   - Observe AI playing defensively when low HP (L3+)
 
 ---
 
@@ -837,22 +837,22 @@ static resolve(
 The AI system is considered complete when:
 
 ✅ **Functional:**
-- All 5 difficulty tiers implemented and playable
+- All 5 difficulty levels implemented and playable
 - No crashes or infinite loops
 - Makes legal moves 100% of the time
 
 ✅ **Performance:**
-- T1-T3: <100ms turn time
-- T4: <300ms turn time
-- T5: <1000ms turn time
+- L1-L3: <100ms turn time
+- L4: <300ms turn time
+- L5: <1000ms turn time
 - No UI freezing or lag
 
 ✅ **Quality:**
-- T1 player win rate: 70-80%
-- T3 player win rate: 50-60%
-- T5 player win rate: 30-40%
-- AI finds lethal 95%+ of the time (T2+)
-- AI plays defensively when at risk (T3+)
+- L1 player win rate: 70-80%
+- L3 player win rate: 50-60%
+- L5 player win rate: 30-40%
+- AI finds lethal 95%+ of the time (L2+)
+- AI plays defensively when at risk (L3+)
 
 ✅ **Maintainability:**
 - Code is modular and testable

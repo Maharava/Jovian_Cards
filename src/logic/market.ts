@@ -42,16 +42,20 @@ const getCardPool = (rarity: Rarity, factionFilter?: string, isVoidborn = false,
 };
 
 export const processPackOpening = (
-    pack: PackDefinition, 
+    pack: PackDefinition,
     collection: Record<string, number>,
     unlockCard: (id: string) => void,
     addResource: (type: 'parts' | 'bio' | 'psi', amount: number) => void,
     currentRotationFaction?: string
 ): OpenPackResult[] => {
     const results: OpenPackResult[] = [];
-            
+
+    // Debug: Track rarity distribution
+    const rarityCount: Record<string, number> = { Common: 0, Uncommon: 0, Rare: 0, Legendary: 0 };
+
     for (let i = 0; i < pack.count; i++) {
         const rarity = generateRarity(pack.chances);
+        rarityCount[rarity]++;
         let isVoid = false;
         let isBio = false;
         let factionFilter: string | undefined = undefined;
@@ -106,6 +110,10 @@ export const processPackOpening = (
             results.push({ card, isNew: true });
         }
     }
-    
+
+    // Debug: Log rarity distribution
+    console.log(`[${pack.name}] Pack opened:`, rarityCount);
+    console.log(`Expected: Common ${pack.chances.Common * 100}%, Uncommon ${pack.chances.Uncommon * 100}%, Rare ${pack.chances.Rare * 100}%, Legendary ${pack.chances.Legendary * 100}%`);
+
     return results;
 };

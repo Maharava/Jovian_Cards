@@ -3,17 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { UnitInstance } from '../types';
 import { cn } from '../lib/utils';
 import { useGameStore } from '../store/gameStore';
-import { ALL_CARDS } from '../data/cards';
-
-const FACTION_FOLDERS: Record<string, string> = {
-  'Jovian': 'jovian',
-  'Megacorp': 'megacorp',
-  'Voidborn': 'voidborn',
-  'Bio-horror': 'biohorror',
-  'Republic': 'republic',
-  'Confederate': 'neutral',
-  'Neutral': 'neutral',
-};
+import { ALL_CARDS, TOKEN_CARDS } from '../data/cards';
+import { FACTION_FOLDERS, getFallbackAssetPath } from '../lib/assetUtils';
 
 interface UnitProps {
   unit: UnitInstance;
@@ -44,7 +35,8 @@ interface UnitProps {
 export const Unit: React.FC<UnitProps> = ({ unit, onClick, onContextMenu, isTarget, canAttack, className, layoutId }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const isTaunt = unit.mechanics.some(m => m.type === 'guard');
-  const cardDef = ALL_CARDS.find(c => c.id === unit.cardId);
+  // Check both ALL_CARDS and TOKEN_CARDS to find card definition
+  const cardDef = ALL_CARDS.find(c => c.id === unit.cardId) || TOKEN_CARDS.find(c => c.id === unit.cardId);
   const isLegendary = cardDef?.rarity === 'Legendary';
 
   const isAttacking = useGameStore(state => state.attackingUnitId === unit.uid);
@@ -98,18 +90,17 @@ export const Unit: React.FC<UnitProps> = ({ unit, onClick, onContextMenu, isTarg
             alt={unit.name}
             className="absolute inset-0 w-full h-full object-cover rounded-[4px]"
             onError={(e) => {
-                    // Fallback: Try tier1 if tiered image fails, then placeholder
                     const img = e.target as HTMLImageElement;
                     const currentSrc = img.src;
-                    const tier1Path = `/assets/cards/${folder}/${unit.baseAsset}_tier1.png`;
-                    const placeholderPath = '/assets/cards/placeholder.png';
 
                     if (!currentSrc.includes('_tier1') && !currentSrc.includes('placeholder')) {
-                        // First fallback: try tier1
-                        img.src = tier1Path;
+                        img.src = getFallbackAssetPath(
+                          unit.baseAsset,
+                          unit.faction,
+                          cardDef?.type === 'tactic' || cardDef?.rarity === 'NA'
+                        );
                     } else if (!currentSrc.includes('placeholder')) {
-                        // Second fallback: use placeholder
-                        img.src = placeholderPath;
+                        img.src = '/assets/cards/placeholder.png';
                     }
             }}
         />

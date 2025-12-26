@@ -129,9 +129,9 @@ The Jovian playstyle focuses on **Unit Quality** and **Synergy**. Unlike the Meg
     *   T2 Operator (2 Cost, 2/5): Summon a 1/2 drone.
     *   T3 The Drone Master (3 Cost, 3/6): Turn Start: Summon a 1/2 drone.
 *   **Pasiphae (The Ace)** (Bio)
-    *   T1 Gamer (2 Cost, 3/2): OnPlay: **Swap.**
-    *   T2 Pilot (3 Cost, 4/3): **Rush.** OnPlay: **Swap.**
-    *   T3 The Ace (4 Cost, 6/4): **Rush.** OnPlay: **Swap.** Turn End: Rally 1.
+    *   T1 Gamer (2 Cost, 3/2): OnPlay: **Redeploy.**
+    *   T2 Pilot (3 Cost, 4/3): **Rush.** OnPlay: **Redeploy.**
+    *   T3 The Ace (4 Cost, 6/4): **Rush.** OnPlay: **Redeploy.** Turn End: Rally 1.
 *   **Praxidike (The Trickster)** (Cyber)
     *   T1 Prankster (2 Cost, 1/1): On Play: **Decoy** (Summon 0/2 Taunt Holo).
     *   T2 Illusionist (3 Cost, 3/2): On Play: **Decoy.** 

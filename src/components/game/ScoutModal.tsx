@@ -18,7 +18,7 @@ export const ScoutModal: React.FC<ScoutModalProps> = ({ cards, onClose }) => {
                     <Card
                       key={`scout-${card.id}-${index}`}
                       card={card}
-                      className="w-64 h-96 scale-125 hover:scale-125 cursor-default"
+                      className="w-64 h-96 cursor-default"
                       disabled={false}
                     />
                 ))}

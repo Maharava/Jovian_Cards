@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { ALL_CARDS } from '../data/cards';
 
 export interface SavedDeck {
   id: string;
@@ -68,9 +67,9 @@ export const useMetaStore = create<MetaState>()(
       marketRotationFaction: 'Jovian',
       
       credits: 1000, // Starter credits
-      parts: 100,
-      bioSamples: 100,
-      psiCrystals: 100,
+      parts: 0,
+      bioSamples: 0,
+      psiCrystals: 0,
 
       rotateMarketFaction: () => set(() => {
           const options = ['Jovian', 'Megacorp']; // Expandable list

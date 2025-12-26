@@ -1,0 +1,70 @@
+import type { Faction, MechanicType, TriggerType } from '../types';
+
+// Factions
+export const FACTIONS = {
+  JOVIAN: 'Jovian',
+  REPUBLIC: 'Republic',
+  MEGACORP: 'Megacorp',
+  CONFEDERATE: 'Confederate',
+  VOIDBORN: 'Voidborn',
+  BIO_HORROR: 'Bio-horror',
+  NEUTRAL: 'Neutral',
+} as const satisfies Record<string, Faction>;
+
+// Mechanic Types
+export const MECHANICS = {
+  SUMMON: 'summon',
+  SCOUT: 'scout',
+  STUN: 'stun',
+  BUFF: 'buff',
+  DEBUFF: 'debuff',
+  DAMAGE: 'damage',
+  HEAL: 'heal',
+  DRAW: 'draw',
+  GUARD: 'guard',
+  RUSH: 'rush',
+  DOUBLE_ATTACK: 'double_attack',
+  SNIPE: 'snipe',
+  LIFESTEAL: 'lifesteal',
+  SLOW: 'slow',
+  REPAIR: 'repair',
+  SUPPORT: 'support',
+  REDEPLOY: 'redeploy',
+  BANISH: 'banish',
+  DISARM: 'disarm',
+  SPARK: 'spark',
+  DECOY: 'decoy',
+  RALLY: 'rally',
+  THORNS: 'thorns',
+  POLLUTE: 'pollute',
+  FADE: 'fade',
+  HACK: 'hack',
+  RAGE: 'rage',
+  ENCOURAGE: 'encourage',
+  RECYCLE: 'recycle',
+  LOOT: 'loot',
+  FIRST_STRIKE: 'first_strike',
+  ASSASSINATE: 'assassinate',
+  REGENERATE: 'regenerate',
+  SHIELD: 'shield',
+  BREACH: 'breach',
+  MIND_CONTROL: 'mind_control',
+  GAIN_ENERGY: 'gain_energy',
+  SILENCE: 'silence',
+  COST_REDUCTION: 'cost_reduction',
+  BIO_OPTIMIZE: 'bio_optimize',
+  ADD_RANDOM_TACTIC: 'add_random_tactic',
+} as const satisfies Record<string, MechanicType>;
+
+// Triggers
+export const TRIGGERS = {
+  ON_PLAY: 'onPlay',
+  ON_DEATH: 'onDeath',
+  ON_TURN_END: 'onTurnEnd',
+  ON_TURN_START: 'onTurnStart',
+  ON_DRAW: 'onDraw',
+  ON_ATTACK: 'onAttack',
+  ON_DAMAGE_TAKEN: 'onDamageTaken',
+  PASSIVE: 'passive',
+  CONSTANT: 'constant',
+} as const satisfies Record<string, TriggerType>;

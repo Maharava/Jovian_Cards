@@ -16,13 +16,15 @@ export const Workshop: React.FC = () => {
 
     const rarities = ['All', 'Common', 'Uncommon', 'Rare', 'Legendary'];
 
-    // Filter Collection for Upgradable Cards (Jovian Units, Tier < 3)
+    // Filter Collection for Upgradable Cards (Standard Faction Units, Tier < 3)
     const upgradableCards = useMemo(() => {
         const cards: { cardId: string, def: CardType, count: number }[] = [];
+        const upgradableFactions = ['Jovian', 'Megacorp', 'Republic', 'Confederate', 'Neutral'];
+
         Object.entries(collection).forEach(([id, count]) => {
             const def = ALL_CARDS.find(c => c.id === id);
-            // Logic: Must be Unit, Jovian (or Megacorp/Neutral if implemented), Tier < 3
-            if (def && def.faction === 'Jovian' && def.type === 'unit' && def.tier < 3) {
+            // Logic: Must be Unit, from upgradable faction (excludes exotic factions), Tier < 3
+            if (def && upgradableFactions.includes(def.faction) && def.type === 'unit' && def.tier < 3) {
                 if (rarityFilter !== 'All' && def.rarity !== rarityFilter) return;
                 cards.push({ cardId: id, def, count });
             }
@@ -159,15 +161,9 @@ export const Workshop: React.FC = () => {
                 </div>
 
                 {/* Workbench (Right) */}
-                <div className="w-1/3 bg-slate-900/50 rounded-xl border border-white/10 p-8 flex flex-col items-center justify-center relative">
+                <div className="w-1/3 bg-slate-900/50 rounded-xl border border-white/10 p-8 flex flex-col items-center justify-between relative overflow-hidden">
                     {selectedCard ? (
                         <>
-                            <div className="mb-8 relative transition-all duration-500">
-                                <div className={cn("scale-125 origin-center transition-all duration-700", isUpgrading ? "brightness-[200%] drop-shadow-[0_0_20px_white] scale-125" : "")}>
-                                    <Card card={selectedCard} tooltipPosition="top" />
-                                </div>
-                            </div>
-
                             {(() => {
                                 const { nextCard, cost, resourceType, color } = getUpgradeInfo(selectedCard);
                                 const canAfford = (resourceType === 'parts' && parts >= cost) ||
@@ -175,36 +171,64 @@ export const Workshop: React.FC = () => {
                                                   (resourceType === 'psi' && psiCrystals >= cost);
 
                                 return (
-                                    <div className="w-full flex flex-col items-center gap-4 animate-in slide-in-from-bottom-8 fade-in">
-                                        <div className="text-center font-mono text-sm text-slate-400">
-                                            UPGRADE TO <span className="text-white font-bold">TIER {selectedCard.tier + 1}</span>
-                                        </div>
-                                        
-                                        {nextCard ? (
-                                            <button 
-                                                onClick={handleUpgrade}
-                                                disabled={!canAfford || isUpgrading}
-                                                className={cn(
-                                                    "w-full py-4 rounded-lg font-black text-xl tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 border-2",
-                                                    color,
-                                                    (!canAfford || isUpgrading) && "opacity-50 grayscale cursor-not-allowed border-slate-700 bg-slate-800 text-slate-500"
-                                                )}
-                                            >
-                                                <span>{isUpgrading ? "UPGRADING..." : "UPGRADE"}</span>
-                                                {!isUpgrading && (
-                                                    <span className="bg-black/20 px-2 rounded text-sm">
-                                                        {cost} {resourceType === 'parts' ? '⚙' : (resourceType === 'bio' ? '🧬' : '🔮')}
-                                                    </span>
-                                                )}
-                                            </button>
-                                        ) : (
-                                            <div className="text-red-500 font-bold">MAX TIER REACHED</div>
-                                        )}
+                                    <>
+                                        {/* Preview Stack */}
+                                        <div className="flex-1 flex flex-col items-center justify-center gap-2 w-full py-4 overflow-y-auto no-scrollbar">
+                                            {/* Current Card */}
+                                            <div className={cn("transition-all duration-500 shrink-0", isUpgrading ? "opacity-30 scale-75 blur-sm" : "scale-90")}>
+                                                <div className="text-[10px] text-slate-500 uppercase tracking-widest mb-1 text-center font-mono">Current Version</div>
+                                                <Card card={selectedCard} />
+                                            </div>
 
-                                        {!canAfford && nextCard && !isUpgrading && (
-                                            <div className="text-red-500 text-xs font-mono">INSUFFICIENT RESOURCES</div>
-                                        )}
-                                    </div>
+                                            {nextCard && (
+                                                <>
+                                                    {/* Faint Arrow */}
+                                                    <div className="text-slate-800 text-3xl animate-pulse py-1">↓</div>
+
+                                                    {/* Next Version */}
+                                                    <div className={cn(
+                                                        "transition-all duration-700 shrink-0", 
+                                                        isUpgrading ? "scale-110 brightness-[150%] drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]" : "scale-90 opacity-80 grayscale-[20%]"
+                                                    )}>
+                                                        <div className="text-[10px] text-yellow-500/50 uppercase tracking-widest mb-1 text-center font-mono">Next Tier Preview</div>
+                                                        <Card card={nextCard} />
+                                                    </div>
+                                                </>
+                                            )}
+                                        </div>
+
+                                        {/* Action Area */}
+                                        <div className="w-full flex flex-col items-center gap-4 pt-6 border-t border-white/5 animate-in slide-in-from-bottom-4 fade-in">
+                                            <div className="text-center font-mono text-xs text-slate-400">
+                                                CONVERTING TO <span className="text-white font-bold uppercase">Tier {selectedCard.tier + 1}</span>
+                                            </div>
+                                            
+                                            {nextCard ? (
+                                                <button 
+                                                    onClick={handleUpgrade}
+                                                    disabled={!canAfford || isUpgrading}
+                                                    className={cn(
+                                                        "w-full py-4 rounded-lg font-black text-xl tracking-widest shadow-lg transition-all flex items-center justify-center gap-2 border-2",
+                                                        color,
+                                                        (!canAfford || isUpgrading) && "opacity-50 grayscale cursor-not-allowed border-slate-700 bg-slate-800 text-slate-500"
+                                                    )}
+                                                >
+                                                    <span>{isUpgrading ? "UPGRADING..." : "UPGRADE UNIT"}</span>
+                                                    {!isUpgrading && (
+                                                        <span className="bg-black/20 px-2 rounded text-sm">
+                                                            {cost} {resourceType === 'parts' ? '⚙' : (resourceType === 'bio' ? '🧬' : '🔮')}
+                                                        </span>
+                                                    )}
+                                                </button>
+                                            ) : (
+                                                <div className="text-red-500 font-bold font-mono py-2">MAX TIER REACHED</div>
+                                            )}
+
+                                            {!canAfford && nextCard && !isUpgrading && (
+                                                <div className="text-red-500 text-[10px] font-mono tracking-tighter">INSUFFICIENT RESOURCES FOR UPGRADE</div>
+                                            )}
+                                        </div>
+                                    </>
                                 );
                             })()}
                         </>
