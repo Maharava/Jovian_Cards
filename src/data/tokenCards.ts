@@ -3,6 +3,20 @@ import { m } from './cardUtils';
 
 export const TOKEN_CARDS: Card[] = [
   {
+    id: 'republic_guard', name: 'Republic Guard', type: 'unit', tier: 1, cost: 2,
+    stats: { atk: 2, hp: 2, maxHp: 2 }, subtype: 'Cybernetic', rarity: 'NA',
+    text: '', faction: 'Republic', baseAsset: 'republic_guard', 
+    lore: "Standard Republic military unit.",
+    mechanics: []
+  },
+  {
+    id: 'tactic_aerial_strike', name: 'Aerial Strike', type: 'tactic', tier: 1, cost: 0,
+    text: 'Deal 2 damage to a random enemy.', faction: 'Republic', rarity: 'NA',
+    baseAsset: 'aerial_strike',
+    lore: "Precision bombardment from above.",
+    mechanics: [m('damage', 'onPlay', 2, 'random_enemy')]
+  },
+  {
     id: 'neutral_drone', name: 'Drone', type: 'unit', tier: 1, cost: 1,
     stats: { atk: 1, hp: 1, maxHp: 1 }, subtype: 'Cybernetic', rarity: 'NA',
     text: '', faction: 'Neutral', baseAsset: 'drone', 

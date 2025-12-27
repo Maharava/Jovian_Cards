@@ -128,22 +128,22 @@
 
 | ID | Name | Lore |
 | :--- | :--- | :--- |
-| tactic_power_shot | Power Shot | Standard issue electromagnetic railgun tech. Reliable, punchy, and loud enough to rattle the hull of a station. |
-| tactic_nano_repair | Nano-Repair | Military-grade nanites that stitch flesh and weld metal in seconds. It’s a painful process, but it beats bleeding out in a vacuum. |
-| tactic_emp_blast | EMP Blast | A localized electromagnetic pulse designed to fry sensors and servo-motors. In the dark of the Outer System, light is life—and this takes it away. |
-| tactic_supply_drop | Supply Drop | Orbital logistics are the backbone of any campaign. When the canisters hit the dirt, the tide of battle follows. |
-| tactic_reinforce | Reinforce | Hold the line! Support is incoming from the nearest Confederate station, bringing fresh plating and renewed hope. |
-| tactic_scramble | Scramble | A tactical retreat is better than a strategic defeat. Disengage, regroup, and strike back when the odds are in your favor. |
-| tactic_asset_seizure | Asset Seizure | Repossession is a violent business. Resistance will be noted in the final audit and billed to your next of kin. |
-| tactic_outsource | Outsource | Why pay a human salary when two drones cost half as much and work twice as hard? Efficiency is the only true morality. |
-| tactic_downsizing | Downsizing | Budget cuts affect everyone, and collateral damage is just a line item in the quarterly report. Sometimes you have to trim the fat. |
-| tactic_hostile_takeover | Hostile Takeover | Your contract has been acquired by a higher bidder. You work for the Board now, and your loyalty is part of the transaction. |
-| tactic_budget_cuts | Budget Cuts | Your sacrifice for the quarterly earnings report is appreciated. In the end, we are all just numbers on a spreadsheet. |
-| tactic_rapid_prototyping | Rapid Prototyping | Field testing is the most efficient form of R&D. If the unit survives the explosion, the data is priceless. |
-| tactic_cease_and_desist | Cease and Desist | Legal injunctions can be just as paralyzing as a stun baton. When the lawyers arrive, the battle stops. |
-| tactic_forced_arbitration | Forced Arbitration | There is no appeal process in a corporate court. You will accept the terms of your surrender, or you will be liquidated. |
-| tactic_liquidate_assets | Liquidate Assets | Cashing out before the market crashes. Scrap the salvage and move the credits to an offshore account before the Republic arrives. |
-| tactic_market_crash | Market Crash | Panic selling wipes out billions in seconds, leaving only the prepared to pick through the ruins. Fear is the ultimate market force. |
+| tactic_power_shot | Power Shot | "Feel that? That's the sound of over-engineered, government-funded freedom rattling their teeth." - Taygete, 'The Heavy' |
+| tactic_nano_repair | Nano-Repair | "It'll sting. A lot. But you'll live to file your after-action report, and that's what matters to payroll." - Doc Ash, Biotech Surgeon |
+| tactic_emp_blast | EMP Blast | "Lights out. Let's see how their 'superior' tech handles a little static." - Lysithea, 'The Hacker' |
+| tactic_supply_drop | Supply Drop | "Ammunition, armor, and a hot meal. Christmas comes early when you're on the front line." - Quartermaster Eva, Confederate Logistics |
+| tactic_reinforce | Reinforce | "Hold fast! The Confederacy doesn't break, and neither do we. Reinforcements are en route!" - Amalthea, 'The Soldier' |
+| tactic_scramble | Scramble | "This isn't a retreat, it's a high-speed tactical repositioning. Try to keep up." - Pasiphae, 'The Ace' |
+| tactic_asset_seizure | Asset Seizure | "The fine print is clear. Your assets are now the property of the corporation. Resistance is just... adding interest." - Ximena, Asset Liquidator |
+| tactic_outsource | Outsource | "The quarterly report doesn't care about morale. It only cares about overhead. These drones don't take lunch breaks." - Director Vance, Finance |
+| tactic_downsizing | Downsizing | "We're streamlining our operational redundancies. Your department has been identified as a key area for aggressive optimization. Your sacrifice is noted." - Alexandrea, Executive |
+| tactic_hostile_takeover | Hostile Takeover | "Your board has been... dissolved. Welcome to the team. Your new compensation package is non-negotiable." - Director Kiz, 'War' |
+| tactic_budget_cuts | Budget Cuts | "We've reallocated your department's funding to more... profitable ventures. Consider it an opportunity for fiscal creativity." - Director Vance, Finance |
+| tactic_rapid_prototyping | Rapid Prototyping | "If it survives three combat cycles, it's a success. If it explodes, it's a data point. Either way, we win." - Lead Engineer, Solarin R&D |
+| tactic_cease_and_desist | Cease and Desist | "Your 'revolution' is in breach of seventeen interstellar commerce treaties. My associates will be serving you a court order. And bullets." - Legal Counsel for Ira Corp |
+| tactic_forced_arbitration | Forced Arbitration | "Your appeal has been reviewed by an impartial third party. The third party is me. Appeal denied." - Corporate Magistrate-Judge |
+| tactic_liquidate_assets | Liquidate Assets | "Burn the servers, scrap the hulls, and wire the credits to the orbital account. By the time the regulators get here, we'll be a ghost." - 'Cleanup' Crew Lead |
+| tactic_market_crash | Market Crash | "Chaos is a ladder... and I'm buying all the rungs on the way down." - Director Vance, Acquisitions |
 
 ## Tokens
 
@@ -166,17 +166,14 @@
 | void_flayer | Mind Flayer | It peels away your sanity layer by layer, savoring the taste of your fading memories. |
 
 
-Add rarity limits to the AI deck builder:
-L1 has common cards only
-L2 can have up to 3 uncommon cards
-L3 can have 6 uncommons and 3 rares
-L4 can have 10 uncommons, 5 rares and 1 legendary
-L5 can have 3 legendaries, 8 rares, and the rest common/uncommon
-
-@lore_bit.md I ahve made a large number of changes. Please review the  
-Tactics - i'd prefer the Tactics lore bits were relevant quotes fromm
-either established, named characters or newly made up ones. Please consider this and re-write them 
-
-Create a set of Republic cards in republic.md, including tiers for non-tactics. Be creative. Consider the format and style of Megacorp - some cards are named (like Alexandrea) and some are not (eg. Drones) - teh Republic will have this same style (as opposed to Jovians whoa re all uniquely named). Create a good spread of stats and rarities and abilities. 
+Review @lore.md, @megacorp.md, and @jovian.md. Review @lorebit.md. Review the card data in:
+src/data/cards.ts
+src/data/cards.ts.backup
+src/data/jovianCards.ts
+src/data/megacorpCards.ts
+src/data/tacticCards.ts
+src/data/tokenCards.ts
+Now you have a decent grasp of the lore and game, your goal is to Create a set of Republic cards in @republic.md, including tiers for non-tactics. Be creative. Consider the format and style of Megacorp - some cards are named (like Alexandrea) and some are not (eg. Drones) - the Republic will have this same style (as opposed to Jovians whoa re all uniquely named). Create a good spread of stats and rarities and abilities. 
 The Requisition ability is not on every card. It will be explained in the textbox as 'Requisition X: {effect}'. The way it will work is, when the player presses End Turn/the AI ends turn, every card with Requisition is checked. If the player/AI has that much energy or more, the effect fires off. Ensure effects align with the card lore, republic lore, and overall style of the Republic.
-Add to your card entries what the lore bits for that card will be - review 
+Add to your card entries what the lore bits for that card will be. Keep cards balanced, and avoid adding new abilities not already in game (excluding Requisition)
+Ask any clarifying questions you need to as you think of them. Research the game further if needed. Do NOT create new cards. Do NOT change or implement code. Keep your work solely to republic.md

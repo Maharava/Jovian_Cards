@@ -1,4 +1,4 @@
-import type { Card, MechanicPayload } from '../../types';
+import type { Card, MechanicPayload, Rarity } from '../../types';
 import { ENEMY_CARDS } from '../../data/cards';
 
 const isStringPayload = (payload: string | MechanicPayload | undefined): payload is string => {
@@ -136,6 +136,8 @@ export class DeckBuilder {
     const deck: Card[] = [];
     const tierCaps = this.getTierCaps(level);
     const tierCounts = { 1: 0, 2: 0, 3: 0 };
+    const rarityCaps = this.getRarityCaps(level);
+    const rarityCounts: Record<Rarity, number> = { Common: 0, Uncommon: 0, Rare: 0, Legendary: 0, NA: 0 };
 
     let attempts = 0;
     const maxAttempts = DECK_SIZE * 100;
@@ -150,8 +152,14 @@ export class DeckBuilder {
         continue;
       }
 
+      // Check rarity cap
+      if (rarityCaps[card.rarity] !== -1 && rarityCounts[card.rarity] >= rarityCaps[card.rarity]) {
+        continue;
+      }
+
       deck.push({ ...card });
       tierCounts[tier]++;
+      rarityCounts[card.rarity]++;
     }
 
     if (deck.length < DECK_SIZE) {
@@ -168,6 +176,8 @@ export class DeckBuilder {
     const deck: Card[] = [];
     const tierCaps = this.getTierCaps(level);
     const tierCounts = { 1: 0, 2: 0, 3: 0 };
+    const rarityCaps = this.getRarityCaps(level);
+    const rarityCounts: Record<Rarity, number> = { Common: 0, Uncommon: 0, Rare: 0, Legendary: 0, NA: 0 };
 
     // Fill each cost bucket
     for (const bucket of profile.costDistribution) {
@@ -176,7 +186,9 @@ export class DeckBuilder {
       for (let i = 0; i < bucket.count && deck.length < DECK_SIZE; i++) {
         const candidates = bucketPool.filter(c => {
           const tier = c.tier as 1 | 2 | 3;
-          return tierCaps[tier] === -1 || tierCounts[tier] < tierCaps[tier];
+          const tierOk = tierCaps[tier] === -1 || tierCounts[tier] < tierCaps[tier];
+          const rarityOk = rarityCaps[c.rarity] === -1 || rarityCounts[c.rarity] < rarityCaps[c.rarity];
+          return tierOk && rarityOk;
         });
 
         if (candidates.length === 0) break;
@@ -186,6 +198,7 @@ export class DeckBuilder {
 
         deck.push({ ...card });
         tierCounts[card.tier as 1 | 2 | 3]++;
+        rarityCounts[card.rarity]++;
       }
     }
 
@@ -193,7 +206,9 @@ export class DeckBuilder {
     while (deck.length < DECK_SIZE) {
       const candidates = pool.filter(c => {
         const tier = c.tier as 1 | 2 | 3;
-        return tierCaps[tier] === -1 || tierCounts[tier] < tierCaps[tier];
+        const tierOk = tierCaps[tier] === -1 || tierCounts[tier] < tierCaps[tier];
+        const rarityOk = rarityCaps[c.rarity] === -1 || rarityCounts[c.rarity] < rarityCaps[c.rarity];
+        return tierOk && rarityOk;
       });
 
       if (candidates.length === 0) {
@@ -206,6 +221,7 @@ export class DeckBuilder {
 
       deck.push({ ...card });
       tierCounts[card.tier as 1 | 2 | 3]++;
+      rarityCounts[card.rarity]++;
     }
 
     return deck;
@@ -307,6 +323,26 @@ export class DeckBuilder {
         return { 1: -1, 2: -1, 3: -1 }; // No restrictions
       default:
         return { 1: -1, 2: 0, 3: 0 };
+    }
+  }
+
+  /**
+   * Get rarity caps per level
+   */
+  private static getRarityCaps(level: number): Record<Rarity, number> {
+    switch (level) {
+      case 1:
+        return { Common: -1, Uncommon: 0, Rare: 0, Legendary: 0, NA: -1 };
+      case 2:
+        return { Common: -1, Uncommon: 3, Rare: 0, Legendary: 0, NA: -1 };
+      case 3:
+        return { Common: -1, Uncommon: 6, Rare: 3, Legendary: 0, NA: -1 };
+      case 4:
+        return { Common: -1, Uncommon: 10, Rare: 5, Legendary: 1, NA: -1 };
+      case 5:
+        return { Common: -1, Uncommon: -1, Rare: 8, Legendary: 3, NA: -1 };
+      default:
+        return { Common: -1, Uncommon: 0, Rare: 0, Legendary: 0, NA: -1 };
     }
   }
 }
