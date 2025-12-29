@@ -38,9 +38,13 @@ export const GameBoard: React.FC = () => {
 
     // AI Turn Trigger handled in gameStore/AI logic, but we need to ensure loop starts if phase changes
     useEffect(() => {
-        if (phase === 'enemy_turn') {
+        let cancelled = false;
+        if (phase === 'enemy_turn' && !cancelled) {
             useGameStore.getState().enemyAction();
         }
+        return () => {
+            cancelled = true;
+        };
     }, [phase]);
 
     // Animation Effect Helper

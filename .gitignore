@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Gemini specific (or similar AI tools)
+.claude/
+
+# Temporary files from refactoring or development
+docs/archive/
+overhaul.md
+public/assets/cards/setup_cosmetics.sh
+*.backup

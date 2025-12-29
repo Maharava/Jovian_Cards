@@ -7,17 +7,18 @@ export const FactionSelect: React.FC = () => {
   const startBattle = useGameStore(state => state.startBattle);
   const goToMainMenu = useGameStore(state => state.goToMainMenu);
   
-  const { credits, parts, bioSamples, psiCrystals } = useMetaStore();
+  const { credits, platinum, mossan } = useMetaStore();
 
   const [selectedFaction, setSelectedFaction] = useState<string | null>(null);
   const [difficulty, setDifficulty] = useState<number>(1);
 
   const FACTIONS = [
-    { id: 'Megacorp', name: 'Megacorp', desc: 'Drone Swarms & Automation', active: true, color: 'bg-slate-800 border-slate-500', drop: 'High: Tech Parts' },
+    { id: 'Confederate', name: 'Confederate', desc: 'Guerrilla Tactics & Elite Units', active: true, color: 'bg-green-900/50 border-green-800', drop: 'Balanced: Credits & Platinum' },
+    { id: 'Megacorp', name: 'Megacorp', desc: 'Drone Swarms & Automation', active: true, color: 'bg-slate-800 border-slate-500', drop: 'High: Platinum' },
     // VOIDBORN: Faction incomplete - hidden until implementation finished
-    { id: 'Voidborn', name: 'Voidborn', desc: 'Cosmic Horror & Madness [WIP]', active: false, color: 'bg-purple-900/50 border-purple-800', drop: 'High: Psi-Crystals' },
-    { id: 'Biohorror', name: 'Bio-Horror', desc: 'Evolution & Mutation', active: false, color: 'bg-red-900/50 border-red-800', drop: 'High: Bio-Samples' },
-    { id: 'Republic', name: 'Republic', desc: 'Order & Tactics', active: false, color: 'bg-blue-900/50 border-blue-800', drop: 'Balanced' },
+    { id: 'Voidborn', name: 'Voidborn', desc: 'Cosmic Horror & Madness [WIP]', active: false, color: 'bg-purple-900/50 border-purple-800', drop: 'High: Mossan' },
+    { id: 'Biohorror', name: 'Bio-Horror', desc: 'Evolution & Mutation', active: false, color: 'bg-red-900/50 border-red-800', drop: 'High: Mossan' },
+    { id: 'Republic', name: 'Republic', desc: 'Order & Tactics', active: false, color: 'bg-blue-900/50 border-blue-800', drop: 'High: Platinum & Credits' },
   ];
 
   const handleLaunch = () => {
@@ -50,16 +51,12 @@ export const FactionSelect: React.FC = () => {
             </div>
             <div className="w-px bg-white/20 h-full mx-2" />
             <div className="flex flex-col items-end">
-                <span className="text-[10px] text-slate-500 uppercase tracking-wider">Tech Parts</span>
-                <span className="text-xl text-emerald-400 font-bold">{parts} ⚙</span>
+                <span className="text-[10px] text-slate-500 uppercase tracking-wider">Platinum</span>
+                <span className="text-xl text-blue-400 font-bold">{platinum} 💎</span>
             </div>
             <div className="flex flex-col items-end">
-                <span className="text-[10px] text-slate-500 uppercase tracking-wider">Bio-Samples</span>
-                <span className="text-xl text-red-400 font-bold">{bioSamples} 🧬</span>
-            </div>
-            <div className="flex flex-col items-end">
-                <span className="text-[10px] text-slate-500 uppercase tracking-wider">Psi-Crystals</span>
-                <span className="text-xl text-purple-400 font-bold">{psiCrystals} 🔮</span>
+                <span className="text-[10px] text-slate-500 uppercase tracking-wider">Mossan</span>
+                <span className="text-xl text-purple-400 font-bold">{mossan} ⚛️</span>
             </div>
         </div>
       </div>

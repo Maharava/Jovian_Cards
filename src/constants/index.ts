@@ -2,10 +2,9 @@ import type { Faction, MechanicType, TriggerType } from '../types';
 
 // Factions
 export const FACTIONS = {
-  JOVIAN: 'Jovian',
+  CONFEDERATE: 'Confederate',
   REPUBLIC: 'Republic',
   MEGACORP: 'Megacorp',
-  CONFEDERATE: 'Confederate',
   VOIDBORN: 'Voidborn',
   BIO_HORROR: 'Bio-horror',
   NEUTRAL: 'Neutral',

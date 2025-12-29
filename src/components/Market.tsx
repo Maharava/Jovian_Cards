@@ -9,7 +9,7 @@ import { PACKS } from '../data/market';
 import { processPackOpening, type OpenPackResult } from '../logic/market';
 
 export const Market: React.FC = () => {
-    const { credits, spendCredits, collection, unlockCard, addResource, parts, bioSamples, psiCrystals, marketRotationFaction } = useMetaStore();
+    const { credits, platinum, mossan, spendCredits, spendPlatinum, collection, unlockCard, addResource, marketRotationFaction } = useMetaStore();
     const goToMainMenu = useGameStore(state => state.goToMainMenu);
     
     const [openedCards, setOpenedCards] = useState<OpenPackResult[] | null>(null);
@@ -17,17 +17,21 @@ export const Market: React.FC = () => {
 
     // Resolve Faction Pack Image safely
     const factionImage = useMemo(() => {
-        const pool = ALL_CARDS.filter(c => c.faction === marketRotationFaction && c.tier === 1 && c.type === 'unit');
+        const pool = ALL_CARDS.filter(c => c.faction === marketRotationFaction && c.type === 'unit' && c.rarity === 'Common');
         if (pool.length > 0) {
             const card = pool[Math.floor(Math.random() * pool.length)];
              const folder = FACTION_FOLDERS[card.faction] || 'neutral';
-             return `/assets/cards/${folder}/${card.baseAsset}_tier1.png`;
+             return `/assets/cards/${folder}/${card.baseAsset}.png`;
         }
         return '/assets/ui/requisition.png';
     }, [marketRotationFaction]);
 
     const handleBuy = (pack: typeof PACKS[0]) => {
-        if (!spendCredits(pack.cost)) return; 
+        // Check currency type and spend accordingly
+        const isPlatinum = pack.currency === 'platinum';
+        const canAfford = isPlatinum ? spendPlatinum(pack.cost) : spendCredits(pack.cost);
+
+        if (!canAfford) return;
 
         setIsOpening(true);
         setTimeout(() => {
@@ -70,12 +74,14 @@ export const Market: React.FC = () => {
                         <span className="text-2xl text-yellow-400 font-bold">{credits} ₡</span>
                     </div>
                     <div className="flex flex-col items-end">
-                        <span className="text-[10px] text-slate-500 uppercase tracking-wider">Scrap / Bio / Psi</span>
-                        <span className="text-sm text-slate-300">
-                            {parts} ⚙  {bioSamples} 🧬  {psiCrystals} 🔮
-                        </span>
+                        <span className="text-[10px] text-slate-500 uppercase tracking-wider">Platinum</span>
+                        <span className="text-2xl text-blue-400 font-bold">{platinum} 💎</span>
                     </div>
-                    <button 
+                    <div className="flex flex-col items-end">
+                        <span className="text-[10px] text-slate-500 uppercase tracking-wider">Mossan</span>
+                        <span className="text-2xl text-purple-400 font-bold">{mossan} ⚛️</span>
+                    </div>
+                    <button
                         onClick={goToMainMenu}
                         className="px-6 py-2 border border-slate-600 rounded hover:bg-slate-800 transition-colors"
                     >
@@ -153,17 +159,21 @@ export const Market: React.FC = () => {
                                 <li className="flex justify-between"><span>Legendary:</span> <span className="text-orange-500">{Math.round(pack.chances.Legendary * 100)}%</span></li>
                             </ul>
 
-                            <button 
+                            <button
                                 onClick={() => handleBuy(pack)}
-                                disabled={credits < pack.cost}
+                                disabled={pack.currency === 'platinum' ? platinum < pack.cost : credits < pack.cost}
                                 className={cn(
                                     "w-full py-3 font-bold text-lg rounded transition-all",
-                                    credits >= pack.cost 
-                                        ? "bg-yellow-600 hover:bg-yellow-500 text-black shadow-lg" 
-                                        : "bg-slate-800 text-slate-500 cursor-not-allowed"
+                                    pack.currency === 'platinum'
+                                        ? (platinum >= pack.cost
+                                            ? "bg-blue-600 hover:bg-blue-500 text-white shadow-lg"
+                                            : "bg-slate-800 text-slate-500 cursor-not-allowed")
+                                        : (credits >= pack.cost
+                                            ? "bg-yellow-600 hover:bg-yellow-500 text-black shadow-lg"
+                                            : "bg-slate-800 text-slate-500 cursor-not-allowed")
                                 )}
                             >
-                                {pack.cost} ₡
+                                {pack.cost} {pack.currency === 'platinum' ? '💎' : '₡'}
                             </button>
                         </div>
                     );

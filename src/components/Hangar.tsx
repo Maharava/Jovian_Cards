@@ -107,7 +107,7 @@ export const Hangar: React.FC = () => {
   const [inspectingCard, setInspectingCard] = useState<CardType | null>(null);
   const [hoveredDeckCard, setHoveredDeckCard] = useState<CardType | null>(null);
 
-  const factions = ['All', 'Jovian', 'Megacorp', 'Republic', 'Confederate', 'Voidborn', 'Bio-horror', 'Neutral'];
+  const factions = ['All', 'Confederate', 'Megacorp', 'Republic', 'Voidborn', 'Bio-horror', 'Neutral'];
   const rarities = ['All', 'Common', 'Uncommon', 'Rare', 'Legendary'];
   const energyCosts = ['All', '0', '1', '2', '3', '4', '5', '6', '7', '8+'];
 
@@ -136,12 +136,11 @@ export const Hangar: React.FC = () => {
           });
       });
 
-      // Sort alphabetically by base name, then by tier
+      // Sort alphabetically by name
       return stacks.sort((a, b) => {
-          const aBase = a.def.name.split(',')[0].trim();
-          const bBase = b.def.name.split(',')[0].trim();
-          if (aBase === bBase) return a.def.tier - b.def.tier;
-          return aBase.localeCompare(bBase);
+          const aName = a.def.name.split(',')[0].trim();
+          const bName = b.def.name.split(',')[0].trim();
+          return aName.localeCompare(bName);
       });
   }, [typeFilter, factionFilter, rarityFilter, energyFilter, collection]);
 
@@ -430,8 +429,7 @@ export const Hangar: React.FC = () => {
                                         {card.cost}
                                     </div>
                                     <span className="text-sm font-mono">
-                                        {card.name} 
-                                        {card.type === 'unit' && <span className="text-slate-500 text-xs ml-1">(T{card.tier})</span>}
+                                        {card.name}
                                     </span>
                                 </div>
                                 <span className="text-xs text-red-500 opacity-0 group-hover:opacity-100">REMOVE</span>

@@ -38,7 +38,7 @@ export const MECHANICS_DEFINITIONS: Record<string, { title: string; desc: string
   },
   decoy: {
     title: 'Decoy',
-    desc: 'Summon a Hologram token with Guard. Stats vary by tier.',
+    desc: 'Summon a Hologram token with Guard. Stats vary by variant.',
     icon: '🤖',
     color: 'bg-zinc-500 text-white'
   },

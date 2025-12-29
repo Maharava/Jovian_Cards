@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import type { Card as CardType } from '../types';
 import { cn } from '../lib/utils';
 import { MECHANICS_DEFINITIONS } from '../data/mechanics';
-import { getCardAssetPath, getFallbackAssetPath } from '../lib/assetUtils';
+import { getCardAssetPath, getFallbackAssetPath, FACTION_FOLDERS } from '../lib/assetUtils';
+import { useMetaStore } from '../store/metaStore';
 
 interface CardProps {
   card: CardType;
@@ -16,25 +17,29 @@ interface CardProps {
   tooltipPosition?: 'right' | 'top';
   layoutId?: string;
   artOnly?: boolean; // Hide all text overlays, show only art
+  previewAsset?: string; // Override asset for preview purposes (ignores active cosmetics)
 }
 
-const TIER_COLORS = {
-  1: 'border-slate-400 bg-slate-900/90',
-  2: 'border-blue-400 bg-blue-950/90',
-  3: 'border-yellow-400 bg-yellow-950/90',
+const RARITY_BORDERS = {
+  'Common': 'border-slate-500 bg-slate-900/90',
+  'Uncommon': 'border-blue-500 bg-blue-950/90',
+  'Rare': 'border-yellow-500 bg-yellow-950/90',
+  'Legendary': 'border-orange-500 bg-orange-950/90',
+  'NA': 'border-slate-600 bg-slate-900/90',
 };
 
-const TIER_TEXT_COLORS = {
-  1: 'text-slate-200',
-  2: 'text-blue-200',
-  3: 'text-yellow-200',
+const RARITY_TEXT = {
+  'Common': 'text-slate-300',
+  'Uncommon': 'text-blue-300',
+  'Rare': 'text-yellow-300',
+  'Legendary': 'text-orange-300',
+  'NA': 'text-slate-300',
 };
 
 const FACTION_COLORS: Record<string, string> = {
-  'Jovian': 'text-cyan-400',
+  'Confederate': 'text-emerald-400',
   'Republic': 'text-blue-500',
   'Megacorp': 'text-slate-400',
-  'Confederate': 'text-emerald-400',
   'Voidborn': 'text-purple-500',
   'Bio-horror': 'text-red-600',
   'Neutral': 'text-slate-500',
@@ -55,17 +60,22 @@ const RARITY_COLORS = {
   'NA': 'text-transparent'
 };
 
-export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, className, disabled, showTooltip = true, layoutId, artOnly = false }) => {
+export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, className, disabled, showTooltip = true, layoutId, artOnly = false, previewAsset }) => {
   const [tooltipPos, setTooltipPos] = React.useState<{ x: number; y: number } | null>(null);
   const cardRef = React.useRef<HTMLDivElement>(null);
+  const activeCosmetics = useMetaStore(state => state.activeCosmetics);
 
-  const imagePath = getCardAssetPath(card);
+  // Check if this card has an active cosmetic (unless we're in preview mode)
+  const activeCosmetic = !previewAsset ? activeCosmetics[card.id] : null;
+  const cosmetic = activeCosmetic ? card.cosmetics?.find(c => c.id === activeCosmetic) : null;
+
+  // Use preview asset first, then cosmetic asset if equipped, otherwise base asset
+  const assetName = previewAsset || cosmetic?.asset || card.baseAsset;
+  const folder = FACTION_FOLDERS[card.faction] || 'neutral';
+  const imagePath = `/assets/cards/${folder}/${assetName}.png`;
 
   // Mechanics Tooltips
   const activeMechanics = (card.mechanics || []).map(m => m.type).filter(m => MECHANICS_DEFINITIONS[m]);
-
-  // Generate tier dots with spacing - 4x larger
-  const tierDots = Array(card.tier).fill('●').join(' ');
 
   const handleMouseEnter = () => {
     if (cardRef.current && showTooltip && activeMechanics.length > 0) {
@@ -92,7 +102,7 @@ export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, classN
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className={cn(
         "relative w-48 h-64 flex flex-col select-none cursor-pointer shadow-lg group bg-black rounded-xl",
-        TIER_COLORS[card.tier],
+        RARITY_BORDERS[card.rarity],
         disabled && "opacity-50 grayscale cursor-not-allowed",
         className
       )}
@@ -124,7 +134,7 @@ export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, classN
                   {card.cost}
                 </div>
                 <div className="text-right">
-                  <div className={cn("text-xs font-mono uppercase tracking-wider font-bold drop-shadow-md", TIER_TEXT_COLORS[card.tier])}>
+                  <div className={cn("text-xs font-mono uppercase tracking-wider font-bold drop-shadow-md", RARITY_TEXT[card.rarity])}>
                     {card.name}
                   </div>
                   {card.title && (
@@ -163,7 +173,6 @@ export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, classN
                     <span className="text-sm">⚔</span> {card.stats.atk}
                   </div>
                   <div className="text-white text-[9px] flex items-center gap-1.5">
-                    <span className="text-white">{tierDots}</span>
                     <span className={cn("uppercase font-bold tracking-wide", FACTION_COLORS[card.faction] || 'text-white')}>
                       {card.faction}
                     </span>

@@ -20,20 +20,20 @@ const generateRarity = (chances: { Common: number; Uncommon: number; Rare: numbe
 const getCardPool = (rarity: Rarity, factionFilter?: string, isVoidborn = false, isBio = false): CardType[] => {
     // If a specific faction is forced (e.g. Faction Pack 50% chance)
     if (factionFilter) {
-        const factionPool = ALL_CARDS.filter(c => c.rarity === rarity && c.tier === 1 && c.faction === factionFilter);
+        const factionPool = ALL_CARDS.filter(c => c.rarity === rarity && c.faction === factionFilter);
         if (factionPool.length > 0) return factionPool;
         // Fallback to standard if empty?
     }
 
-    let pool = ALL_CARDS.filter(c => c.rarity === rarity && c.tier === 1);
+    let pool = ALL_CARDS.filter(c => c.rarity === rarity);
     
     if (isVoidborn) {
-        const voidPool = ALL_CARDS.filter(c => c.faction === 'Voidborn' && c.rarity === rarity && c.tier === 1);
+        const voidPool = ALL_CARDS.filter(c => c.faction === 'Voidborn' && c.rarity === rarity);
         if (voidPool.length > 0) return voidPool;
     } 
     
     if (isBio) {
-        const bioPool = ALL_CARDS.filter(c => c.faction === 'Bio-horror' && c.rarity === rarity && c.tier === 1);
+        const bioPool = ALL_CARDS.filter(c => c.faction === 'Bio-horror' && c.rarity === rarity);
         if (bioPool.length > 0) return bioPool;
     }
 
@@ -45,7 +45,7 @@ export const processPackOpening = (
     pack: PackDefinition,
     collection: Record<string, number>,
     unlockCard: (id: string) => void,
-    addResource: (type: 'parts' | 'bio' | 'psi', amount: number) => void,
+    addResource: (type: 'credits' | 'platinum' | 'mossan', amount: number) => void,
     currentRotationFaction?: string
 ): OpenPackResult[] => {
     const results: OpenPackResult[] = [];
@@ -89,22 +89,16 @@ export const processPackOpening = (
 
         const card = pool[Math.floor(Math.random() * pool.length)];
         const owned = collection[card.id] || 0;
-        
-        if (owned >= 3) {
-            // Convert to parts
-            let partType = 'parts'; 
-            if (card.subtype === 'Biological') partType = 'bio';
-            if (card.subtype === 'Psionic') partType = 'psi';
-            if (card.faction === 'Voidborn') partType = 'psi'; 
-            if (card.faction === 'Bio-horror') partType = 'bio';
 
+        if (owned >= 3) {
+            // Convert duplicates to platinum (cosmetic currency)
             let amount = 1;
             if (card.rarity === 'Uncommon') amount = 2;
-            if (card.rarity === 'Rare') amount = 3;
-            if (card.rarity === 'Legendary') amount = 5;
+            if (card.rarity === 'Rare') amount = 5;
+            if (card.rarity === 'Legendary') amount = 10;
 
-            addResource(partType as any, amount);
-            results.push({ card, isNew: false, partsGained: { type: partType, amount } });
+            addResource('platinum', amount);
+            results.push({ card, isNew: false, partsGained: { type: 'platinum', amount } });
         } else {
             unlockCard(card.id);
             results.push({ card, isNew: true });

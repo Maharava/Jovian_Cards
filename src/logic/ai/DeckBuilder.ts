@@ -62,11 +62,17 @@ export class DeckBuilder {
     const pool = this.getCardPool(faction, level);
 
     if (pool.length === 0) {
-      console.warn(`No cards available for faction ${faction} at level ${level}`);
-      return [];
+      console.error(`No cards available for faction ${faction} at level ${level}`);
+      console.error(`CRITICAL: Cannot generate AI deck - falling back to full card pool`);
+      // FIXED: Fallback to all cards of the faction to prevent empty deck crash
+      const fallbackPool = ALL_CARDS.filter(c => c.faction === faction && c.type === 'unit');
+      if (fallbackPool.length === 0) {
+        throw new Error(`No unit cards found for faction ${faction} - game cannot start`);
+      }
+      return this.randomDeck(fallbackPool, level);
     }
 
-    // L1-L2: Pure random with tier restrictions
+    // L1-L2: Pure random with rarity restrictions
     if (level <= 2) {
       return this.randomDeck(pool, level);
     }
@@ -80,26 +86,25 @@ export class DeckBuilder {
 
   /**
    * Filter card pool based on level restrictions
+   * Now uses rarity-based progression instead of tier-based
    */
   private static getCardPool(faction: string, level: number): Card[] {
     let pool = ENEMY_CARDS.filter(c => c.faction === faction || c.faction === 'Megacorp');
 
     switch (level) {
       case 1:
-        // L1: Tier 1 only, cost <= 3
-        return pool.filter(c => c.tier === 1 && c.cost <= 3);
+        // L1: Common only, cost <= 3
+        return pool.filter(c => c.rarity === 'Common' && c.cost <= 3);
       case 2:
-        // L2: T1 + T2
-        return pool.filter(c => c.tier <= 2);
+        // L2: Common + Uncommon
+        return pool.filter(c => c.rarity === 'Common' || c.rarity === 'Uncommon');
       case 3:
-        // L3: All tiers
-        return pool;
       case 4:
       case 5:
-        // L4-L5: All tiers
+        // L3+: All rarities available
         return pool;
       default:
-        return pool.filter(c => c.tier === 1);
+        return pool.filter(c => c.rarity === 'Common');
     }
   }
 
@@ -134,10 +139,8 @@ export class DeckBuilder {
    */
   private static randomDeck(pool: Card[], level: number): Card[] {
     const deck: Card[] = [];
-    const tierCaps = this.getTierCaps(level);
-    const tierCounts = { 1: 0, 2: 0, 3: 0 };
     const rarityCaps = this.getRarityCaps(level);
-    const rarityCounts: Record<Rarity, number> = { Common: 0, Uncommon: 0, Rare: 0, Legendary: 0, NA: 0 };
+    const rarityCounts: Record<Rarity, number> = { Common: 0, Uncommon: 0, Rare: 0, Legendary: 0 };
 
     let attempts = 0;
     const maxAttempts = DECK_SIZE * 100;
@@ -145,12 +148,6 @@ export class DeckBuilder {
     while (deck.length < DECK_SIZE && attempts < maxAttempts) {
       attempts++;
       const card = pool[Math.floor(Math.random() * pool.length)];
-      const tier = card.tier as 1 | 2 | 3;
-
-      // Check tier cap
-      if (tierCaps[tier] !== -1 && tierCounts[tier] >= tierCaps[tier]) {
-        continue;
-      }
 
       // Check rarity cap
       if (rarityCaps[card.rarity] !== -1 && rarityCounts[card.rarity] >= rarityCaps[card.rarity]) {
@@ -158,12 +155,22 @@ export class DeckBuilder {
       }
 
       deck.push({ ...card });
-      tierCounts[tier]++;
       rarityCounts[card.rarity]++;
     }
 
+    // FIXED: If deck is incomplete due to restrictions, fill it without restrictions
     if (deck.length < DECK_SIZE) {
-      console.warn(`DeckBuilder: Could only generate ${deck.length}/${DECK_SIZE} cards for level ${level}`);
+      console.warn(`DeckBuilder: Could only generate ${deck.length}/${DECK_SIZE} cards with restrictions`);
+      console.warn(`Filling remaining ${DECK_SIZE - deck.length} slots without rarity caps`);
+
+      while (deck.length < DECK_SIZE && pool.length > 0) {
+        const card = pool[Math.floor(Math.random() * pool.length)];
+        deck.push({ ...card });
+      }
+
+      if (deck.length < DECK_SIZE) {
+        console.error(`CRITICAL: Still incomplete deck (${deck.length}/${DECK_SIZE}) - pool exhausted`);
+      }
     }
 
     return deck;
@@ -174,10 +181,8 @@ export class DeckBuilder {
    */
   private static smartDraft(pool: Card[], profile: DeckProfile, level: number): Card[] {
     const deck: Card[] = [];
-    const tierCaps = this.getTierCaps(level);
-    const tierCounts = { 1: 0, 2: 0, 3: 0 };
     const rarityCaps = this.getRarityCaps(level);
-    const rarityCounts: Record<Rarity, number> = { Common: 0, Uncommon: 0, Rare: 0, Legendary: 0, NA: 0 };
+    const rarityCounts: Record<Rarity, number> = { Common: 0, Uncommon: 0, Rare: 0, Legendary: 0 };
 
     // Fill each cost bucket
     for (const bucket of profile.costDistribution) {
@@ -185,10 +190,8 @@ export class DeckBuilder {
 
       for (let i = 0; i < bucket.count && deck.length < DECK_SIZE; i++) {
         const candidates = bucketPool.filter(c => {
-          const tier = c.tier as 1 | 2 | 3;
-          const tierOk = tierCaps[tier] === -1 || tierCounts[tier] < tierCaps[tier];
           const rarityOk = rarityCaps[c.rarity] === -1 || rarityCounts[c.rarity] < rarityCaps[c.rarity];
-          return tierOk && rarityOk;
+          return rarityOk;
         });
 
         if (candidates.length === 0) break;
@@ -197,7 +200,6 @@ export class DeckBuilder {
         const card = this.pickWeighted(scored);
 
         deck.push({ ...card });
-        tierCounts[card.tier as 1 | 2 | 3]++;
         rarityCounts[card.rarity]++;
       }
     }
@@ -205,10 +207,8 @@ export class DeckBuilder {
     // Fill remaining slots if any
     while (deck.length < DECK_SIZE) {
       const candidates = pool.filter(c => {
-        const tier = c.tier as 1 | 2 | 3;
-        const tierOk = tierCaps[tier] === -1 || tierCounts[tier] < tierCaps[tier];
         const rarityOk = rarityCaps[c.rarity] === -1 || rarityCounts[c.rarity] < rarityCaps[c.rarity];
-        return tierOk && rarityOk;
+        return rarityOk;
       });
 
       if (candidates.length === 0) {
@@ -220,7 +220,6 @@ export class DeckBuilder {
       const card = this.pickWeighted(scored);
 
       deck.push({ ...card });
-      tierCounts[card.tier as 1 | 2 | 3]++;
       rarityCounts[card.rarity]++;
     }
 
@@ -239,10 +238,7 @@ export class DeckBuilder {
     return candidates.map(card => {
       let score = 1.0;
 
-      // Base score from tier/rarity
-      if (card.tier === 3) score += 2.0;
-      else if (card.tier === 2) score += 1.0;
-
+      // Base score from rarity (replaces tier scoring)
       if (card.rarity === 'Legendary') score += 3.0;
       else if (card.rarity === 'Rare') score += 1.5;
       else if (card.rarity === 'Uncommon') score += 0.5;
@@ -307,42 +303,22 @@ export class DeckBuilder {
   }
 
   /**
-   * Get tier caps per level
-   */
-  private static getTierCaps(level: number): Record<1 | 2 | 3, number> {
-    switch (level) {
-      case 1:
-        return { 1: -1, 2: 0, 3: 0 }; // Unlimited T1, no T2/T3
-      case 2:
-        return { 1: -1, 2: 4, 3: 0 }; // Unlimited T1, max 4 T2, no T3
-      case 3:
-        return { 1: -1, 2: -1, 3: 5 }; // Unlimited T1/T2, max 5 T3
-      case 4:
-        return { 1: -1, 2: -1, 3: 10 }; // Unlimited T1/T2, max 10 T3
-      case 5:
-        return { 1: -1, 2: -1, 3: -1 }; // No restrictions
-      default:
-        return { 1: -1, 2: 0, 3: 0 };
-    }
-  }
-
-  /**
-   * Get rarity caps per level
+   * Get rarity caps per level (replaces tier caps)
    */
   private static getRarityCaps(level: number): Record<Rarity, number> {
     switch (level) {
       case 1:
-        return { Common: -1, Uncommon: 0, Rare: 0, Legendary: 0, NA: -1 };
+        return { Common: -1, Uncommon: 0, Rare: 0, Legendary: 0 };
       case 2:
-        return { Common: -1, Uncommon: 3, Rare: 0, Legendary: 0, NA: -1 };
+        return { Common: -1, Uncommon: 3, Rare: 0, Legendary: 0 };
       case 3:
-        return { Common: -1, Uncommon: 6, Rare: 3, Legendary: 0, NA: -1 };
+        return { Common: -1, Uncommon: 6, Rare: 3, Legendary: 0 };
       case 4:
-        return { Common: -1, Uncommon: 10, Rare: 5, Legendary: 1, NA: -1 };
+        return { Common: -1, Uncommon: 10, Rare: 5, Legendary: 1 };
       case 5:
-        return { Common: -1, Uncommon: -1, Rare: 8, Legendary: 3, NA: -1 };
+        return { Common: -1, Uncommon: -1, Rare: 8, Legendary: 3 };
       default:
-        return { Common: -1, Uncommon: 0, Rare: 0, Legendary: 0, NA: -1 };
+        return { Common: -1, Uncommon: 0, Rare: 0, Legendary: 0 };
     }
   }
 }

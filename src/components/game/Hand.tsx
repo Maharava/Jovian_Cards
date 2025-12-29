@@ -2,33 +2,13 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '../Card';
 import type { PlayerState, Card as CardType } from '../../types';
+import { getCardCost } from '../../lib/cardHelpers';
 
 interface HandProps {
     player: PlayerState;
     phase: string;
     onPlayCard: (card: CardType) => void;
     onInspectUnit: (card: CardType) => void;
-}
-
-/**
- * Calculate actual card cost accounting for cost_reduction mechanics
- * Matches logic in gameStore.ts:getCardCost()
- */
-function getActualCost(card: CardType, board: PlayerState['board']): number {
-    let cost = card.cost;
-
-    // Check for cost_reduction mechanics (e.g., Corp Technician T2/T3)
-    const hasCostReduction = card.mechanics?.some(m => m.type === 'cost_reduction');
-    if (hasCostReduction) {
-        const costReductionMechanic = card.mechanics?.find(m => m.type === 'cost_reduction');
-        if (costReductionMechanic?.payload === 'count_megacorp') {
-            const megacorpCount = board.filter(u => u.faction === 'Megacorp').length;
-            const reduction = (costReductionMechanic.value || 1) * megacorpCount;
-            cost = Math.max(0, cost - reduction);
-        }
-    }
-
-    return cost;
 }
 
 export const Hand: React.FC<HandProps> = ({ player, phase, onPlayCard, onInspectUnit }) => {
@@ -38,7 +18,7 @@ export const Hand: React.FC<HandProps> = ({ player, phase, onPlayCard, onInspect
                 <AnimatePresence mode='popLayout'>
                     {player.hand.map((card, index) => {
                         // Calculate actual cost with reductions
-                        const actualCost = getActualCost(card, player.board);
+                        const actualCost = getCardCost(card, player.board);
 
                         // Create modified card with actual cost for display
                         const displayCard = actualCost !== card.cost

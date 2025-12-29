@@ -11,37 +11,46 @@ interface MetaState {
   collection: Record<string, number>; // Card ID -> Quantity owned
   savedDecks: SavedDeck[];
   activeDeckId: string | null;
-  marketRotationFaction: string; // New: Tracks the current faction for the Faction Pack
-  
+  marketRotationFaction: string; // Tracks the current faction for the Faction Pack
+
   // Resources
   credits: number;
-  parts: number;
-  bioSamples: number;
-  psiCrystals: number;
-  
+  platinum: number;
+  mossan: number;
+
+  // Cosmetics
+  unlockedCosmetics: Record<string, string[]>; // Card ID -> Array of unlocked cosmetic IDs
+  activeCosmetics: Record<string, string>; // Card ID -> Active cosmetic ID
+
+  // Actions
   unlockCard: (id: string, amount?: number) => void;
   saveDeck: (deck: SavedDeck) => void;
   deleteDeck: (id: string) => void;
   setActiveDeck: (id: string) => void;
   resetProgress: () => void;
-  rotateMarketFaction: () => void; // New action
-  
-  addResource: (type: 'credits' | 'parts' | 'bio' | 'psi', amount: number) => void;
-  spendCredits: (amount: number) => boolean; // Returns success
-  upgradeCard: (currentId: string, nextId: string, cost: number, resourceType: 'parts' | 'bio' | 'psi') => boolean;
+  rotateMarketFaction: () => void;
+
+  addResource: (type: 'credits' | 'platinum' | 'mossan', amount: number) => void;
+  spendCredits: (amount: number) => boolean;
+  spendPlatinum: (amount: number) => boolean;
+  spendMossan: (amount: number) => boolean;
+
+  // Cosmetic actions
+  unlockCosmetic: (cardId: string, cosmeticId: string) => void;
+  setActiveCosmetic: (cardId: string, cosmeticId: string) => void;
 }
 
-// Initial unlocks: Strictly match the starting deck
+// Initial unlocks: Strictly match the starting deck (no tiers)
 const DEFAULT_DECK_CARDS = [
-    'lysithea_t1', 'lysithea_t1',
-    'himalia_t1', 'himalia_t1',
-    'leda_t1', 'leda_t1',
-    'amalthea_t1', 'amalthea_t1',
-    'kore_t1', 'kore_t1',
+    'lysithea', 'lysithea',
+    'himalia', 'himalia',
+    'leda', 'leda',
+    'amalthea', 'amalthea',
+    'kore', 'kore',
     'tactic_nano_repair', 'tactic_nano_repair',
     'tactic_reinforce', 'tactic_reinforce',
-    'euporie_t1',
-    'callisto_t1',
+    'euporie',
+    'callisto',
     'tactic_power_shot', 'tactic_power_shot',
     'tactic_scramble',
     'tactic_outsource'
@@ -64,15 +73,17 @@ export const useMetaStore = create<MetaState>()(
           }
       ],
       activeDeckId: 'default_vanguard',
-      marketRotationFaction: 'Jovian',
-      
+      marketRotationFaction: 'Confederate',
+
       credits: 1000, // Starter credits
-      parts: 0,
-      bioSamples: 0,
-      psiCrystals: 0,
+      platinum: 0,
+      mossan: 0,
+
+      unlockedCosmetics: {},
+      activeCosmetics: {},
 
       rotateMarketFaction: () => set(() => {
-          const options = ['Jovian', 'Megacorp']; // Expandable list
+          const options = ['Confederate', 'Megacorp', 'Republic']; // Expandable list
           const next = options[Math.floor(Math.random() * options.length)];
           return { marketRotationFaction: next };
       }),
@@ -122,13 +133,12 @@ export const useMetaStore = create<MetaState>()(
       addResource: (type, amount) => set((state) => {
           switch(type) {
               case 'credits': return { credits: state.credits + amount };
-              case 'parts': return { parts: state.parts + amount };
-              case 'bio': return { bioSamples: state.bioSamples + amount };
-              case 'psi': return { psiCrystals: state.psiCrystals + amount };
+              case 'platinum': return { platinum: state.platinum + amount };
+              case 'mossan': return { mossan: state.mossan + amount };
               default: return {};
           }
       }),
-      
+
       spendCredits: (amount) => {
           const { credits } = get();
           if (credits >= amount) {
@@ -138,60 +148,61 @@ export const useMetaStore = create<MetaState>()(
           return false;
       },
 
-      upgradeCard: (currentId, nextId, cost, resourceType) => {
-          const state = get();
-          const currentCount = state.collection[currentId] || 0;
-          
-          // Check Resources
-          let resourceAvailable = 0;
-          if (resourceType === 'parts') resourceAvailable = state.parts;
-          if (resourceType === 'bio') resourceAvailable = state.bioSamples;
-          if (resourceType === 'psi') resourceAvailable = state.psiCrystals;
-
-          if (currentCount > 0 && resourceAvailable >= cost) {
-              // Deduct Resource
-              const updates: Partial<MetaState> = {};
-              if (resourceType === 'parts') updates.parts = state.parts - cost;
-              if (resourceType === 'bio') updates.bioSamples = state.bioSamples - cost;
-              if (resourceType === 'psi') updates.psiCrystals = state.psiCrystals - cost;
-
-              // Update Collection
-              const newCollection = { ...state.collection };
-              newCollection[currentId] = currentCount - 1;
-              if (newCollection[currentId] === 0) delete newCollection[currentId];
-              
-              newCollection[nextId] = Math.min(3, (newCollection[nextId] || 0) + 1);
-
-              // Update Saved Decks to reflect upgrade
-              const newSavedDecks = state.savedDecks.map(deck => {
-                  const cardIds = [...deck.cardIds];
-                  const index = cardIds.indexOf(currentId);
-                  if (index !== -1) {
-                      cardIds[index] = nextId;
-                  }
-                  return { ...deck, cardIds };
-              });
-
-              set({ ...updates, collection: newCollection, savedDecks: newSavedDecks });
+      spendPlatinum: (amount) => {
+          const { platinum } = get();
+          if (platinum >= amount) {
+              set({ platinum: platinum - amount });
               return true;
           }
           return false;
       },
 
-      resetProgress: () => set({ 
-          collection: INITIAL_COLLECTION, 
-          savedDecks: [{ 
-              id: 'default_vanguard', 
-              name: 'Vanguard Standard', 
-              cardIds: DEFAULT_DECK_CARDS 
+      spendMossan: (amount) => {
+          const { mossan } = get();
+          if (mossan >= amount) {
+              set({ mossan: mossan - amount });
+              return true;
+          }
+          return false;
+      },
+
+      unlockCosmetic: (cardId, cosmeticId) => set((state) => {
+          const unlocked = state.unlockedCosmetics[cardId] || [];
+          if (unlocked.includes(cosmeticId)) return state; // Already unlocked
+
+          return {
+              unlockedCosmetics: {
+                  ...state.unlockedCosmetics,
+                  [cardId]: [...unlocked, cosmeticId]
+              }
+          };
+      }),
+
+      setActiveCosmetic: (cardId, cosmeticId) => set((state) => ({
+          activeCosmetics: {
+              ...state.activeCosmetics,
+              [cardId]: cosmeticId
+          }
+      })),
+
+      resetProgress: () => set({
+          collection: INITIAL_COLLECTION,
+          savedDecks: [{
+              id: 'default_vanguard',
+              name: 'Vanguard Standard',
+              cardIds: DEFAULT_DECK_CARDS
           }],
           activeDeckId: 'default_vanguard',
-          marketRotationFaction: 'Jovian',
-          credits: 1000, parts: 0, bioSamples: 0, psiCrystals: 0
+          marketRotationFaction: 'Confederate',
+          credits: 1000,
+          platinum: 0,
+          mossan: 0,
+          unlockedCosmetics: {},
+          activeCosmetics: {}
       })
     }),
     {
-      name: 'jovian_meta_storage_v4',
+      name: 'jovian_meta_storage_v5', // Incremented version to invalidate old saves
     }
   )
 );

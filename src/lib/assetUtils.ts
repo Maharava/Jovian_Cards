@@ -1,27 +1,21 @@
 import type { Card, Faction } from '../types';
 
 export const FACTION_FOLDERS: Record<Faction, string> = {
-  'Jovian': 'jovian',
+  'Confederate': 'confederate',
   'Megacorp': 'megacorp',
   'Voidborn': 'voidborn',
   'Bio-horror': 'biohorror',
   'Republic': 'republic',
-  'Confederate': 'neutral',
   'Neutral': 'neutral',
 };
 
 /**
- * Resolves card asset path with tier suffix
- * - Tactics and tokens (rarity='NA') use base asset without tier suffix
- * - Regular units use _tierN suffix
+ * Resolves card asset path (no tier suffixes - consolidated system)
+ * All cards use their baseAsset directly without tier modifications
  */
 export const getCardAssetPath = (card: Card): string => {
-  const assetSuffix = (card.type === 'tactic' || card.rarity === 'NA')
-    ? ''
-    : (card.tier === 1 ? '_tier1' : `_tier${card.tier}`);
-
   const folder = FACTION_FOLDERS[card.faction] || 'neutral';
-  return `/assets/cards/${folder}/${card.baseAsset}${assetSuffix}.png`;
+  return `/assets/cards/${folder}/${card.baseAsset}.png`;
 };
 
 /**
@@ -29,10 +23,8 @@ export const getCardAssetPath = (card: Card): string => {
  */
 export const getFallbackAssetPath = (
   baseAsset: string,
-  faction: Faction,
-  isTacticOrToken: boolean
+  faction: Faction
 ): string => {
-  const fallbackSuffix = isTacticOrToken ? '' : '_tier1';
   const folder = FACTION_FOLDERS[faction] || 'neutral';
-  return `/assets/cards/${folder}/${baseAsset}${fallbackSuffix}.png`;
+  return `/assets/cards/${folder}/${baseAsset}.png`;
 };

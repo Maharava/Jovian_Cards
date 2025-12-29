@@ -1,5 +1,4 @@
 export type CardType = 'unit' | 'tactic';
-export type CardTier = 1 | 2 | 3;
 export type CardSubtype = 'Cybernetic' | 'Biological' | 'Psionic';
 
 export type MechanicType = 
@@ -47,8 +46,8 @@ export type MechanicType =
 
 export type TriggerType = 'onPlay' | 'onDeath' | 'onTurnEnd' | 'onTurnStart' | 'passive' | 'constant' | 'onDraw' | 'onAttack' | 'onDamageTaken';
 
-export type Faction = 'Jovian' | 'Republic' | 'Megacorp' | 'Confederate' | 'Voidborn' | 'Bio-horror' | 'Neutral';
-export type Rarity = 'Common' | 'Uncommon' | 'Rare' | 'Legendary' | 'NA';
+export type Faction = 'Confederate' | 'Republic' | 'Megacorp' | 'Voidborn' | 'Bio-horror' | 'Neutral';
+export type Rarity = 'Common' | 'Uncommon' | 'Rare' | 'Legendary';
 
 // Typed payload structures for type safety
 export interface MechanicPayload {
@@ -91,12 +90,21 @@ export interface ResolutionResult {
     notifications?: Array<{ id: string; unitName: string; text: string; timestamp: number }>;
 }
 
+export interface CosmeticVariant {
+  id: string;
+  name: string;
+  asset: string;
+  unlockCost?: {
+    currency: 'platinum' | 'mossan';
+    amount: number;
+  };
+}
+
 export interface Card {
   id: string;
   name: string;
-  title?: string; // Title for this tier (e.g., "Researcher", "The Biologist")
+  title?: string; // Title for the card (e.g., "The Biologist")
   type: CardType;
-  tier: CardTier;
   rarity: Rarity;
   subtype?: CardSubtype;
   cost: number;
@@ -114,8 +122,10 @@ export interface Card {
   faction: Faction;
   // Mechanics for logic
   mechanics: Mechanic[];
-  // Asset path (e.g. 'elara') - we will append _tierX.png
+  // Asset path (e.g. 'elara') - no tier suffix
   baseAsset: string;
+  // Cosmetic variants for this card
+  cosmetics?: CosmeticVariant[];
   // Unique Instance ID (runtime only, for hand management)
   uid?: string;
 }
@@ -185,7 +195,7 @@ export interface GameState {
   phase: 'main_menu' | 'faction_select' | 'player_turn' | 'enemy_turn' | 'game_over' | 'victory' | 'hangar' | 'market' | 'workshop' | 'settings';
   winner?: 'player' | 'enemy';
   scoutedCards?: Card[] | null; // For scout abilities (can show multiple cards)
-  lastLoot?: { credits: number, parts: number, bio: number, psi: number } | null; // For Victory Screen
+  lastLoot?: { credits: number, platinum: number, mossan: number } | null; // For Victory Screen
   
   // Animation State
   eventQueue: GameEvent[];

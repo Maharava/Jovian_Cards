@@ -3,8 +3,7 @@ import type { AIMove, SimulationResult } from './types';
 import { deepCloneState } from './utils';
 import { MechanicHandler } from '../mechanics';
 import { MAX_BOARD_SLOTS } from '../../config/constants';
-
-const generateId = () => Math.random().toString(36).substr(2, 9);
+import { generateId } from '../../lib/utils';
 
 export class Simulator {
   /**

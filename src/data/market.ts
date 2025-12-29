@@ -2,6 +2,7 @@ export interface PackDefinition {
     id: string;
     name: string;
     cost: number;
+    currency?: 'credits' | 'platinum'; // Default: credits
     count: number;
     chances: { Common: number; Uncommon: number; Rare: number; Legendary: number };
     desc: string;
@@ -29,13 +30,14 @@ export const PACKS: PackDefinition[] = [
         desc: 'High-grade military assets.', 
         img: 'requisition.png' 
     },
-    { 
-        id: 'faction', 
+    {
+        id: 'faction',
         name: 'Faction Supply', // Name will be dynamic in UI probably? Or just "Faction Supply"
-        cost: 300, 
-        count: 5, 
-        chances: { Common: 0.45, Uncommon: 0.40, Rare: 0.12, Legendary: 0.03 }, 
-        desc: 'Supplies from a specific sector.', 
+        cost: 300,
+        currency: 'platinum',
+        count: 5,
+        chances: { Common: 0.45, Uncommon: 0.40, Rare: 0.12, Legendary: 0.03 },
+        desc: 'Supplies from a specific sector.',
         img: 'requisition.png', // Placeholder, UI will override
         isFaction: true
     },

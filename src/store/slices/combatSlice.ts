@@ -1,21 +1,12 @@
 import type { StateCreator } from 'zustand';
 import type { UnitInstance } from '../../types';
-import { calculateLoot, generateId } from '../../lib/utils';
+import { generateId } from '../../lib/utils';
+import { calculateLoot } from '../../config/economy';
+import { getMechanicDescription } from '../../lib/mechanicHelpers';
 import { useMetaStore } from '../metaStore';
 import { ALL_CARDS } from '../../data/cards';
 import { MechanicHandler } from '../../logic/mechanics';
 import { DELAYS } from '../../config/constants';
-
-function getMechanicDescription(mechanic: import('../../types').Mechanic, cardDef: import('../../types').Card | undefined): string {
-  if (!cardDef?.text) return '';
-  const lines = cardDef.text.split('.');
-  for (const line of lines) {
-    if (mechanic.trigger === 'onTurnStart' && line.includes('Turn Start')) return line.trim();
-    if (mechanic.trigger === 'onTurnEnd' && line.includes('Turn End')) return line.trim();
-    if (mechanic.trigger === 'onPlay' && line.includes('OnPlay')) return line.trim();
-  }
-  return cardDef.text.split('.')[0];
-}
 
 export interface CombatSlice {
   // State
@@ -70,12 +61,11 @@ export const createCombatSlice: StateCreator<
     if (newHp <= 0) {
       newHp = 0;
       phase = 'victory';
-      const loot = calculateLoot(s.run.difficulty, s.enemy.faction || 'Republic');
+      const loot = calculateLoot(s.run.difficulty);
       const meta = useMetaStore.getState();
       meta.addResource('credits', loot.credits);
-      meta.addResource('parts', loot.parts);
-      meta.addResource('bio', loot.bio);
-      meta.addResource('psi', loot.psi);
+      meta.addResource('platinum', loot.platinum);
+      meta.addResource('mossan', loot.mossan);
       return { enemy: { ...s.enemy, hp: newHp }, phase, lastLoot: loot };
     }
     return { enemy: { ...s.enemy, hp: newHp } };

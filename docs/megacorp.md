@@ -1,4 +1,4 @@
-# Megacorp Faction File
+# Megacorp Faction File (CONSOLIDATED - RARITY-BASED)
 
 ## Overview
 **The Megacorps** represent the raw industrial and capitalist might of the billionaire class. Technically, they are chartered entities within the Republic, but they operate in the massive blind spots created by the Republic's crippling bureaucracy.
@@ -58,95 +58,151 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 
 ---
 
-## Planned Card Roster
+## Card Roster (18 Unique Cards)
 
-### Units (15 Heroes x 3 Tiers = 45 Cards)
+### COMMON UNITS (6 Cards)
 
-#### Common (The Workforce)
-*   **Mining Drone** (Mech - Swarm)
-    *   T1 Automated Miner (1 Cost, 1/1): No ability.
-    *   T2 Rapid Extraction Drone (1 Cost, 2/2): **Rush**.
-    *   T3 Explosive Miner (1 Cost, 3/3): **Rush**. Death: Deal 1 dmg to random enemy.
-*   **Security Bot** (Mech - Defense)
-    *   T1 Security Bot (2 Cost, 1/2): **Guard**.
-    *   T2 Riot Control Bot (2 Cost, 2/3): **Guard**.
-    *   T3 Pacifier Unit (2 Cost, 3/4): **Guard**. When attacking, **Stun** target for 1 turn.
-*   **Corp Guard** (Bio - Meat Shield)
-    *   T1 Security Enforcer (2 Cost, 1/2): **Guard**.
-    *   T2 Tactical Response Unit (2 Cost, 2/3): **Guard**.
-    *   T3 Site Warden (2 Cost, 3/2): **Guard**. **Rally** (Buff allies +1 HP/MaxHP).
-*   **K9X Unit** (Mech - Fast Attack)
-    *   T1 Cyber-Hound (2 Cost, 2/1): **Rush**.
-    *   T2 Hunter-Killer (2 Cost, 3/2): **Rush**.
-    *   T3 Alpha (3 Cost, 5/2): **Rush**. **Double Attack**.
-*   **Loader** (Mech - Heavy)
-    *   T1 Cargo Loader (3 Cost, 2/6): **Slow** (Attacks every other turn).
-    *   T2 Industrial Mech (3 Cost, 3/7): **Slow**.
-    *   T3 Payload Hauler (3 Cost, 4/9): **Slow**. **Guard**.
-*   **Doc Ash** (Bio - Support)
-    *   T1 Field Medic (2 Cost, 1/3): Turn End: **Heal 1** (Random Ally).
-    *   T2 Paramedic (2 Cost, 1/4): Turn End: **Heal 2**. If Megacorp, heal 3 instead.
-    *   T3 Biotech Surgeon (2 Cost, 2/4): Turn End: **Heal 3**. If Megacorp, also grant +0/+1.
+#### Mining Drone - Common
+- **Cost:** 1 | **Stats:** 1/1 | **Subtype:** Cybernetic
+- **Ability:** (None - vanilla unit)
+- **Lore:** Mass-produced automated mining units. Cheap, expendable, and easily repurposed for combat when profit margins demand it.
+- **Asset:** mining_drone
+- **Cosmetic Variants:** mining_drone_alt1 (tier2), mining_drone_alt2 (tier3)
 
-#### Uncommon (The Specialists)
-*   **Alexandrea** (Bio - Buffer)
-    *   T1 Supervisor (3 Cost, 0/3): Turn End: **Encourage 1** (+1 ATK to a random ally).
-    *   T2 Manager (3 Cost, 0/4): Turn End: **Encourage 2**. If you have 3+ Megacorp units, **Encourage 3**.
-    *   T3 Executive (3 Cost, 0/5): Turn End: **Encourage X**, **Rally X**, where X = Megacorp units you control.
-*   **Ximena** (Bio - Damage)
-    *   T1 Asset Liquidator (4 Cost, 4/2): No Ability.
-    *   T2 Clean-Up Crew (4 Cost, 5/3): **Loot 1** (On kill: Draw 1 card).
-    *   T3 Black Ops Agent (4 Cost, 6/4): **Loot 1**. **First Strike** (Take 0 dmg if killing target on attack).
-*   **Black Betty** (Mech - Disruption)
-    *   T1 Hacking Uplink (3 Cost, 0/4): Turn End: **Hack 1** (Random Enemy).
-    *   T2 AI Jammer (3 Cost, 0/5): Turn End: **Hack 3**.
-    *   T3 Network Crasher (3 Cost, 0/6): Turn End: **Hack 5**.
-*   **T4M3K0** (Bio - Repair)
-    *   *Note: Summoned Drones are Neutral faction.*
-    *   T1 Drone Mechanic (3 Cost, 2/2): OnPlay: **Summon** 1/1 Drone.
-    *   T2 Line Engineer (3 Cost, 3/3): Costs (1) less for each Megacorp unit. OnPlay: **Summon** 1/1 Drone.
-    *   T3 Master Architect (3 Cost, 4/4): Costs (1) less for each Megacorp unit. OnPlay: **Summon X** Drones, where X = Megacorp units.
-*   **Mr Harrison** (Bio - Control)
-    *   T1 Debt Collector (4 Cost, 2/3): No ability.
-    *   T2 Indentured Enforcer (4 Cost, 3/4): OnPlay: **Disarm 2** (Random Enemy).
-    *   T3 Contract Binder (4 Cost, 4/5): OnPlay: **Disarm 2**. On Play: Steal control of enemy with ATK <= 2.
+#### Security Bot - Common
+- **Cost:** 2 | **Stats:** 1/2 | **Subtype:** Cybernetic
+- **Ability:** Guard - Must be attacked before other units
+- **Lore:** Basic security units deployed to protect corporate assets. Their programming prioritizes property over people.
+- **Asset:** security_bot
+- **Cosmetic Variants:** security_bot_alt1 (tier2), security_bot_alt2 (tier3)
 
-#### Rare (The Elite)
-*   **Solarin Control** (Mech - Economy)
-    *   T1 Sub-Routine (3 Cost, 0/4): Turn Start: Gain 1 Energy.
-    *   T2 Process Manager (3 Cost, 0/6): Turn Start: Gain 1 Energy for each Megacorp unit (max 4). Turn End: Repair 1 Cybernetic.
-    *   T3 Swarm Manager (3 Cost, 0/8): Costs (1) less for each Megacorp unit. Turn Start: Gain 1 Energy. Turn End: Repair 1 Cybernetic.
-*   **Director Kiz** (Bio - Synergy)
-    *   T1 Director: Mars (4 Cost, 2/3): On Play: Give all other **Megacorp** units +1/+1.
-    *   T2 Director: Earth (4 Cost, 3/4): On Play: Give all other **Megacorp** units +1/+1 and **Rush**.
-    *   T3 Director: War (4 Cost, 4/5): On Play: Give all other **Megacorp** units +2/+2.
-*   **Enforcer Lee** (Bio - Brawler)
-    *   T1 Enforcer (5 Cost, 4/4): OnAttack: **Rage**. Turn End: **Regenerate 2**.
-    *   T2 Commander (5 Cost, 5/5): OnAttack: **Rage**. Turn End: **Regenerate 2**.
-    *   T3 Enforcer General (5 Cost, 6/6): OnAttack: **Rage**. Turn End: **Regenerate 2**. **Double Attack**.
-*   **R0-VR** (Mech - Assassin)
-    *   T1 Iteration One (3 Cost, 3/1): **Rush**. **Shield**. OnPlay: If you control another Megacorp unit, **Scout 2**.
-    *   T2 Iteration Two (3 Cost, 4/2): **Rush**. **Shield**. OnPlay: **Scout X**, where X = Megacorp units you control.
-    *   T3 Iteration Three (3 Cost, 6/3): **Rush**. **Shield**. **Double Attack**. OnPlay: **Scout X**, where X = Megacorp units.
+#### Corp Guard - Common
+- **Cost:** 2 | **Stats:** 1/2 | **Subtype:** Biological
+- **Ability:** Guard - Must be attacked before other units
+- **Lore:** Human security personnel. Better equipped than most militia forces, they enforce corporate policy with lethal efficiency.
+- **Asset:** corp_guard
+- **Cosmetic Variants:** corp_guard_alt1 (tier2), corp_guard_alt2 (tier3)
 
-#### Legendary (Unique Characters)
-*   **"Director Vance"** (Bio/Cyber - Leader)
-    *   *The CEO of Ira Corp.*
-    *   T1 Director: Finance (6 Cost, 0/5): **Shield**. Passive: When you play a Megacorp unit, give it +1/+1.
-    *   T2 Director: Psychic (6 Cost, 0/7): **Shield**. Passive: When you play a Megacorp unit, give it +1/+1. **Recycle 1**.
-    *   T3 Director: Acquisitions (6 Cost, 0/10): **Shield**. Passive: When you play a Megacorp unit, give it +2/+2. **Recycle 2**.
-*   **"The Auditor"** (Bio - Assassin)
-    *   *He fires you from life.*
-    *   T1 Whisper (5 Cost, 3/2): **Snipe**. On Attack: **Stun** target.
-    *   T2 Shadow (5 Cost, 4/3): **Snipe**. On Attack: **Stun** target.
-    *   T3 Unknown (5 Cost, 5/4): **Snipe**. **Assassinate** (Destroys target when attacking).
-*   **"Unit 734"** (Mech - Board Clear)
-    *   *Walking Apocalypse.*
-    *   T1 Unit 734 (7 Cost, 4/4): On Play: Deal 2 damage to all **Non-Megacorp** units.
-    *   T2 Unit 735 (7 Cost, 6/6): On Play: Deal 3 damage to all **Non-Megacorp** units.
-    *   T3 Unit 736 (7 Cost, 6/6): On Play: Deal 4 damage to all **Non-Megacorp** units. **Shield**.
+#### K9X Unit - Common
+- **Cost:** 2 | **Stats:** 2/1 | **Subtype:** Cybernetic
+- **Ability:** Rush - Can attack immediately
+- **Lore:** Cybernetic hunting units designed to track and terminate targets. Fast, deadly, and utterly obedient to corporate directives.
+- **Asset:** k9x_unit
+- **Cosmetic Variants:** k9x_unit_alt1 (tier2), k9x_unit_alt2 (tier3)
 
-### Tactics (10 Cards)
+#### Loader - Common
+- **Cost:** 3 | **Stats:** 2/6 | **Subtype:** Cybernetic
+- **Ability:** Slow - Attacks every other turn
+- **Lore:** Industrial cargo loaders retrofitted for combat. Slow but incredibly durable, they hold the line while cheaper units swarm.
+- **Asset:** loader
+- **Cosmetic Variants:** loader_alt1 (tier2), loader_alt2 (tier3)
+
+#### Doc Ash - Common
+- **Cost:** 2 | **Stats:** 1/3 | **Subtype:** Biological
+- **Ability:** Turn End: Heal 1 (random ally)
+- **Lore:** Corporate field medics keep workers alive just long enough to finish their shifts. Doc Ash is efficient, detached, and follows company protocols to the letter.
+- **Asset:** doc_ash
+- **Cosmetic Variants:** doc_ash_alt1 (tier2), doc_ash_alt2 (tier3)
+
+---
+
+### UNCOMMON UNITS (5 Cards)
+
+#### Alexandrea (Executive) - Uncommon
+- **Cost:** 3 | **Stats:** 0/3 | **Subtype:** Biological
+- **Ability:** Turn End: Encourage 1 - Give a random ally +1 ATK
+- **Lore:** Middle management at its finest. Alexandrea motivates the workforce through inspirational speeches and subtle threats. She climbed the corporate ladder by ensuring her subordinates always hit their quotas.
+- **Asset:** alexandrea
+- **Cosmetic Variants:** alexandrea_alt1 (tier2), alexandrea_alt2 (tier3)
+
+#### Ximena (Asset Liquidator) - Uncommon
+- **Cost:** 4 | **Stats:** 4/2 | **Subtype:** Biological
+- **Ability:** (None - vanilla unit)
+- **Lore:** When assets need to be "liquidated," Ximena is the one who gets the call. She doesn't ask questions; she just delivers results.
+- **Asset:** ximena
+- **Cosmetic Variants:** ximena_alt1 (tier2), ximena_alt2 (tier3)
+
+#### Black Betty (Hacking Uplink) - Uncommon
+- **Cost:** 3 | **Stats:** 0/4 | **Subtype:** Cybernetic
+- **Ability:** Turn End: Hack 1 (random enemy) - Reduce ATK by 1 for 2 turns
+- **Lore:** An AI-driven cyberwarfare platform. Black Betty infiltrates enemy systems, corrupting targeting data and disabling weapons with surgical precision.
+- **Asset:** black_betty
+- **Cosmetic Variants:** black_betty_alt1 (tier2), black_betty_alt2 (tier3)
+
+#### T4M3K0 (Drone Mechanic) - Uncommon
+- **Cost:** 3 | **Stats:** 2/2 | **Subtype:** Biological
+- **Ability:** OnPlay: Summon a 1/1 Drone token
+- **Lore:** A corporate engineer who keeps the drone swarms operational. T4M3K0 can field-repair or deploy units with remarkable speed.
+- **Asset:** t4m3k0
+- **Cosmetic Variants:** t4m3k0_alt1 (tier2), t4m3k0_alt2 (tier3)
+
+#### Mr Harrison (Debt Collector) - Uncommon
+- **Cost:** 4 | **Stats:** 2/3 | **Subtype:** Biological
+- **Ability:** (None - vanilla unit)
+- **Lore:** When your debt comes due, Mr. Harrison arrives with a smile and a contract. Those who can't pay find themselves in "indentured service."
+- **Asset:** mr_harrison
+- **Cosmetic Variants:** mr_harrison_alt1 (tier2), mr_harrison_alt2 (tier3)
+
+---
+
+### RARE UNITS (4 Cards)
+
+#### Solarin Control (Process Manager) - Rare
+- **Cost:** 3 | **Stats:** 0/6 | **Subtype:** Cybernetic
+- **Ability:** Turn Start: Gain 1 Energy for each Megacorp unit (max 4). Turn End: Repair 1 Cybernetic
+- **Lore:** Automated resource management systems that optimize corporate operations. When properly configured, Solarin Control can sustain entire fleets.
+- **Asset:** solarin_control (from tier2)
+- **Cosmetic Variants:** solarin_control_alt1 (tier1), solarin_control_alt2 (tier3)
+
+#### Director Kiz (Director: Earth) - Rare
+- **Cost:** 4 | **Stats:** 3/4 | **Subtype:** Biological
+- **Ability:** OnPlay: Give all other Megacorp units +1/+1 and Rush
+- **Lore:** Director of Earth Operations for Ira Corp. Kiz is ruthlessly efficient, coordinating planetary invasions with the precision of a quarterly earnings report.
+- **Asset:** director_kiz (from tier2)
+- **Cosmetic Variants:** director_kiz_alt1 (tier1), director_kiz_alt2 (tier3)
+
+#### Enforcer Lee (Commander) - Rare
+- **Cost:** 5 | **Stats:** 5/5 | **Subtype:** Biological
+- **Ability:** OnAttack: Rage - Gain +1 ATK permanently. Turn End: Regenerate 2
+- **Lore:** A combat-enhanced corporate enforcer. Lee's cybernetic augmentations and combat stims make him a nearly unstoppable force on the battlefield.
+- **Asset:** enforcer_lee (from tier2)
+- **Cosmetic Variants:** enforcer_lee_alt1 (tier1), enforcer_lee_alt2 (tier3)
+
+#### R0-VR (Iteration Two) - Rare
+- **Cost:** 3 | **Stats:** 4/2 | **Subtype:** Cybernetic
+- **Ability:** Rush. Shield. OnPlay: Scout X (where X = Megacorp units you control)
+- **Lore:** The second iteration of Ira Corp's experimental combat droid. Fast, lethal, and equipped with advanced reconnaissance protocols.
+- **Asset:** r0_vr (from tier2)
+- **Cosmetic Variants:** r0_vr_alt1 (tier1), r0_vr_alt2 (tier3)
+
+---
+
+### LEGENDARY UNITS (3 Cards)
+
+#### Director Vance (Director: Acquisitions) - Legendary
+- **Cost:** 6 | **Stats:** 0/10 | **Subtype:** Biological/Cybernetic
+- **Ability:** Shield. Passive: When you play a Megacorp unit, give it +2/+2. Recycle 2 - Gain 2 energy when this dies
+- **Lore:** The CEO of Ira Corp. Once a brilliant executive, Vance's consciousness now exists within a life-support system. His mind remains sharp, his ambitions limitless, and his humanity long since liquidated for quarterly profits.
+- **Asset:** director_vance (from tier3)
+- **Cosmetic Variants:** director_vance_alt1 (tier1), director_vance_alt2 (tier2)
+
+#### The Auditor (Unknown) - Legendary
+- **Cost:** 5 | **Stats:** 5/4 | **Subtype:** Biological
+- **Ability:** Snipe - Bypass guards. Assassinate - Destroy target when attacking
+- **Lore:** No one knows his real name. He appears without warning, eliminates targets with surgical precision, and vanishes. The Auditor doesn't fire you from a job—he fires you from life.
+- **Asset:** the_auditor (from tier3)
+- **Cosmetic Variants:** the_auditor_alt1 (tier1), the_auditor_alt2 (tier2)
+
+#### Unit 734 (Unit 735) - Legendary
+- **Cost:** 7 | **Stats:** 6/6 | **Subtype:** Cybernetic
+- **Ability:** OnPlay: Deal 3 damage to all Non-Megacorp units
+- **Lore:** A walking apocalypse. Unit 735 is a prototype weapons platform designed for urban pacification. Its deployment is typically followed by a sharp decline in local resistance—and population.
+- **Asset:** unit_734 (from tier3)
+- **Cosmetic Variants:** unit_734_alt1 (tier1), unit_734_alt2 (tier2)
+
+---
+
+## Tactics (10 Cards)
 
 | Name | Cost | Effect | Flavor |
 | :--- | :--- | :--- | :--- |
@@ -156,7 +212,37 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 | **Hostile Takeover** | 5 | Mind Control enemy unit with <= 3 ATK. | "Look at me. I'm the captain now." |
 | **Budget Cuts** | 0 | Destroy a friendly unit. Gain 2 Energy. | "You're fired." |
 | **Rapid Prototyping** | 2 | Give a unit +2/+2 and "Death: Draw a card". | "Burn bright, burn fast." |
-| **Cease and Desist** | 3 | **Stun** an enemy and **Disarm** it for 2 turns. | "Legal says 'No'." |
-| **Forced Arbitration** | 2 | **Silence** a unit and Draw a card. | "We found a loophole." |
+| **Cease and Desist** | 3 | Stun an enemy and Disarm it for 2 turns. | "Legal says 'No'." |
+| **Forced Arbitration** | 2 | Silence a unit and Draw a card. | "We found a loophole." |
 | **Liquidate Assets** | 1 | Destroy friendly unit. Deal its ATK to enemy. | "Sold for scrap." |
 | **Market Crash** | 4 | Set ALL enemy units' Attack to 1 until next turn. | "The bubble burst." |
+
+---
+
+## Asset Migration Map
+
+### Common Cards (Use Tier 1 as primary):
+- **Mining Drone:** mining_drone_tier1.png → mining_drone.png
+- **Security Bot:** security_bot_tier1.png → security_bot.png
+- **Corp Guard:** corp_guard_tier1.png → corp_guard.png
+- **K9X Unit:** k9x_unit_tier1.png → k9x_unit.png
+- **Loader:** loader_tier1.png → loader.png
+- **Doc Ash:** doc_ash_tier1.png → doc_ash.png
+
+### Uncommon Cards (Use Tier 1 as primary):
+- **Alexandrea:** alexandrea_tier1.png → alexandrea.png
+- **Ximena:** ximena_tier1.png → ximena.png
+- **Black Betty:** black_betty_tier1.png → black_betty.png
+- **T4M3K0:** t4m3k0_tier1.png → t4m3k0.png
+- **Mr Harrison:** mr_harrison_tier1.png → mr_harrison.png
+
+### Rare Cards (Use Tier 2 as primary):
+- **Solarin Control:** solarin_control_tier2.png → solarin_control.png
+- **Director Kiz:** director_kiz_tier2.png → director_kiz.png
+- **Enforcer Lee:** enforcer_lee_tier2.png → enforcer_lee.png
+- **R0-VR:** r0_vr_tier2.png → r0_vr.png
+
+### Legendary Cards (Use Tier 3 as primary):
+- **Director Vance:** director_vance_tier3.png → director_vance.png
+- **The Auditor:** the_auditor_tier3.png → the_auditor.png
+- **Unit 734:** unit_734_tier3.png → unit_734.png

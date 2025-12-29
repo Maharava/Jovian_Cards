@@ -4,24 +4,16 @@ import { ALL_CARDS } from '../data/cards';
 import { MechanicHandler } from '../logic/mechanics';
 import { useMetaStore } from './metaStore';
 import { MAX_BOARD_SLOTS, DEFAULT_PLAYER_HP, DEFAULT_ENERGY, MAX_ENERGY_CAP, DELAYS } from '../config/constants';
-import { generateId, calculateLoot } from '../lib/utils';
+import { generateId } from '../lib/utils';
+import { calculateLoot } from '../config/economy';
+import { getCardCost } from '../lib/cardHelpers';
+import { getMechanicDescription } from '../lib/mechanicHelpers';
 import { DeckBuilder } from '../logic/ai/DeckBuilder';
 import { createAnimationSlice, type AnimationSlice } from './slices/animationSlice';
 import { createDeckSlice, type DeckSlice } from './slices/deckSlice';
 import { createCombatSlice, type CombatSlice } from './slices/combatSlice';
-
-// Helper to get mechanic description
-function getMechanicDescription(mechanic: import('../types').Mechanic, cardDef: Card | undefined): string {
-  if (!cardDef?.text) return '';
-  // Extract the specific ability from card text that matches this trigger
-  const lines = cardDef.text.split('.');
-  for (const line of lines) {
-    if (mechanic.trigger === 'onTurnStart' && line.includes('Turn Start')) return line.trim();
-    if (mechanic.trigger === 'onTurnEnd' && line.includes('Turn End')) return line.trim();
-    if (mechanic.trigger === 'onPlay' && line.includes('OnPlay')) return line.trim();
-  }
-  return cardDef.text.split('.')[0]; // Return first sentence as fallback
-}
+import { createDevSlice, type DevSlice } from './slices/devSlice';
+import { createNavigationSlice, type NavigationSlice } from './slices/navigationSlice';
 
 // Fisher-Yates shuffle algorithm for proper uniform distribution
 function shuffleArray<T>(array: T[]): T[] {
@@ -37,32 +29,10 @@ function shuffleArray<T>(array: T[]): T[] {
 const CARD_MAP = new Map<string, Card>();
 ALL_CARDS.forEach(card => CARD_MAP.set(card.id, card));
 
-const VALID_FACTIONS = new Set(['Jovian', 'Megacorp', 'Republic', 'Confederate', 'Voidborn', 'Bio-horror', 'Neutral']);
-
-// Helper: Calculate actual card cost with reductions
-function getCardCost(card: Card, board: UnitInstance[]): number {
-  let cost = card.cost;
-
-  // Check for cost_reduction mechanics
-  const hasCostReduction = card.mechanics?.some(m => m.type === 'cost_reduction');
-  if (hasCostReduction) {
-    const costReductionMechanic = card.mechanics?.find(m => m.type === 'cost_reduction');
-    if (costReductionMechanic?.payload === 'count_megacorp') {
-      const megacorpCount = board.filter(u => u.faction === 'Megacorp').length;
-      const reduction = (costReductionMechanic.value || 1) * megacorpCount;
-      cost = Math.max(0, cost - reduction);
-    }
-  }
-
-  return cost;
-}
+const VALID_FACTIONS = new Set(['Confederate', 'Megacorp', 'Republic', 'Voidborn', 'Bio-horror', 'Neutral']);
 
 export interface GameActions {
   startGame: (playerDeck?: Card[]) => void;
-  enterFactionSelect: () => void;
-  enterHangar: () => void;
-  goToMainMenu: () => void;
-  setPhase: (phase: GameState['phase']) => void;
   startBattle: (faction: string, difficulty: number) => void;
   drawCard: (count?: number) => void;
   playUnit: (card: Card, targetUid?: string) => Promise<void>;
@@ -77,17 +47,6 @@ export interface GameActions {
   addAbilityNotification: (unitName: string, abilityText: string) => void;
   cleanDeadUnits: () => Promise<void>;
   startPlayerTurn: () => Promise<void>;
-  // Dev mode actions
-  devSetPlayerHP: (hp: number) => void;
-  devSetEnemyHP: (hp: number) => void;
-  devSetUnitHP: (unitUid: string, hp: number) => void;
-  devSetUnitATK: (unitUid: string, atk: number) => void;
-  devSetPlayerEnergy: (energy: number) => void;
-  devSetMaxEnergy: (maxEnergy: number) => void;
-  devSpawnCard: (cardId: string) => void;
-  devSpawnEnemyCard: (cardId: string) => void;
-  devRemoveUnit: (unitUid: string) => void;
-  devClearBoard: (side: 'player' | 'enemy' | 'both') => void;
 }
 
 const INITIAL_PLAYER_STATE: PlayerState = {
@@ -103,11 +62,16 @@ const INITIAL_ENEMY_STATE: EnemyState = {
   nextMoveDescription: 'Thinking...'
 };
 
-export const useGameStore = create<GameState & GameActions & AnimationSlice & DeckSlice & CombatSlice>((set, get) => ({
+export const useGameStore = create<GameState & GameActions & AnimationSlice & DeckSlice & CombatSlice & DevSlice & NavigationSlice>((set, get) => ({
+  // Internal state for slices to access
+  __CARD_MAP: CARD_MAP,
+
   // Compose slices
   ...createAnimationSlice(set, get, {} as any),
   ...createDeckSlice(set, get, {} as any),
   ...createCombatSlice(set, get, {} as any),
+  ...createDevSlice(set, get, {} as any),
+  ...createNavigationSlice(set, get, {} as any),
 
   // Core game state
   player: INITIAL_PLAYER_STATE,
@@ -147,15 +111,16 @@ export const useGameStore = create<GameState & GameActions & AnimationSlice & De
     }
 
     if (!deckToUse || deckToUse.length === 0) {
-      // Fallback to basic Jovian deck if nothing in store
+      // Fallback to basic Confederate deck if nothing in store
       const cardIds = [
-        'lysithea_t1', 'lysithea_t1', 'himalia_t1', 'himalia_t1',
-        'leda_t1', 'leda_t1', 'amalthea_t1', 'amalthea_t1',
-        'kore_t1', 'kore_t1', 'tactic_nano_repair', 'tactic_nano_repair',
-        'tactic_reinforce', 'tactic_reinforce', 'euporie_t1', 'callisto_t1',
+        'lysithea', 'lysithea', 'himalia', 'himalia',
+        'leda', 'leda', 'amalthea', 'amalthea',
+        'kore', 'kore', 'tactic_nano_repair', 'tactic_nano_repair',
+        'tactic_reinforce', 'tactic_reinforce', 'euporie', 'callisto',
         'tactic_power_shot', 'tactic_power_shot', 'tactic_scramble', 'tactic_outsource'
       ];
-      deckToUse = cardIds.map(id => CARD_MAP.get(id)).filter(Boolean) as Card[];
+      // FIXED: Use proper type guard instead of unsafe 'as Card[]' assertion
+      deckToUse = cardIds.map(id => CARD_MAP.get(id)).filter((c): c is Card => c !== undefined);
     }
     const shuffledDeck = shuffleArray(deckToUse);
 
@@ -164,14 +129,6 @@ export const useGameStore = create<GameState & GameActions & AnimationSlice & De
       phase: 'main_menu',
     });
   },
-
-  enterFactionSelect: () => set({ phase: 'faction_select' }),
-
-  enterHangar: () => set({ phase: 'hangar' }),
-
-  goToMainMenu: () => set({ phase: 'main_menu' }),
-
-  setPhase: (phase) => set({ phase }),
 
   startBattle: (faction: string, difficulty: number) => {
       // Validate faction
@@ -356,6 +313,14 @@ export const useGameStore = create<GameState & GameActions & AnimationSlice & De
                        }
                   }
               });
+          } else {
+              // FIXED: Add notification when hand is full
+              console.log('[Draw] Hand is full (10 cards), discarding:', card.name);
+              get().addAbilityNotification('Hand Full', `Discarded ${card.name}`);
+              // Put card in graveyard instead of losing it
+              graveyard.push(card);
+              newState.player.graveyard = graveyard;
+              newState.player.deck = deck;
           }
         }
       }
@@ -416,31 +381,40 @@ export const useGameStore = create<GameState & GameActions & AnimationSlice & De
         ]
     }));
 
-    // Process passive buffs: Check if any units on board have passive buff mechanics
+    // FIXED: Process passive buffs immutably without O(n²) search
     set(state => {
-        const updatedBoard = state.player.board.map(u => {
-            // Don't process the newly played unit's passive on itself
-            if (u.uid === newUnit.uid) return u;
+        // Collect all passive buff modifiers first
+        const buffModifiers: { atk: number; hp: number; maxHp: number } = { atk: 0, hp: 0, maxHp: 0 };
+
+        state.player.board.forEach(u => {
+            // Skip the newly played unit itself
+            if (u.uid === newUnit.uid) return;
 
             // Check if this unit has a passive buff mechanic
             const passiveBuff = u.mechanics.find(m => m.type === 'buff' && m.trigger === 'passive');
             if (passiveBuff) {
-                // Apply buff to the newly played unit if it matches the criteria
-                const justPlayedUnit = state.player.board.find(unit => unit.uid === newUnit.uid);
-                if (justPlayedUnit) {
-                    // Check faction filter
-                    if (passiveBuff.payload && typeof passiveBuff.payload === 'string' && passiveBuff.payload.startsWith('faction:')) {
-                        const requiredFaction = passiveBuff.payload.split(':')[1];
-                        if (justPlayedUnit.faction === requiredFaction) {
-                            justPlayedUnit.atk += passiveBuff.value || 0;
-                            const hpBonus = passiveBuff.secondaryValue || 0;
-                            if (hpBonus) {
-                                justPlayedUnit.hp += hpBonus;
-                                justPlayedUnit.maxHp += hpBonus;
-                            }
-                        }
+                // Check if buff applies to newly played unit based on faction filter
+                if (passiveBuff.payload && typeof passiveBuff.payload === 'string' && passiveBuff.payload.startsWith('faction:')) {
+                    const requiredFaction = passiveBuff.payload.split(':')[1];
+                    if (newUnit.faction === requiredFaction) {
+                        buffModifiers.atk += passiveBuff.value || 0;
+                        const hpBonus = passiveBuff.secondaryValue || 0;
+                        buffModifiers.hp += hpBonus;
+                        buffModifiers.maxHp += hpBonus;
                     }
                 }
+            }
+        });
+
+        // Apply collected buffs immutably to the newly played unit
+        const updatedBoard = state.player.board.map(u => {
+            if (u.uid === newUnit.uid && (buffModifiers.atk > 0 || buffModifiers.hp > 0)) {
+                return {
+                    ...u,
+                    atk: u.atk + buffModifiers.atk,
+                    hp: u.hp + buffModifiers.hp,
+                    maxHp: u.maxHp + buffModifiers.maxHp
+                };
             }
             return u;
         });
@@ -565,6 +539,15 @@ export const useGameStore = create<GameState & GameActions & AnimationSlice & De
                 }
             }
 
+            // Decrement hacked at end of turn (separate from weak to avoid conflicts)
+            if (updatedUnit.status?.hacked && updatedUnit.status.hacked > 0) {
+                updatedUnit.status.hacked -= 1;
+                if (updatedUnit.status.hacked === 0 && updatedUnit.status.originalAtkBeforeHack !== undefined) {
+                    updatedUnit.atk = updatedUnit.status.originalAtkBeforeHack;
+                    delete updatedUnit.status.originalAtkBeforeHack;
+                }
+            }
+
             return updatedUnit;
         });
 
@@ -626,13 +609,12 @@ export const useGameStore = create<GameState & GameActions & AnimationSlice & De
   damageEnemy: (amount: number) => set(s => {
       const newHp = s.enemy.hp - amount;
       if (newHp <= 0) {
-          const loot = calculateLoot(s.run.difficulty, s.enemy.faction || 'Republic');
+          const loot = calculateLoot(s.run.difficulty);
           
           const meta = useMetaStore.getState();
           meta.addResource('credits', loot.credits);
-          meta.addResource('parts', loot.parts);
-          meta.addResource('bio', loot.bio);
-          meta.addResource('psi', loot.psi);
+          meta.addResource('platinum', loot.platinum);
+          meta.addResource('mossan', loot.mossan);
           
           // Rotate Market Faction
           meta.rotateMarketFaction();
@@ -780,12 +762,11 @@ export const useGameStore = create<GameState & GameActions & AnimationSlice & De
                   if (newState.enemy.hp <= 0) {
                       newState.enemy.hp = 0;
                       phase = 'victory';
-                      const loot = calculateLoot(newState.run.difficulty, newState.enemy.faction || 'Republic');
+                      const loot = calculateLoot(newState.run.difficulty);
                       const meta = useMetaStore.getState();
                       meta.addResource('credits', loot.credits);
-                      meta.addResource('parts', loot.parts);
-                      meta.addResource('bio', loot.bio);
-                      meta.addResource('psi', loot.psi);
+                      meta.addResource('platinum', loot.platinum);
+                      meta.addResource('mossan', loot.mossan);
                       newState.lastLoot = loot;
                   }
               } else {
@@ -847,14 +828,19 @@ export const useGameStore = create<GameState & GameActions & AnimationSlice & De
                   const isStunned = (target.status?.stun || 0) > 0;
                   const hasFirstStrike = att.mechanics.some(m => m.type === 'first_strike');
 
-                  if (!isStunned && target.hp > 0) {
-                       // Attacker takes damage from counter-attack
-                       let counterDmg = target.atk;
-                       att.hp -= counterDmg;
-                  } else if (!isStunned && target.hp <= 0 && !hasFirstStrike) {
-                       // Target died but attacker doesn't have first strike, still counter-attack
-                       let counterDmg = target.atk;
-                       att.hp -= counterDmg;
+                  // Counter-attack only happens if target is not stunned
+                  // Dead units only counter if attacker lacks first strike (simultaneous damage)
+                  if (!isStunned) {
+                      if (target.hp > 0) {
+                          // Target is alive, normal counter-attack
+                          let counterDmg = target.atk;
+                          att.hp -= counterDmg;
+                      } else if (!hasFirstStrike) {
+                          // Target died but attacker lacks first strike - simultaneous damage
+                          let counterDmg = target.atk;
+                          att.hp -= counterDmg;
+                      }
+                      // If target died AND attacker has first strike, no counter-attack
                   }
 
                   // Thorns
@@ -965,7 +951,8 @@ export const useGameStore = create<GameState & GameActions & AnimationSlice & De
                    }
                    unit.status.turnsSincePlay += 1;
 
-                   // Can attack only on odd turns after playing (turn 2, 4, 6 in game, which is turnsSincePlay 1, 3, 5)
+                   // FIXED: Clarified logic - unit can attack when turnsSincePlay is odd (1, 3, 5, ...)
+                   // This means: Turn 0 (played) - can't attack, Turn 1 - can attack, Turn 2 - can't attack, etc.
                    if (unit.status.turnsSincePlay % 2 === 0) {
                        unit.ready = false;
                        unit.attacksLeft = 0;
@@ -1127,211 +1114,6 @@ export const useGameStore = create<GameState & GameActions & AnimationSlice & De
     if (iterations >= MAX_DEATH_ITERATIONS) {
         console.error('Death processing exceeded maximum iterations - possible infinite loop detected');
     }
-  },
-
-  // ===== DEV MODE ACTIONS =====
-  devSetPlayerHP: (hp: number) => {
-    set(state => ({
-      player: {
-        ...state.player,
-        hp: Math.max(0, Math.min(hp, state.player.maxHp))
-      }
-    }));
-  },
-
-  devSetEnemyHP: (hp: number) => {
-    set(state => ({
-      enemy: {
-        ...state.enemy,
-        hp: Math.max(0, Math.min(hp, state.enemy.maxHp))
-      }
-    }));
-  },
-
-  devSetUnitHP: (unitUid: string, hp: number) => {
-    set(state => {
-      const playerUnit = state.player.board.find(u => u.uid === unitUid);
-      const enemyUnit = state.enemy.board.find(u => u.uid === unitUid);
-
-      if (playerUnit) {
-        return {
-          player: {
-            ...state.player,
-            board: state.player.board.map(u =>
-              u.uid === unitUid
-                ? { ...u, hp: Math.max(0, Math.min(hp, u.maxHp)) }
-                : u
-            )
-          }
-        };
-      } else if (enemyUnit) {
-        return {
-          enemy: {
-            ...state.enemy,
-            board: state.enemy.board.map(u =>
-              u.uid === unitUid
-                ? { ...u, hp: Math.max(0, Math.min(hp, u.maxHp)) }
-                : u
-            )
-          }
-        };
-      }
-      return {};
-    });
-  },
-
-  devSetUnitATK: (unitUid: string, atk: number) => {
-    set(state => {
-      const playerUnit = state.player.board.find(u => u.uid === unitUid);
-      const enemyUnit = state.enemy.board.find(u => u.uid === unitUid);
-
-      if (playerUnit) {
-        return {
-          player: {
-            ...state.player,
-            board: state.player.board.map(u =>
-              u.uid === unitUid ? { ...u, atk: Math.max(0, atk) } : u
-            )
-          }
-        };
-      } else if (enemyUnit) {
-        return {
-          enemy: {
-            ...state.enemy,
-            board: state.enemy.board.map(u =>
-              u.uid === unitUid ? { ...u, atk: Math.max(0, atk) } : u
-            )
-          }
-        };
-      }
-      return {};
-    });
-  },
-
-  devSetPlayerEnergy: (energy: number) => {
-    set(state => ({
-      player: {
-        ...state.player,
-        energy: Math.max(0, Math.min(energy, state.player.maxEnergy))
-      }
-    }));
-  },
-
-  devSetMaxEnergy: (maxEnergy: number) => {
-    set(state => ({
-      player: {
-        ...state.player,
-        maxEnergy: Math.max(1, Math.min(maxEnergy, MAX_ENERGY_CAP))
-      }
-    }));
-  },
-
-  devSpawnCard: (cardId: string) => {
-    set(state => {
-      const card = CARD_MAP.get(cardId);
-      if (!card) {
-        console.warn(`Card ${cardId} not found in CARD_MAP`);
-        return {};
-      }
-
-      if (state.player.hand.length >= 10) {
-        console.warn('Hand is full (10 cards), cannot spawn card');
-        return {};
-      }
-
-      return {
-        player: {
-          ...state.player,
-          hand: [...state.player.hand, { ...card, uid: generateId() }]
-        }
-      };
-    });
-  },
-
-  devSpawnEnemyCard: (cardId: string) => {
-    set(state => {
-      const card = CARD_MAP.get(cardId);
-      if (!card) {
-        console.warn(`Card ${cardId} not found in CARD_MAP`);
-        return {};
-      }
-      if (card.type !== 'unit') {
-        console.warn('Can only spawn unit cards for enemy');
-        return {};
-      }
-      if (state.enemy.board.length >= MAX_BOARD_SLOTS) {
-        console.warn('Enemy board is full, cannot spawn unit');
-        return {};
-      }
-
-      const newUnit: UnitInstance = {
-        uid: generateId(),
-        cardId: card.id,
-        name: card.name,
-        baseAsset: card.baseAsset,
-        faction: card.faction,
-        atk: card.stats?.atk || 0,
-        hp: card.stats?.hp || 1,
-        maxHp: card.stats?.hp || 1,
-        owner: 'enemy',
-        ready: true,
-        attacksLeft: 1,
-        mechanics: card.mechanics || [],
-        shield: 0
-      };
-
-      return {
-        enemy: {
-          ...state.enemy,
-          board: [...state.enemy.board, newUnit]
-        }
-      };
-    });
-  },
-
-  devRemoveUnit: (unitUid: string) => {
-    set(state => {
-      const playerUnit = state.player.board.find(u => u.uid === unitUid);
-      const enemyUnit = state.enemy.board.find(u => u.uid === unitUid);
-
-      if (playerUnit) {
-        return {
-          player: {
-            ...state.player,
-            board: state.player.board.filter(u => u.uid !== unitUid)
-          }
-        };
-      } else if (enemyUnit) {
-        return {
-          enemy: {
-            ...state.enemy,
-            board: state.enemy.board.filter(u => u.uid !== unitUid)
-          }
-        };
-      }
-
-      console.warn(`Unit ${unitUid} not found`);
-      return {};
-    });
-  },
-
-  devClearBoard: (side: 'player' | 'enemy' | 'both') => {
-    set(state => {
-      if (side === 'player') {
-        return {
-          player: { ...state.player, board: [] }
-        };
-      } else if (side === 'enemy') {
-        return {
-          enemy: { ...state.enemy, board: [] }
-        };
-      } else {
-        return {
-          player: { ...state.player, board: [] },
-          enemy: { ...state.enemy, board: [] }
-        };
-      }
-    });
   }
 
 }));

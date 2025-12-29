@@ -43,11 +43,9 @@ export const Unit: React.FC<UnitProps> = ({ unit, onClick, onContextMenu, isTarg
 
   const folder = FACTION_FOLDERS[unit.faction] || 'neutral';
 
-  // Asset resolution logic - match Card.tsx behavior
-  // Tactic cards and tokens (rarity='NA') don't have tier suffixes
-  // Regular units use _tierN suffix to load the correct tier art
-  const assetSuffix = (cardDef?.type === 'tactic' || cardDef?.rarity === 'NA') ? '' : (cardDef?.tier === 1 ? '_tier1' : `_tier${cardDef?.tier || 1}`);
-  const imagePath = `/assets/cards/${folder}/${unit.baseAsset}${assetSuffix}.png`;
+  // Asset resolution logic - consolidated system (no tier suffixes)
+  // All cards now use baseAsset directly without tier modifications
+  const imagePath = `/assets/cards/${folder}/${unit.baseAsset}.png`;
 
   return (
     <div className="relative">

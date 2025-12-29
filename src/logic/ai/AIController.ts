@@ -74,6 +74,8 @@ export class AIController {
     // Execute moves until END_TURN
     let maxActions = 50;
     let actionCount = 0;
+    let consecutiveFailures = 0;
+    const MAX_CONSECUTIVE_FAILURES = 5;
 
     while (actionCount++ < maxActions) {
       const fullState = get();
@@ -90,10 +92,23 @@ export class AIController {
       const success = await this.executeMove(move, get, set);
 
       if (!success) {
+        consecutiveFailures++;
+        // FIXED: Break if too many consecutive failures to prevent infinite loop
+        if (consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+          console.error(`AI exceeded ${MAX_CONSECUTIVE_FAILURES} consecutive failures, forcing end turn`);
+          break;
+        }
         continue;
       }
 
+      consecutiveFailures = 0; // Reset on success
       await delay(300);
+    }
+
+    // FIXED: Log error if max actions reached without END_TURN
+    if (actionCount >= maxActions) {
+      console.error(`AI exceeded max actions (${maxActions}) without ending turn - forcing end turn`);
+      console.error('This indicates a bug in the behavior tree - it should eventually return END_TURN');
     }
 
     // End turn

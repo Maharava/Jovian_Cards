@@ -1,8 +1,7 @@
 import type { GameState, Mechanic, UnitInstance, ResolutionResult, Card, MechanicPayload } from '../types';
 import { ENEMY_CARDS, ALL_CARDS, TACTIC_CARDS, TOKEN_CARDS } from '../data/cards';
 import { MAX_BOARD_SLOTS } from '../config/constants';
-
-const generateId = () => Math.random().toString(36).substr(2, 9);
+import { generateId } from '../lib/utils';
 
 // Helper to check if payload is a string
 const isStringPayload = (payload: string | MechanicPayload | undefined): payload is string => {
@@ -99,7 +98,7 @@ export class MechanicHandler {
 
                 // Special logic for Hack: avoid units that are already hacked
                 if (mechanic.type === 'hack') {
-                    const unhackedEnemies = enemies.filter(e => !e.status?.weak || e.status.weak === 0);
+                    const unhackedEnemies = enemies.filter(e => !e.status?.hacked || e.status.hacked === 0);
                     if (unhackedEnemies.length > 0) {
                         enemies = unhackedEnemies;
                     }
@@ -289,42 +288,35 @@ export class MechanicHandler {
 
         case 'damage':
             if (mechanic.payload === 'sacrifice_self_damage_equal_atk') {
-                // Special logic: Destroy source (or target ally?) -> Deal ATK damage
-                // 'Liquidate Assets' usually targets a friendly unit to destroy, then damages an enemy?
-                // The card text says: "Destroy friendly unit. Deal its ATK to enemy." 
-                // This implies TWO targets: one ally to kill, one enemy to damage.
-                // Current mechanic system has one target selector.
-                // Workaround: Target the enemy. We need to select an ally to sacrifice separately or assume source?
-                // Card definition: target='target_enemy'. 
-                // We need to Find a friendly unit to sacrifice. Random? Or is it implicit?
-                // Simpler version for now: "Destroy SELF, deal ATK to target". But Tactic isn't a unit.
-                // Better implementation: "Destroy TARGET friendly, deal damage equal to its ATK to random enemy?"
-                // The card text implies target selection.
-                // Let's implement a simpler version for this constraints: "Target Enemy. Deal damage equal to your strongest unit's ATK, then kill that unit."
-                // OR: Change target to 'target_ally' (to kill) and deal damage to random enemy.
-                // Let's assume we target the Ally to sacrifice, and damage goes to random enemy/commander.
-                
-                // Correction based on complexity: Let's make it: Target Ally. Destroy it. Deal its ATK to Random Enemy.
-                // Card definition needs update to target='target_ally'. I will assume I updated it or will update it.
-                // Special case: Liquidate Assets - Sacrifice an ally and deal its ATK as damage
-                
+                // FIXED: Sacrifice mechanic clarification
+                // Sacrifices target ally and deals its ATK as damage to a random enemy
+                // Used by cards like "Liquidate Assets"
+                // Card definition should use target='target_ally' to select unit to sacrifice
                  if (targets.length > 0) {
                      const sacrificed = targets[0];
                      const dmg = sacrificed.atk;
-                     sacrificed.hp = 0; // Kill
+                     sacrificed.hp = 0; // Destroy the sacrificed unit
+                     sacrificed.dying = true;
                      logEvent('death', { target: sacrificed.uid });
-                     
-                     // Now find enemy target
+
+                     // Deal damage to random enemy
                      const enemies = sacrificed.owner === 'player' ? enemy.board : player.board;
                      if (enemies.length > 0) {
                          const targetEnemy = enemies[Math.floor(Math.random() * enemies.length)];
                          targetEnemy.hp -= dmg;
                          damagedUnits.push(targetEnemy.uid); // Track for onDamageTaken
                          animations.push({ from: sacrificed.uid, to: targetEnemy.uid, color: 'red' });
+                         addNotification(`sacrificed ${sacrificed.name} dealing ${dmg} damage`);
                      } else {
-                         // Hit commander
-                         if (sacrificed.owner === 'player') enemy.hp -= dmg;
-                         else player.hp -= dmg;
+                         // No enemies on board, hit commander instead
+                         if (sacrificed.owner === 'player') {
+                             enemy.hp -= dmg;
+                             animations.push({ from: sacrificed.uid, to: 'enemy_commander', color: 'red' });
+                         } else {
+                             player.hp -= dmg;
+                             animations.push({ from: sacrificed.uid, to: 'player_commander', color: 'red' });
+                         }
+                         addNotification(`sacrificed ${sacrificed.name} dealing ${dmg} damage to commander`);
                      }
                  }
             } else if (mechanic.value) {
@@ -437,15 +429,20 @@ export class MechanicHandler {
 
         case 'hack':
              // Hack: Reduces attack by X until end of next turn (2 turn duration)
+             // FIXED: Use separate 'hacked' status to avoid conflict with disarm/weak
              targets.forEach(t => {
-                 if (!t.status) t.status = { originalAtk: t.atk };
-                 if (t.status.originalAtk === undefined) t.status.originalAtk = t.atk;
-
-                 const amount = mechanic.value || 1;
-                 t.atk = Math.max(0, t.atk - amount);
-                 t.status.weak = 2; // Lasts 2 turns (current + next)
-                 logEvent('debuff', { target: t.uid, type: 'hack', amount });
-                 animations.push({ from: sourceUnit.uid, to: t.uid, color: '#00ff00', duration: 300 }); // Green
+                 if (!t.status) t.status = {};
+                 // Only apply if not already hacked
+                 if (!t.status.hacked || t.status.hacked === 0) {
+                     if (t.status.originalAtkBeforeHack === undefined) {
+                         t.status.originalAtkBeforeHack = t.atk;
+                     }
+                     const amount = mechanic.value || 1;
+                     t.atk = Math.max(0, t.atk - amount);
+                     t.status.hacked = 2; // Lasts 2 turns (current + next)
+                     logEvent('debuff', { target: t.uid, type: 'hack', amount });
+                     animations.push({ from: sourceUnit.uid, to: t.uid, color: '#00ff00', duration: 300 }); // Green
+                 }
              });
              break;
 
@@ -699,13 +696,13 @@ export class MechanicHandler {
                  cardDef = {
                      id: `hologram_${sourceUnit.cardId}`,
                      name: `${sourceUnit.name.split(',')[0]} (Holo)`,
-                     type: 'unit', tier: 1, cost: 0,
+                     type: 'unit', cost: 0,
                      baseAsset: sourceUnit.baseAsset,
                      faction: sourceUnit.faction,
                      stats: hologramStats,
                      text: hologramText,
                      mechanics: hologramMechanics,
-                     rarity: 'NA'
+                     rarity: 'Common'
                  };
              } else if (payload) {
                  // Handle scaling summons (e.g., 'neutral_drone:count_megacorp')
@@ -727,10 +724,10 @@ export class MechanicHandler {
                      }
 
                      cardDef = {
-                         id: 'hologram', name: 'Hologram', type: 'unit', tier: 1, cost: 0,
+                         id: 'hologram', name: 'Hologram', type: 'unit', cost: 0,
                          baseAsset: 'praxidike', stats: hologramStats,
                          text: 'Guard', mechanics: hologramMechanics,
-                         faction: 'Neutral', rarity: 'NA'
+                         faction: 'Neutral', rarity: 'Common'
                      };
                  } else {
                      cardDef = ALL_CARDS.find(c => c.id === basePayload || c.baseAsset === basePayload) || null;

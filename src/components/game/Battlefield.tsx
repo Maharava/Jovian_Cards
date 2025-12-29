@@ -3,7 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import { Unit } from '../Unit';
 import { cn } from '../../lib/utils';
 import type { PlayerState, EnemyState, UnitInstance, Card as CardType } from '../../types';
-import { MAX_BOARD_SLOTS } from '../../config/constants';
+import { MAX_BOARD_SLOTS } from '../../constants';
 
 interface BattlefieldProps {
     player: PlayerState;

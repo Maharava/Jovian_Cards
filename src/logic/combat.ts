@@ -1,3 +1,12 @@
+/**
+ * WARNING: This file is currently UNUSED in the codebase!
+ *
+ * Combat logic is implemented directly in src/store/gameStore.ts (attackTarget function).
+ * This file contains a cleaner, more testable implementation but is not called anywhere.
+ *
+ * TODO: Either refactor gameStore.ts to use this function, or delete this file to avoid confusion.
+ */
+
 import type { UnitInstance } from '../types';
 import { MECHANICS } from '../constants';
 
