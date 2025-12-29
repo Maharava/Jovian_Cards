@@ -1,7 +1,9 @@
 {
-  "name": "app",
+  "name": "jovian-cards",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "description": "A sci-fi deck-building card game set in a colonized Solar System",
+  "author": "Ryan Ford",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -1,73 +1,126 @@
-# React + TypeScript + Vite
+# Jovian Cards
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A sci-fi deck-building card game set in a colonized Solar System where you play as the **Outer Confederacy** and their genetically-engineered defenders, the **Jovian Sisters**, fighting against corporate tyranny and cosmic threats.
 
-Currently, two official plugins are available:
+## 🎮 About the Game
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Jovian Cards** is a single-player roguelite deck-builder where you battle against AI opponents using a deck of unique units and tactics. Build your deck, manage your resources, and defeat increasingly difficult enemies across multiple factions.
 
-## React Compiler
+**Setting:** A hard sci-fi Solar System where humanity has colonized the inner and outer planets. The United Republic of Sol is paralyzed by bureaucracy, while Megacorporations exploit the void between worlds. The Outer Confederacy—a loose alliance of frontier settlements—has become a haven for the Jovian Sisters, genetically-engineered post-humans hunted for their advanced abilities.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🚀 Quick Start
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
+- Node.js 18+ and npm
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Installation
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Development
+```bash
+npm run dev
 ```
+Open http://localhost:5173 in your browser.
+
+### Build
+```bash
+npm run build
+```
+
+---
+
+## 📚 Documentation
+
+- **[How to Play](docs/GAMEPLAY.md)** - Game rules and mechanics *(coming soon)*
+- **[Mechanics Glossary](docs/MECHANICS_GLOSSARY.md)** - All 40+ card abilities explained *(coming soon)*
+- **[Lore & Setting](docs/lore.md)** - World-building and story
+- **[Confederate Faction](docs/confederate.md)** - Your playable faction (Confederacy + Jovians)
+- **[Megacorp Faction](docs/megacorp.md)** - Enemy faction details
+- **[Development Guide](NEXT_STEPS.md)** - Implementation roadmap
+
+---
+
+## 🎴 Game Overview
+
+### Objective
+Reduce your opponent's HP to 0 while defending your own.
+
+### Core Mechanics
+- **Energy System:** Gain 1 energy per turn (max 10). Use energy to play cards.
+- **Deck Building:** Customize your 20-card deck between battles
+- **Unit Combat:** Deploy units to the battlefield, attack enemies, and trigger powerful abilities
+- **Roguelite Progression:** Unlock cards, earn resources, and improve your collection
+
+### Factions
+- **Confederate (Playable):** Versatile units, hero-focused synergies, Jovian Sisters with unique powers
+- **Megacorp (Enemy):** Swarm tactics, debuffs, expendable drones
+- **Voidborn (Enemy):** Cosmic horrors with psychic and corruption mechanics
+- **Republic (Planned):** Elite soldiers, defensive formations
+- **Bio-horror (Planned):** Self-replicating biological nightmares
+
+---
+
+## 🛠️ Tech Stack
+
+- **React 19** + **TypeScript** - UI framework
+- **Zustand** - State management
+- **Framer Motion** - Animations
+- **Tailwind CSS** - Styling
+- **Vite** - Build tool
+
+---
+
+## 🎯 Current Status
+
+**Version:** Alpha 0.1.0
+
+**Playable:**
+- Single-player campaign vs Megacorp
+- Deck building and customization
+- Card collection and cosmetics system
+- Advanced AI with behavior trees
+
+**In Development:**
+- Additional factions (Republic, Bio-horror)
+- More card variety
+- Campaign/story mode
+- Balance improvements
+
+---
+
+## 📖 Lore Highlights
+
+The year is 2187. The brilliant geneticist **Jupiter** unleashed a psychic virus on Ceres Station that rewrote human DNA, creating the first psychics. Years later, her genetically-engineered "children"—the **Jovian Sisters**—emerged on the moons of Jupiter, each with unique post-human abilities.
+
+When **Ira Corp** attempted to abduct them, the Outer Confederacy formed to protect them. In exchange for asylum, the Sisters share Jupiter's advanced technology, allowing this frontier nation to stand against the might of the Republic and the greed of the Megacorps.
+
+Now, a shadow war rages in the outer system. The Jovians fight to protect their freedom. The Corporations hunt them as "intellectual property." And something dark whispers from the void between stars...
+
+---
+
+## 🤝 Contributing
+
+This is an active personal project. Feedback, bug reports, and suggestions are welcome!
+
+See [NEXT_STEPS.md](NEXT_STEPS.md) for the development roadmap.
+
+---
+
+## 📜 License
+
+*To be determined*
+
+---
+
+## 🙏 Credits
+
+**Design & Development:** Ryan Ford
+**Inspired by:** Slay the Spire, Hearthstone, The Expanse
+
+---
+
+**Protect the Void. Defend the Free.**
