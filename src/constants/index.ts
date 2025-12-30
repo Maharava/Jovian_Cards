@@ -1,6 +1,7 @@
 import type { Faction, MechanicType, TriggerType } from '../types';
 
 // Factions
+export const MAX_BOARD_SLOTS = 5;
 export const FACTIONS = {
   CONFEDERATE: 'Confederate',
   REPUBLIC: 'Republic',

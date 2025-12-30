@@ -47,7 +47,7 @@ export type MechanicType =
 export type TriggerType = 'onPlay' | 'onDeath' | 'onTurnEnd' | 'onTurnStart' | 'passive' | 'constant' | 'onDraw' | 'onAttack' | 'onDamageTaken';
 
 export type Faction = 'Confederate' | 'Republic' | 'Megacorp' | 'Voidborn' | 'Bio-horror' | 'Neutral';
-export type Rarity = 'Common' | 'Uncommon' | 'Rare' | 'Legendary';
+export type Rarity = 'Common' | 'Uncommon' | 'Rare' | 'Legendary' | 'NA';
 
 // Typed payload structures for type safety
 export interface MechanicPayload {
@@ -153,6 +153,8 @@ export interface UnitInstance {
       rallied?: boolean; // Track if unit has been rallied
       encouraged?: boolean; // Track if unit has been encouraged
       turnsSincePlay?: number; // Track turns for slow mechanic
+      hacked?: number; // Duration in turns
+      originalAtkBeforeHack?: number; // Store original attack before hack
   };
 }
 

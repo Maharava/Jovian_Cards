@@ -15,8 +15,8 @@ export function DevPanel() {
   const [showEnemyCardList, setShowEnemyCardList] = useState(false);
 
   // Refs to track timeouts for cleanup
-  const cardSearchTimeoutRef = useRef<NodeJS.Timeout>();
-  const enemyCardSearchTimeoutRef = useRef<NodeJS.Timeout>();
+  const cardSearchTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const enemyCardSearchTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const {
     player,

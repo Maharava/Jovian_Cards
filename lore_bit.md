@@ -166,14 +166,3 @@
 | void_flayer | Mind Flayer | It peels away your sanity layer by layer, savoring the taste of your fading memories. |
 
 
-Review @lore.md, @megacorp.md, and @jovian.md. Review @lorebit.md. Review the card data in:
-src/data/cards.ts
-src/data/cards.ts.backup
-src/data/jovianCards.ts
-src/data/megacorpCards.ts
-src/data/tacticCards.ts
-src/data/tokenCards.ts
-Now you have a decent grasp of the lore and game, your goal is to Create a set of Republic cards in @republic.md, including tiers for non-tactics. Be creative. Consider the format and style of Megacorp - some cards are named (like Alexandrea) and some are not (eg. Drones) - the Republic will have this same style (as opposed to Jovians whoa re all uniquely named). Create a good spread of stats and rarities and abilities. 
-The Requisition ability is not on every card. It will be explained in the textbox as 'Requisition X: {effect}'. The way it will work is, when the player presses End Turn/the AI ends turn, every card with Requisition is checked. If the player/AI has that much energy or more, the effect fires off. Ensure effects align with the card lore, republic lore, and overall style of the Republic.
-Add to your card entries what the lore bits for that card will be. Keep cards balanced, and avoid adding new abilities not already in game (excluding Requisition)
-Ask any clarifying questions you need to as you think of them. Research the game further if needed. Do NOT create new cards. Do NOT change or implement code. Keep your work solely to republic.md

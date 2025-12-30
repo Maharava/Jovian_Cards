@@ -3,8 +3,9 @@ import { AnimatePresence } from 'framer-motion';
 import { Unit } from '../Unit';
 import { cn } from '../../lib/utils';
 import type { PlayerState, EnemyState, UnitInstance, Card as CardType } from '../../types';
-import { MAX_BOARD_SLOTS } from '../../constants';
+import { MAX_BOARD_SLOTS } from '../../config/constants';
 
+// Battlefield Component handles the deployment zones for both players
 interface BattlefieldProps {
     player: PlayerState;
     enemy: EnemyState;

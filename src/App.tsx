@@ -43,10 +43,10 @@ function App() {
                 <div className="text-center">
                     <h2 className="text-6xl text-red-600 font-bold mb-4">CRITICAL FAILURE</h2>
                     <button 
-                      onClick={() => useGameStore.getState().startGame()}
-                      className="px-8 py-3 bg-red-800 hover:bg-red-700 text-white font-bold rounded"
+                      onClick={() => useGameStore.getState().enterFactionSelect()}
+                      className="px-8 py-3 bg-cyan-800 hover:bg-cyan-700 text-white font-bold rounded border border-cyan-500"
                     >
-                      SYSTEM REBOOT
+                      RETURN TO COMMAND HUB
                     </button>
                 </div>
              </div>

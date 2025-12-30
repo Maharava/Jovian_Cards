@@ -13,7 +13,7 @@ export const FactionSelect: React.FC = () => {
   const [difficulty, setDifficulty] = useState<number>(1);
 
   const FACTIONS = [
-    { id: 'Confederate', name: 'Confederate', desc: 'Guerrilla Tactics & Elite Units', active: true, color: 'bg-green-900/50 border-green-800', drop: 'Balanced: Credits & Platinum' },
+    { id: 'Confederate', name: 'Confederate', desc: 'Guerrilla Tactics & Elite Units', active: false, color: 'bg-green-900/50 border-green-800', drop: 'Balanced: Credits & Platinum' },
     { id: 'Megacorp', name: 'Megacorp', desc: 'Drone Swarms & Automation', active: true, color: 'bg-slate-800 border-slate-500', drop: 'High: Platinum' },
     // VOIDBORN: Faction incomplete - hidden until implementation finished
     { id: 'Voidborn', name: 'Voidborn', desc: 'Cosmic Horror & Madness [WIP]', active: false, color: 'bg-purple-900/50 border-purple-800', drop: 'High: Mossan' },

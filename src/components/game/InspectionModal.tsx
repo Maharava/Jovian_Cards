@@ -26,7 +26,6 @@ export const InspectionModal: React.FC<InspectionModalProps> = ({ unit, onClose 
         name: unit.name,
         title: original?.title, // Include title for display (e.g., "The Mind Ocean")
         type: 'unit',
-        tier: original?.tier ?? 1,
         cost: original?.cost ?? 0,
         stats: { atk: unit.atk, hp: unit.hp, maxHp: unit.maxHp },
         text: original?.text ?? (unit.mechanics.map(m => m.type).join(', ') || 'No special abilities'),

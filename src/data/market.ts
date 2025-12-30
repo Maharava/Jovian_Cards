@@ -40,15 +40,5 @@ export const PACKS: PackDefinition[] = [
         desc: 'Supplies from a specific sector.',
         img: 'requisition.png', // Placeholder, UI will override
         isFaction: true
-    },
-    { 
-        id: 'contraband', 
-        name: 'Contraband', 
-        cost: 500, 
-        count: 5, 
-        chances: { Common: 0.30, Uncommon: 0.45, Rare: 0.20, Legendary: 0.05 }, 
-        desc: 'Risk of Void corruption. Exotic goods.', 
-        isExotic: true, 
-        img: 'contraband.png' 
-    },
+    }
 ];

@@ -82,16 +82,16 @@ export const Workshop: React.FC = () => {
             {/* Content */}
             <div className="flex flex-1 gap-8 overflow-hidden">
 
-                {/* Collection (Left) */}
-                <div className="flex-1 flex flex-col bg-slate-900/30 rounded-xl border border-white/5 p-6">
+                {/* Collection (Left) - Squished */}
+                <div className="w-1/4 flex flex-col bg-slate-900/30 rounded-xl border border-white/5 p-4 min-w-[250px]">
                     {/* Filters */}
-                    <div className="flex gap-2 mb-4">
+                    <div className="flex gap-2 mb-4 flex-wrap">
                         {rarities.map(r => (
                             <button
                                 key={r}
                                 onClick={() => setRarityFilter(r)}
                                 className={cn(
-                                    "px-3 py-1 rounded text-xs font-bold uppercase border transition-colors",
+                                    "px-2 py-1 rounded text-[10px] font-bold uppercase border transition-colors",
                                     rarityFilter === r
                                         ? "bg-slate-700 border-white text-white"
                                         : "bg-slate-900 border-slate-700 text-slate-500 hover:bg-slate-800"
@@ -102,75 +102,63 @@ export const Workshop: React.FC = () => {
                         ))}
                     </div>
 
-                    <div className="flex-1 overflow-y-auto grid grid-cols-4 gap-6 content-start">
+                    <div className="flex-1 overflow-y-auto grid grid-cols-2 gap-4 content-start">
                         {ownedCards.map((item) => (
                             <div
                                 key={item.cardId}
                                 onClick={() => setSelectedCardId(item.cardId)}
                                 className={cn(
-                                    "relative group cursor-pointer transition-transform hover:scale-105",
+                                    "relative group cursor-pointer transition-transform hover:scale-105 aspect-[3/4]",
                                     selectedCardId === item.cardId ? "ring-2 ring-yellow-500 rounded-xl scale-105 z-10" : ""
                                 )}
                             >
-                                <div className="scale-90 origin-top-left w-[111%] h-[111%]">
+                                <div className="scale-[0.85] origin-top-left w-[118%] h-[118%]">
                                     <Card card={item.def} />
                                 </div>
-                                <div className="absolute -bottom-2 -right-2 bg-slate-800 border border-slate-600 text-white text-xs px-2 py-1 rounded-full font-bold">
+                                <div className="absolute -bottom-1 -right-1 bg-slate-800 border border-slate-600 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">
                                     x{item.count}
                                 </div>
                             </div>
                         ))}
                         {ownedCards.length === 0 && (
-                            <div className="col-span-4 text-center text-slate-600 mt-20">
+                            <div className="col-span-2 text-center text-slate-600 mt-20 text-xs">
                                 No units in collection.
                             </div>
                         )}
                     </div>
                 </div>
 
-                {/* Cosmetic Preview (Right) */}
-                <div className="w-1/3 bg-slate-900/50 rounded-xl border border-white/10 p-6 flex flex-col relative overflow-hidden">
+                {/* Cosmetic Preview (Right) - Maximized */}
+                <div className="flex-1 bg-slate-900/50 rounded-xl border border-white/10 p-6 flex flex-col relative overflow-hidden items-center">
                     {selectedCard ? (
-                        <div className="flex flex-col gap-4 w-full h-full">
-                            {/* Card Info Header */}
-                            <div className="border-b border-white/10 pb-3">
-                                <h3 className="text-xl font-mono font-bold text-slate-200">{selectedCard.name}</h3>
-                                <p className="text-xs text-slate-500">{selectedCard.title || 'Unit'}</p>
+                        <div className="flex flex-col w-full h-full gap-8">
+                            {/* Card Display - Large & Centered */}
+                            <div className="flex-1 flex items-center justify-center relative">
+                                <div className="scale-[2.0] origin-center z-10 drop-shadow-2xl">
+                                     <Card card={selectedCard} previewAsset={activeCosmetics[selectedCard.id] ? selectedCard.cosmetics?.find(c => c.id === activeCosmetics[selectedCard.id])?.asset : undefined} />
+                                </div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-0 opacity-50 pointer-events-none" />
                             </div>
 
-                            {/* Cosmetic Variants */}
-                            <div className="flex-1 overflow-y-auto space-y-3">
-                                {/* Base Version */}
-                                <div className={cn(
-                                    "border rounded-lg p-3 flex items-center gap-4 transition-all",
-                                    !activeCosmetics[selectedCard.id]
-                                        ? "border-yellow-500 bg-yellow-500/10"
-                                        : "border-white/10 bg-slate-900/50 hover:bg-slate-800/50"
-                                )}>
-                                    <div className="scale-[0.4] origin-left -my-16 -ml-8">
-                                        <Card card={selectedCard} />
+                            {/* Cosmetic Options - Grid */}
+                            <div className="h-1/3 w-full overflow-y-auto">
+                                <h3 className="text-sm font-mono text-slate-500 mb-4 uppercase tracking-widest text-center border-t border-white/10 pt-4">Available Styles</h3>
+                                
+                                <div className="grid grid-cols-3 gap-4 px-8 pb-8">
+                                    {/* Base Version Option */}
+                                    <div className={cn(
+                                        "flex flex-col items-center gap-2 p-3 rounded-lg border transition-all cursor-pointer hover:bg-white/5",
+                                        !activeCosmetics[selectedCard.id]
+                                            ? "border-yellow-500 bg-yellow-500/10"
+                                            : "border-slate-700 bg-slate-900/50"
+                                    )} onClick={() => setActiveCosmetic(selectedCard.id, '')}>
+                                        <div className="text-sm font-bold text-slate-200">Standard Issue</div>
+                                        <div className="text-[10px] text-slate-500">Default</div>
+                                        {!activeCosmetics[selectedCard.id] && <div className="text-[10px] text-yellow-500 font-bold">EQUIPPED</div>}
                                     </div>
-                                    <div className="flex-1 min-w-0">
-                                        <div className="text-sm font-bold text-slate-200">Base Version</div>
-                                        <div className="text-[10px] text-slate-500">Default artwork</div>
-                                    </div>
-                                    {activeCosmetics[selectedCard.id] ? (
-                                        <button
-                                            onClick={() => setActiveCosmetic(selectedCard.id, '')}
-                                            className="px-3 py-1 text-xs bg-slate-700 hover:bg-slate-600 text-white rounded border border-slate-500 transition-colors"
-                                        >
-                                            EQUIP
-                                        </button>
-                                    ) : (
-                                        <div className="px-3 py-1 text-xs bg-yellow-500/20 text-yellow-500 rounded border border-yellow-500/50 font-bold">
-                                            EQUIPPED
-                                        </div>
-                                    )}
-                                </div>
 
-                                {/* Cosmetic Variants */}
-                                {selectedCard.cosmetics && selectedCard.cosmetics.length > 0 ? (
-                                    selectedCard.cosmetics.map((cosmetic) => {
+                                    {/* Unlockable Cosmetics */}
+                                    {selectedCard.cosmetics?.map((cosmetic) => {
                                         const isUnlocked = unlockedCosmetics[selectedCard.id]?.includes(cosmetic.id);
                                         const isActive = activeCosmetics[selectedCard.id] === cosmetic.id;
                                         const cost = cosmetic.unlockCost?.amount || 0;
@@ -179,73 +167,37 @@ export const Workshop: React.FC = () => {
                                         return (
                                             <div
                                                 key={cosmetic.id}
+                                                onClick={() => {
+                                                    if (isUnlocked) {
+                                                        setActiveCosmetic(selectedCard.id, cosmetic.id);
+                                                    } else if (canAfford) {
+                                                        if (spendPlatinum(cost)) unlockCosmetic(selectedCard.id, cosmetic.id);
+                                                    }
+                                                }}
                                                 className={cn(
-                                                    "border rounded-lg p-3 flex items-center gap-4 transition-all",
+                                                    "flex flex-col items-center gap-2 p-3 rounded-lg border transition-all cursor-pointer hover:bg-white/5 relative overflow-hidden",
                                                     isActive
                                                         ? "border-yellow-500 bg-yellow-500/10"
                                                         : isUnlocked
-                                                        ? "border-white/10 bg-slate-900/50 hover:bg-slate-800/50"
-                                                        : "border-slate-700 bg-slate-900/30"
+                                                        ? "border-slate-600 bg-slate-900/50"
+                                                        : "border-slate-800 bg-black/40 opacity-80"
                                                 )}
                                             >
-                                                <div className={cn(
-                                                    "scale-[0.4] origin-left -my-16 -ml-8",
-                                                    !isUnlocked && "opacity-50 grayscale"
-                                                )}>
-                                                    <Card card={selectedCard} previewAsset={cosmetic.asset} />
-                                                </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="text-sm font-bold text-slate-200">{cosmetic.name}</div>
-                                                    {!isUnlocked && (
-                                                        <div className="text-[10px] text-blue-400 font-mono mt-1">
-                                                            {cost} 💎 Platinum
-                                                        </div>
-                                                    )}
-                                                    {isUnlocked && !isActive && (
-                                                        <div className="text-[10px] text-green-500 font-mono mt-1">
-                                                            ✓ Unlocked
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                {isUnlocked ? (
-                                                    isActive ? (
-                                                        <div className="px-3 py-1 text-xs bg-yellow-500/20 text-yellow-500 rounded border border-yellow-500/50 font-bold">
-                                                            EQUIPPED
-                                                        </div>
-                                                    ) : (
-                                                        <button
-                                                            onClick={() => setActiveCosmetic(selectedCard.id, cosmetic.id)}
-                                                            className="px-3 py-1 text-xs bg-slate-700 hover:bg-slate-600 text-white rounded border border-slate-500 transition-colors"
-                                                        >
-                                                            EQUIP
-                                                        </button>
-                                                    )
+                                                <div className="text-sm font-bold text-slate-200 text-center">{cosmetic.name}</div>
+                                                
+                                                {!isUnlocked ? (
+                                                    <div className={cn("text-xs font-mono font-bold px-3 py-1 rounded bg-black/50 border", canAfford ? "text-blue-400 border-blue-500/30" : "text-red-500 border-red-500/30")}>
+                                                        {cost} 💎
+                                                    </div>
                                                 ) : (
-                                                    <button
-                                                        onClick={() => {
-                                                            if (canAfford && spendPlatinum(cost)) {
-                                                                unlockCosmetic(selectedCard.id, cosmetic.id);
-                                                            }
-                                                        }}
-                                                        disabled={!canAfford}
-                                                        className={cn(
-                                                            "px-3 py-1 text-xs rounded border transition-colors font-bold",
-                                                            canAfford
-                                                                ? "bg-blue-600 hover:bg-blue-500 text-white border-blue-400"
-                                                                : "bg-slate-800 text-slate-600 border-slate-700 cursor-not-allowed"
-                                                        )}
-                                                    >
-                                                        UNLOCK
-                                                    </button>
+                                                    <div className="text-[10px] text-green-500 font-mono">UNLOCKED</div>
                                                 )}
+
+                                                {isActive && <div className="text-[10px] text-yellow-500 font-bold">EQUIPPED</div>}
                                             </div>
                                         );
-                                    })
-                                ) : (
-                                    <div className="text-center text-slate-600 text-sm py-8">
-                                        No cosmetics available for this unit.
-                                    </div>
-                                )}
+                                    })}
+                                </div>
                             </div>
                         </div>
                     ) : (

@@ -434,8 +434,14 @@ export class MechanicHandler {
                  if (!t.status) t.status = {};
                  // Only apply if not already hacked
                  if (!t.status.hacked || t.status.hacked === 0) {
+                     // FIXED: If unit is disarmed (weak), use its original ATK as the baseline
+                     let baseAtk = t.atk;
+                     if (t.status.weak && t.status.weak > 0 && t.status.originalAtk !== undefined) {
+                         baseAtk = t.status.originalAtk;
+                     }
+
                      if (t.status.originalAtkBeforeHack === undefined) {
-                         t.status.originalAtkBeforeHack = t.atk;
+                         t.status.originalAtkBeforeHack = baseAtk;
                      }
                      const amount = mechanic.value || 1;
                      t.atk = Math.max(0, t.atk - amount);

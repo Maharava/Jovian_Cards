@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import type { Card as CardType } from '../types';
 import { cn } from '../lib/utils';
 import { MECHANICS_DEFINITIONS } from '../data/mechanics';
-import { getCardAssetPath, getFallbackAssetPath, FACTION_FOLDERS } from '../lib/assetUtils';
+import { getFallbackAssetPath, FACTION_FOLDERS } from '../lib/assetUtils';
 import { useMetaStore } from '../store/metaStore';
 
 interface CardProps {
@@ -117,8 +117,7 @@ export const Card: React.FC<CardProps> = ({ card, onClick, onContextMenu, classN
             onError={(e) => {
                 (e.target as HTMLImageElement).src = getFallbackAssetPath(
                   card.baseAsset,
-                  card.faction,
-                  card.type === 'tactic' || card.rarity === 'NA'
+                  card.faction
                 );
             }}
           />

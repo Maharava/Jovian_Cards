@@ -25,28 +25,58 @@ export const createDeckSlice: StateCreator<
   [],
   [],
   DeckSlice
-> = (set) => ({
-  drawCard: (count = 1) => set((state: any) => {
+> = (set, get) => ({
+  drawCard: (count = 1) => {
+    const state = get();
+    // Use mutable copies
     const newHand = [...state.player.hand];
-    const newDeck = [...state.player.deck];
+    let newDeck = [...state.player.deck];
+    let newGraveyard = [...state.player.graveyard];
+    let shouldEndTurn = false;
 
     for (let i = 0; i < count; i++) {
-      if (newDeck.length === 0) break;
+      if (newDeck.length === 0) {
+        if (newGraveyard.length > 0) {
+           // Recycle Graveyard
+           newDeck = shuffleArray(newGraveyard);
+           newGraveyard = [];
+           
+           // Draw 1 card from new deck
+           const card = newDeck.shift();
+           if (card) {
+               newHand.push({ ...card, uid: generateId() });
+           }
 
-      const card = newDeck.shift();
-      if (card) {
-        newHand.push({ ...card, uid: generateId() });
+           // Flag to end turn immediately (Fatigue/Cycle penalty)
+           shouldEndTurn = true;
+           break; // Stop drawing
+        } else {
+           // No cards left at all
+           break;
+        }
+      } else {
+        const card = newDeck.shift();
+        if (card) {
+          newHand.push({ ...card, uid: generateId() });
+        }
       }
     }
 
-    return {
+    set({
       player: {
         ...state.player,
         hand: newHand,
-        deck: newDeck
+        deck: newDeck,
+        graveyard: newGraveyard
       }
-    };
-  }),
+    });
+
+    if (shouldEndTurn) {
+        // We need to access endPlayerTurn from the main store actions
+        // Since get() returns the full store state/actions
+        (get() as any).endPlayerTurn();
+    }
+  },
 
   shuffleDeck: (cards: Card[]) => shuffleArray(cards),
 

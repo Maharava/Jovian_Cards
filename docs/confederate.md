@@ -6,20 +6,15 @@
 They are the newest "faction" on the galactic stage. To the Republic, they are a legal headache; to the Megacorps, they are a market to be exploited; to the Jovian Sisters, they are home.
 
 *   **Archetype:** Midrange / Synergy / Guerrilla / Hero-Centric
-*   **Motto:** "Free Sky, Free Void."
-*   **Visual Style:** **Space Western / Industrial + Bio-Punk.** Worn metal, repurposed mining equipment, jury-rigged starships, magnetic boots, and heavy kinetic weaponry. Not pretty, but it works. The Jovian Sisters add clean medical aesthetics, bioluminescent blues and purples, and organic high-tech visors.
+*   **Visual Style:** **Chaotic (lots of different cultures/designs) / Industrial + Bio-Punk.** 
 
 ---
 
 ## Origins
-The Confederacy did not start as a nation. It began as a trade union of mining colonies on the moons of Jupiter and Saturn who were tired of the Republic's taxes and the Megacorps' predatory contracts.
-*   **The Catalyst:** The "Europa Incident" and the persecution of the Jovian Sisters. When the Republic demanded the surrender of the "mutants," the Outer Worlds refused. This act of defiance solidified their alliance.
+The Confederacy did not start as a nation. It began as a disparate group of settlements scattered across the Belt, the Jovian and Saturn moons.
+*   **The Catalyst:** The emergence of the Jovian sisters. Already, many settlements were banding together to form regional federations, and the moon of Callisto was approaching the status of being a united world. When the first Sisters appeared, there was a bounty put out by Corporations as the Republic dithered about what the children of Jupiter were. Cities that shielded the sisters found they were gifted advanced technologies, cutting edge research, and money from the elusive Jupiter. These cities became targets of other, jealous cities, and so they banded together. More sisters appeared, enw cities gave them shelter and citizenship and received the gifts of Jupiter, and they joined this union for mutual defence.
+By the time Europa Jovia, eldest daughter of Jupiter, was in her tenties, the Confederacy was official. Not all the settlements in the outer system joined the Confederacy
 *   **Independence:** They consider themselves a sovereign state. The Republic is still debating what they are.
-
-## Structure
-Unlike the Republic's rigid hierarchy, the Confederacy is a decentralized democracy.
-*   **The Council of Captains:** Decisions are made by a council of station administrators, ship captains, and settlement leaders. It is chaotic, loud, and often deadlock-prone, but it moves faster than the Republic.
-*   **The Militia:** There is no standing "Army." Every ship is a warship; every miner is a militiaman. When the call goes out, the "Fleet" assembles from a thousand different vectors.
 
 ---
 
@@ -27,43 +22,42 @@ Unlike the Republic's rigid hierarchy, the Confederacy is a decentralized democr
 
 **The Jovian Sisters** (often called "The Family") are the genetically engineered children of **Jupiter**, the most brilliant geneticist to ever grace humanity. They are the first—and only—non-human sentient beings in the system. Though their baseline DNA is human, they were grown with radical genetic alterations that have matured into stable, functional post-human physiology—something regular humans can only approximate with crude surgery.
 
-They are not a government. They are refugees, mercenaries, and celebrities living under the protection of the Outer Confederacy. In exchange for asylum and privacy, the Sisters provide the Confederacy with advanced technology from Jupiter's network, allowing this young "Space Western" nation to stand toe-to-toe with the Republic.
+They are not a government. They are refugees, mercenaries, and celebrities living under the protection of the Outer Confederacy. 
 
 While some Sisters work directly for the Confederacy military (like **Amalthea**) or local governments, most operate independently.
 
 ### The "Sisters" (And Brothers)
-The faction is led by the genetically engineered children of Jupiter. Each represents a unique facet of post-human evolution.
+The family is led by the genetically engineered children of Jupiter. Each represents a unique facet of post-human evolution.
 
-#### 1. The Psychics (The Void-Touched)
+#### 1. The Psychics
 Those who carry the active "Jupiter Gene," granting them varying degrees of telekinetic or telepathic power.
 *   **Europa (The Eldest):** A powerful psychic burdened by leadership.
-*   **Metis (The Empath):** Can heal wounds by manipulating biological energy but feels the pain of others.
-*   **Lysithea (The Glitch):** A chaotic psychic whose presence disrupts technology.
-*   **Cyllene (The Storm):** A raw, unrefined psychic force.
+*   **Metis:** A dangerous psychic with little mercy, using her power to destroy her foes.
+*   **Lysithea:** A chaotic psychic whose presence disrupts technology.
+*   **Cyllene:** A powerful telekinetic.
 
-#### 2. The Fighters (The Protectors)
+#### 2. The Fighters
 Often "Psy-deaf" (immune to psychic influence), these siblings rely on physical prowess and advanced weaponry.
-*   **Ganymede (The Pugilist):** A brawler who loves a fight.
-*   **Himalia (The Shield):** A massive, heavily armored protector.
-*   **Callisto (The Survivor):** A street-smart fighter who gets stronger as she takes damage.
-*   **Thebe (The Apex):** A bio-hacked ranger and hunter.
-*   **Taygete (The Heavy):** A master of suppression and heavy ordnance.
+*   **Ganymede:** A boxer and gym-junkie who loves a fight.
+*   **Himalia:** A massive, heavily armored soldier, first in, last out.
+*   **Callisto:** A street-smart fighter who gets stronger as she takes damage.
+*   **Thebe:** A bio-hacked ranger and hunter.
 
-#### 3. The Technicians (The Builders)
+#### 3. The Technicians
 Those who interface with machines or enhance their bodies with cybernetics.
-*   **Elara (The Scientist):** The researcher and strategist.
-*   **Io (The Gremlin):** A drone operator and hacker.
-*   **Carpo (The Specialist):** A pacifist gadgeteer who buffs his allies.
+*   **Elara:** A biological researcher specialising in flora.
+*   **Io:** A drone operator and hacker.
+*   **Carpo:** A pacifist gadgeteer and mechanic.
 
-#### 4. The Civilians (The Heart)
+#### 4. The Civilians
 Those who try to live normal lives, providing support and resources.
-*   **Kore (The Maiden):** A socialite who gathers information and resources.
-*   **Adrastea (The Provider):** A dedicated healer who runs a charitable clinic.
+*   **Kore:** A socialite who gathers information and resources.
+*   **Adrastea:** A dedicated healer who runs a charitable clinic.
 
 ---
 
 ## Strategic Doctrine
-The Confederacy cannot win a straight fight against the Republic Navy or a full Megacorp fleet. They rely on **Guerrilla Warfare** combined with the **Unit Quality and Synergy** of the Jovian Sisters.
+The Confederacy cannot win a straight fight against the Republic Navy, but it can make it bleed. It's arguably ready to stand off a full Corporate fleet, but is untested - the Confederacy's region has been a den of smugglers and pirates for decades, and its troops are more adept at fighting small, evasive foes than proper soldiers. Confederate decks rely on **Guerrilla Warfare** combined with the **Unit Quality and Synergy** of the Jovian Sisters.
 
 ### Core Pillars:
 1.  **Synergy:** Many units buff allies (Support, Rally) or rely on board presence. The Jovian Sisters become significantly more powerful when working together.
@@ -84,23 +78,11 @@ The Confederacy cannot win a straight fight against the Republic Navy or a full 
 
 ---
 
-## Key Locations
-*   **Callisto:** The unofficial capital and trade hub. Home to massive refugee sectors and Adrastea's clinic.
-*   **Titan (Saturn):** A major industrial center, constantly skirmishing with Ira Corp black sites.
-*   **The Belt:** A lawless buffer zone filled with pirates, smugglers, and listening posts.
-
----
-
 ## Card Roster (20 Unique Cards)
 
 ### COMMON UNITS (7 Cards)
 
-#### Himalia (The Shield) - Common
-- **Cost:** 3 | **Stats:** 2/4 | **Subtype:** Cybernetic
-- **Ability:** (None - vanilla unit)
-- **Lore:** Himalia just wants a normal life. Built like a tank, her muscles aren't quite as efficient as Gany's, but close—she's one of three sisters Gany will never fight in hand-to-hand, because Himalia can take her out with one hit. Himalia works a normal job and dates, but is an absolute gym junkie—this is boosted by her hyper-efficient metabolism.
-- **Asset:** himalia
-- **Cosmetic Variants:** himalia_alt1 (tier2), himalia_alt2 (tier3)
+#### EMPTY
 
 #### Amalthea (The Soldier) - Common
 - **Cost:** 3 | **Stats:** 3/4 | **Subtype:** Biological
@@ -109,12 +91,7 @@ The Confederacy cannot win a straight fight against the Republic Navy or a full 
 - **Asset:** amalthea
 - **Cosmetic Variants:** amalthea_alt1 (tier2), amalthea_alt2 (tier3)
 
-#### Leda (The Thief) - Common
-- **Cost:** 2 | **Stats:** 2/3 | **Subtype:** Biological
-- **Ability:** (None - vanilla unit)
-- **Lore:** A thief who lives amongst the free states of the Jupiter and Saturn moons, Leda is thin, a recluse and quiet. She actively avoids her sisters—she's never forgiven their mother for 'abandoning' them. She walks quietly, can hold her breath for five minutes, and easily sees in the dark.
-- **Asset:** leda
-- **Cosmetic Variants:** leda_alt1 (tier2), leda_alt2 (tier3)
+#### EMPTY
 
 #### Lysithea (The Hacker) - Common
 - **Cost:** 3 | **Stats:** 2/2 | **Subtype:** Psionic
@@ -123,26 +100,11 @@ The Confederacy cannot win a straight fight against the Republic Navy or a full 
 - **Asset:** lysithea
 - **Cosmetic Variants:** lysithea_alt1 (tier2), lysithea_alt2 (tier3)
 
-#### Kore (The Maiden) - Common
-- **Cost:** 2 | **Stats:** 1/3 | **Subtype:** Biological
-- **Ability:** OnPlay: Scout 1 - Reveal 1 random card from enemy hand
-- **Lore:** A socialite who lives for the weekend. Kore works as a 'consultant' for high-end clubs on Ganymede, using her enhanced stamina and charm to be the life of every party. She knows everyone, hears everything, and is the family's best source of gossip and underground intel. She pretends to be shallow to hide how sharp she really is.
-- **Asset:** kore
-- **Cosmetic Variants:** kore_alt1 (tier2), kore_alt2 (tier3)
+#### EMPTY
 
-#### Adrastea (The Provider) - Common
-- **Cost:** 3 | **Stats:** 2/4 | **Subtype:** Biological
-- **Ability:** OnPlay: Heal 2 (target ally) - Restore 2 HP to target ally
-- **Lore:** "The Provider" to the locals of Callisto's refugee sectors. She runs a clinic that treats everyone, regardless of ability to pay. She possesses no psychic talent or cybernetics, but her hands are impossibly steady, and her ability to diagnose ailments by scent and touch borders on the supernatural. She is the moral compass that even Europa listens to.
-- **Asset:** adrastea
-- **Cosmetic Variants:** adrastea_alt1 (tier2), adrastea_alt2 (tier3)
+#### EMPTY
 
-#### Carpo (The Mechanic) - Common
-- **Cost:** 2 | **Stats:** 1/3 | **Subtype:** Cybernetic
-- **Ability:** (None - vanilla unit)
-- **Lore:** The other brother, femboy Carpo loves technology just like Io. But while his brother builds and mods drones, Carpo works on starships. A mechanic with an uncanny ability to spot defects and problems, Carpo works the trade lanes, loving life and exploring with the ships he works on.
-- **Asset:** carpo
-- **Cosmetic Variants:** carpo_alt1 (tier2), carpo_alt2 (tier3)
+#### EMPTY
 
 ---
 
@@ -155,12 +117,7 @@ The Confederacy cannot win a straight fight against the Republic Navy or a full 
 - **Asset:** sinope
 - **Cosmetic Variants:** sinope_alt1 (tier2), sinope_alt2 (tier3)
 
-#### Euporie (The Nurse) - Uncommon
-- **Cost:** 3 | **Stats:** 2/4 | **Subtype:** Biological
-- **Ability:** OnPlay: Heal 3 (target ally) - Restore 3 HP to target ally
-- **Lore:** A dedicated field nurse who works alongside Adrastea in the refugee sectors. Euporie specializes in combat medicine and emergency triage.
-- **Asset:** euporie
-- **Cosmetic Variants:** euporie_alt1 (tier2), euporie_alt2 (tier3)
+#### EMPTY
 
 #### Callisto (The Gang Queen) - Uncommon
 - **Cost:** 3 | **Stats:** 1/2 | **Subtype:** Biological
@@ -169,30 +126,15 @@ The Confederacy cannot win a straight fight against the Republic Navy or a full 
 - **Asset:** callisto
 - **Cosmetic Variants:** callisto_alt1 (tier2), callisto_alt2 (tier3)
 
-#### Taygete (The Heavy) - Uncommon
-- **Cost:** 3 | **Stats:** 2/4 | **Subtype:** Biological
-- **Ability:** (None - vanilla unit)
-- **Lore:** A quiet professional who works the heavy loaders at the orbital docks. She found she had an affinity for heavy ordnance and kinetic suppression. She wears a modified industrial exo-suit into battle, wielding guns that would break a normal human's shoulder. She speaks softly but carries a very, very big gun.
-- **Asset:** taygete
-- **Cosmetic Variants:** taygete_alt1 (tier2), taygete_alt2 (tier3)
+#### EMPTY
 
-#### Cyllene (The Storm) - Uncommon
-- **Cost:** 4 | **Stats:** 3/3 | **Subtype:** Psionic
-- **Ability:** OnPlay: Spark 2 (random enemy) - Deal 2 damage to random enemy unit
-- **Lore:** A raw, unrefined psychic force. Cyllene represents pure psionic power without the control Europa or Metis possess. She is chaos incarnate.
-- **Asset:** cyllene
-- **Cosmetic Variants:** cyllene_alt1 (tier2), cyllene_alt2 (tier3)
+#### EMPTY
 
 ---
 
 ### RARE UNITS (5 Cards)
 
-#### Elara (The Biologist) - Rare
-- **Cost:** 4 | **Stats:** 2/3 | **Subtype:** Biological
-- **Ability:** OnPlay: Draw 2. Bio-Optimize 2 - Give a target unit +2/+2
-- **Lore:** The most like mum, Elara is a scientist, though her focus is on biology. She's arguably the best floral biologist past the Belt, and a contender for top of her field across the system. She thinks at superhuman speeds and can get very frustrated with the antics of younger sisters. She's concerned by Europa's concerns, and has begun working with Thebe on genetic augmentations.
-- **Asset:** elara (from tier2)
-- **Cosmetic Variants:** elara_alt1 (tier1), elara_alt2 (tier3)
+#### EMPTY
 
 #### Io (The Drone Master) - Rare
 - **Cost:** 2 | **Stats:** 2/5 | **Subtype:** Cybernetic
@@ -233,12 +175,7 @@ The Confederacy cannot win a straight fight against the Republic Navy or a full 
 - **Asset:** europa (from tier3)
 - **Cosmetic Variants:** europa_alt1 (tier1), europa_alt2 (tier2)
 
-#### Metis (The Flare) - Legendary
-- **Cost:** 6 | **Stats:** 6/6 | **Subtype:** Psionic
-- **Ability:** OnPlay: Destroy target enemy. WhenAttacked: Spark 3 (attacker)
-- **Lore:** The only other outright Psychic, Metis hears the same Whispers as Europa, but only in her deepest nightmares. While Europa has a public image and works with the Confederacy, Metis strikes out on her own, wielding a high-tech cane to help channel her power, hunting for clues about the Whispers. She's one of the youngest Jovians, and extremely awkward around men. Unlike Europa, mercy isn't in Metis' nature—she'll eliminate a threat without a second thought.
-- **Asset:** metis (from tier3)
-- **Cosmetic Variants:** metis_alt1 (tier1), metis_alt2 (tier2)
+#### EMPTY
 
 #### Thebe (The Apex) - Legendary
 - **Cost:** 6 | **Stats:** 7/7 | **Subtype:** Biological
@@ -262,35 +199,3 @@ The Confederacy does not have a massive standing army. They rely on guerrilla ta
 | **Scramble** | 1 | Return unit to hand. | "Tactical retreat." |
 
 ---
-
-## Asset Migration Map
-
-### Common Cards (Use Tier 1 as primary):
-- **Himalia:** himalia_tier1.png → himalia.png
-- **Amalthea:** amalthea_tier1.png → amalthea.png
-- **Leda:** leda_tier1.png → leda.png
-- **Lysithea:** lysithea_tier1.png → lysithea.png
-- **Kore:** kore_tier1.png → kore.png
-- **Adrastea:** adrastea_tier1.png → adrastea.png
-- **Carpo:** carpo_tier1.png → carpo.png
-
-### Uncommon Cards (Use Tier 1 as primary):
-- **Sinope:** sinope_tier1.png → sinope.png
-- **Euporie:** euporie_tier1.png → euporie.png
-- **Callisto:** callisto_tier1.png → callisto.png
-- **Taygete:** taygete_tier1.png → taygete.png
-- **Cyllene:** cyllene_tier1.png → cyllene.png
-
-### Rare Cards (Use Tier 2 as primary):
-- **Elara:** elara_tier2.png → elara.png
-- **Io:** io_tier2.png → io.png
-- **Pasiphae:** pasiphae_tier2.png → pasiphae.png
-- **Praxidike:** praxidike_tier2.png → praxidike.png
-- **Ganymede:** ganymede_tier2.png → ganymede.png
-
-### Legendary Cards (Use Tier 3 as primary):
-- **Europa:** europa_tier3.png → europa.png
-- **Metis:** metis_tier3.png → metis.png
-- **Thebe:** thebe_tier3.png → thebe.png
-
-**Asset Folder:** All Confederate cards should use `/assets/cards/confederate/` (renamed from `/assets/cards/jovian/`)

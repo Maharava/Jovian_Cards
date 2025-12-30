@@ -94,8 +94,7 @@ export const Unit: React.FC<UnitProps> = ({ unit, onClick, onContextMenu, isTarg
                     if (!currentSrc.includes('_tier1') && !currentSrc.includes('placeholder')) {
                         img.src = getFallbackAssetPath(
                           unit.baseAsset,
-                          unit.faction,
-                          cardDef?.type === 'tactic' || cardDef?.rarity === 'NA'
+                          unit.faction
                         );
                     } else if (!currentSrc.includes('placeholder')) {
                         img.src = '/assets/cards/placeholder.png';

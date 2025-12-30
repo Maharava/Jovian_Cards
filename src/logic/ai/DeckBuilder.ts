@@ -1,5 +1,5 @@
 import type { Card, MechanicPayload, Rarity } from '../../types';
-import { ENEMY_CARDS } from '../../data/cards';
+import { ENEMY_CARDS, ALL_CARDS } from '../../data/cards';
 
 const isStringPayload = (payload: string | MechanicPayload | undefined): payload is string => {
     return typeof payload === 'string';
@@ -140,7 +140,7 @@ export class DeckBuilder {
   private static randomDeck(pool: Card[], level: number): Card[] {
     const deck: Card[] = [];
     const rarityCaps = this.getRarityCaps(level);
-    const rarityCounts: Record<Rarity, number> = { Common: 0, Uncommon: 0, Rare: 0, Legendary: 0 };
+    const rarityCounts: Record<Rarity, number> = { Common: 0, Uncommon: 0, Rare: 0, Legendary: 0, NA: 0 };
 
     let attempts = 0;
     const maxAttempts = DECK_SIZE * 100;
@@ -182,7 +182,7 @@ export class DeckBuilder {
   private static smartDraft(pool: Card[], profile: DeckProfile, level: number): Card[] {
     const deck: Card[] = [];
     const rarityCaps = this.getRarityCaps(level);
-    const rarityCounts: Record<Rarity, number> = { Common: 0, Uncommon: 0, Rare: 0, Legendary: 0 };
+    const rarityCounts: Record<Rarity, number> = { Common: 0, Uncommon: 0, Rare: 0, Legendary: 0, NA: 0 };
 
     // Fill each cost bucket
     for (const bucket of profile.costDistribution) {
@@ -308,17 +308,17 @@ export class DeckBuilder {
   private static getRarityCaps(level: number): Record<Rarity, number> {
     switch (level) {
       case 1:
-        return { Common: -1, Uncommon: 0, Rare: 0, Legendary: 0 };
+        return { Common: -1, Uncommon: 0, Rare: 0, Legendary: 0, NA: 0 };
       case 2:
-        return { Common: -1, Uncommon: 3, Rare: 0, Legendary: 0 };
+        return { Common: -1, Uncommon: 3, Rare: 0, Legendary: 0, NA: 0 };
       case 3:
-        return { Common: -1, Uncommon: 6, Rare: 3, Legendary: 0 };
+        return { Common: -1, Uncommon: 6, Rare: 3, Legendary: 0, NA: 0 };
       case 4:
-        return { Common: -1, Uncommon: 10, Rare: 5, Legendary: 1 };
+        return { Common: -1, Uncommon: 10, Rare: 5, Legendary: 1, NA: 0 };
       case 5:
-        return { Common: -1, Uncommon: -1, Rare: 8, Legendary: 3 };
+        return { Common: -1, Uncommon: -1, Rare: 8, Legendary: 3, NA: 0 };
       default:
-        return { Common: -1, Uncommon: 0, Rare: 0, Legendary: 0 };
+        return { Common: -1, Uncommon: 0, Rare: 0, Legendary: 0, NA: 0 };
     }
   }
 }

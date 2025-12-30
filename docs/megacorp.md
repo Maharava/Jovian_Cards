@@ -42,9 +42,10 @@ The "friendly face" of corporate dominance. They provide the stims that keep wor
 The Megacorp playstyle is defined by **expendability** and **momentum**. They do not value individual units; they value the output of the aggregate.
 
 ### Core Pillars:
-1.  **Swarm Tactics:** Flooding the board with cheap, low-stat units (Drones, Security Bots) that overwhelm single-target removal.
-2.  **Sacrifice ("Downsizing"):** Destroying their own weak units to trigger powerful effects (drawing cards, dealing damage, gaining energy).
-3.  **Debuffs:** Instead of killing strong enemies outright, they cripple them with "Hack" or "Weak" status effects, rendering them useless but taking up board space.
+1.  **Quota X:** Many Megacorp units possess the **Quota X** ability. This effect triggers only when you control X or more Megacorp units on your side of the board (including the unit itself). This represents the efficiency of industrial scale; as the "factory floor" fills up, the corporate machine becomes significantly more powerful.
+2.  **Swarm Tactics:** Flooding the board with cheap, low-stat units (Drones, Security Bots) that overwhelm single-target removal.
+3.  **Sacrifice ("Downsizing"):** Destroying their own weak units to trigger powerful effects (drawing cards, dealing damage, gaining energy).
+4.  **Debuffs:** Instead of killing strong enemies outright, they cripple them with "Hack" or "Weak" status effects, rendering them useless but taking up board space.
 
 ### Strengths:
 *   Fast board development.
@@ -70,22 +71,22 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 - **Cosmetic Variants:** mining_drone_alt1 (tier2), mining_drone_alt2 (tier3)
 
 #### Security Bot - Common
-- **Cost:** 2 | **Stats:** 1/2 | **Subtype:** Cybernetic
-- **Ability:** Guard - Must be attacked before other units
+- **Cost:** 2 | **Stats:** 3/1 | **Subtype:** Cybernetic
+- **Ability:** 
 - **Lore:** Basic security units deployed to protect corporate assets. Their programming prioritizes property over people.
 - **Asset:** security_bot
 - **Cosmetic Variants:** security_bot_alt1 (tier2), security_bot_alt2 (tier3)
 
 #### Corp Guard - Common
-- **Cost:** 2 | **Stats:** 1/2 | **Subtype:** Biological
-- **Ability:** Guard - Must be attacked before other units
+- **Cost:** 2 | **Stats:** 2/2 | **Subtype:** Biological
+- **Ability:** Quota 3: Guard
 - **Lore:** Human security personnel. Better equipped than most militia forces, they enforce corporate policy with lethal efficiency.
 - **Asset:** corp_guard
 - **Cosmetic Variants:** corp_guard_alt1 (tier2), corp_guard_alt2 (tier3)
 
 #### K9X Unit - Common
 - **Cost:** 2 | **Stats:** 2/1 | **Subtype:** Cybernetic
-- **Ability:** Rush - Can attack immediately
+- **Ability:** Rush - Can attack immediately. Quota 4: Snipe
 - **Lore:** Cybernetic hunting units designed to track and terminate targets. Fast, deadly, and utterly obedient to corporate directives.
 - **Asset:** k9x_unit
 - **Cosmetic Variants:** k9x_unit_alt1 (tier2), k9x_unit_alt2 (tier3)
@@ -110,21 +111,21 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 
 #### Alexandrea (Executive) - Uncommon
 - **Cost:** 3 | **Stats:** 0/3 | **Subtype:** Biological
-- **Ability:** Turn End: Encourage 1 - Give a random ally +1 ATK
+- **Ability:** Turn End: Encourage 1 - Give a random ally +1 ATK. Quota 4: TurnEnd: Rally 1 (random ally)
 - **Lore:** Middle management at its finest. Alexandrea motivates the workforce through inspirational speeches and subtle threats. She climbed the corporate ladder by ensuring her subordinates always hit their quotas.
 - **Asset:** alexandrea
 - **Cosmetic Variants:** alexandrea_alt1 (tier2), alexandrea_alt2 (tier3)
 
 #### Ximena (Asset Liquidator) - Uncommon
 - **Cost:** 4 | **Stats:** 4/2 | **Subtype:** Biological
-- **Ability:** (None - vanilla unit)
+- **Ability:** Quota 4: +2/+2 while Quota is met.
 - **Lore:** When assets need to be "liquidated," Ximena is the one who gets the call. She doesn't ask questions; she just delivers results.
 - **Asset:** ximena
 - **Cosmetic Variants:** ximena_alt1 (tier2), ximena_alt2 (tier3)
 
 #### Black Betty (Hacking Uplink) - Uncommon
 - **Cost:** 3 | **Stats:** 0/4 | **Subtype:** Cybernetic
-- **Ability:** Turn End: Hack 1 (random enemy) - Reduce ATK by 1 for 2 turns
+- **Ability:** Turn End: Hack 1 (random enemy) - Reduce ATK by 1 for 2 turns. Quota 4: Hack 2 instead.
 - **Lore:** An AI-driven cyberwarfare platform. Black Betty infiltrates enemy systems, corrupting targeting data and disabling weapons with surgical precision.
 - **Asset:** black_betty
 - **Cosmetic Variants:** black_betty_alt1 (tier2), black_betty_alt2 (tier3)
@@ -149,7 +150,7 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 
 #### Solarin Control (Process Manager) - Rare
 - **Cost:** 3 | **Stats:** 0/6 | **Subtype:** Cybernetic
-- **Ability:** Turn Start: Gain 1 Energy for each Megacorp unit (max 4). Turn End: Repair 1 Cybernetic
+- **Ability:** Turn Start: Gain 1 Energy. Turn End: Repair 1 Cybernetic. Quota 4: Gain 2 energy instead.
 - **Lore:** Automated resource management systems that optimize corporate operations. When properly configured, Solarin Control can sustain entire fleets.
 - **Asset:** solarin_control (from tier2)
 - **Cosmetic Variants:** solarin_control_alt1 (tier1), solarin_control_alt2 (tier3)
@@ -157,7 +158,7 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 #### Director Kiz (Director: Earth) - Rare
 - **Cost:** 4 | **Stats:** 3/4 | **Subtype:** Biological
 - **Ability:** OnPlay: Give all other Megacorp units +1/+1 and Rush
-- **Lore:** Director of Earth Operations for Ira Corp. Kiz is ruthlessly efficient, coordinating planetary invasions with the precision of a quarterly earnings report.
+- **Lore:** Director of Earth Operations for Ira Corp. Kiz is ruthlessly efficient, coordinating hostile takeovers with the precision of a quarterly earnings report.
 - **Asset:** director_kiz (from tier2)
 - **Cosmetic Variants:** director_kiz_alt1 (tier1), director_kiz_alt2 (tier3)
 
@@ -181,14 +182,14 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 
 #### Director Vance (Director: Acquisitions) - Legendary
 - **Cost:** 6 | **Stats:** 0/10 | **Subtype:** Biological/Cybernetic
-- **Ability:** Shield. Passive: When you play a Megacorp unit, give it +2/+2. Recycle 2 - Gain 2 energy when this dies
+- **Ability:** Shield. Passive: When you play a Megacorp unit, give it +2/+2. Quota 5: All Megacorp units you control gain +1/+1.
 - **Lore:** The CEO of Ira Corp. Once a brilliant executive, Vance's consciousness now exists within a life-support system. His mind remains sharp, his ambitions limitless, and his humanity long since liquidated for quarterly profits.
 - **Asset:** director_vance (from tier3)
 - **Cosmetic Variants:** director_vance_alt1 (tier1), director_vance_alt2 (tier2)
 
 #### The Auditor (Unknown) - Legendary
 - **Cost:** 5 | **Stats:** 5/4 | **Subtype:** Biological
-- **Ability:** Snipe - Bypass guards. Assassinate - Destroy target when attacking
+- **Ability:** Snipe - Bypass guards. Assassinate - Destroy target when attacking. Quota 4: First Strike.
 - **Lore:** No one knows his real name. He appears without warning, eliminates targets with surgical precision, and vanishes. The Auditor doesn't fire you from a job—he fires you from life.
 - **Asset:** the_auditor (from tier3)
 - **Cosmetic Variants:** the_auditor_alt1 (tier1), the_auditor_alt2 (tier2)
