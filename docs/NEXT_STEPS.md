@@ -258,3 +258,12 @@
 2. Run build: `npm run build`
 3. Test in development
 4. Deploy when stable
+
+
+
+Disallowed Abilities: First Strike, Double Attack, Disarm, Bio-Optimize, Assassinate, Lifesteal, Mind Control, Silence
+Uncommon:
+Should have 0-2 keyword abilities. Abilities using a value (like Heal X) are never more than 3. 
+Disallowed Abilities: Double Attack, Bio-Optimize, Assassinate, Mind Control
+Rare: Should have 1-2 abilities. Abilities using a value (like Heal X) cap at 4. No disallowed abilities. May have a unique ability.
+Legendary: Should have 2-3 keyword abilities and 1 unique ability. Abilities using a value cap at 5.

@@ -84,21 +84,21 @@ The Confederacy cannot win a straight fight against the Republic Navy, but it ca
 
 #### EMPTY
 
-#### Amalthea (The Soldier) - Common
-- **Cost:** 3 | **Stats:** 3/4 | **Subtype:** Biological
-- **Ability:** (None - vanilla unit)
-- **Lore:** A front line Confederate soldier, Amalthea lacks the hyper-efficient muscles of Himalia or Gany, but has boosted reflexes and heals about four times faster than a normal human. She loves her family, is loyal to the Confederacy, and the 'First in, Last out'. She's something of an embarrassed mascot for the new Confederate Forces.
-- **Asset:** amalthea
-- **Cosmetic Variants:** amalthea_alt1 (tier2), amalthea_alt2 (tier3)
+#### Amalthea - Common
+- Cost: 3 | Stats: 3/4 | Subtype: Biological
+- Ability: (None - vanilla unit)
+- Lore: A proud recruit of the new Confederate Forces, eager to protect the only home she's known. She might lack the raw strength of some sisters, but her heart is unmatched. A veteran of a dozen skirmishes against pirates and Corporate mercs, her boosted reflexes and rapid healing have made her a legend on the front lines, the first in and the last out of every engagement. Now the embarrassed mascot of the Confederacy, The Soldier is a symbol of hope for a free Outer System who fights for her sisters and her nation with a loyalty that cannot be broken.
+- Asset: amalthea
+- Cosmetic Variants: amalthea_alt1 (tier2), amalthea_alt2 (tier3)
 
 #### EMPTY
 
-#### Lysithea (The Hacker) - Common
-- **Cost:** 3 | **Stats:** 2/2 | **Subtype:** Psionic
-- **Ability:** OnPlay: Hack 1 (Random Enemy) - Reduce target's ATK by 1 for 2 turns
-- **Lore:** A chaotic psychic whose presence disrupts technology. Known as "The Glitch," Lysithea's uncontrolled powers make her equally valuable and dangerous to electronic systems.
-- **Asset:** lysithea
-- **Cosmetic Variants:** lysithea_alt1 (tier2), lysithea_alt2 (tier3)
+#### Lysithea - Common
+- Cost: 3 | Stats: 2/2 | Subtype: Psionic
+- Ability: OnPlay: Hack 1 (Random Enemy) - Reduce target's ATK by 1 for 2 turns
+- Lore: A chaotic psychic whose very presence causes sensors to glitch and screens to flicker, she is still learning to control the static that hums in her brain. By channeling her disruption through a neural jack, she became a "White Hat" for the free states, able to bypass Corporate firewalls by simply existing near the server racks. Now, the static has become a scalpel, and the digital world is her playground, with very few places safe from her.
+- Asset: lysithea
+- Cosmetic Variants: lysithea_alt1 (tier2), lysithea_alt2 (tier3)
 
 #### EMPTY
 
@@ -110,21 +110,21 @@ The Confederacy cannot win a straight fight against the Republic Navy, but it ca
 
 ### UNCOMMON UNITS (5 Cards)
 
-#### Sinope (The Seducer) - Uncommon
-- **Cost:** 2 | **Stats:** 1/4 | **Subtype:** Biological
-- **Ability:** OnPlay: Disarm 2 (Random Enemy) - Set target's ATK to 0 for 2 turns
-- **Lore:** The Evil Twin of Praxi, Sinope has cat ears and no tail as well. Just as teasing and playful, that's where the similarity ends with her otherwise-twin—Sinope is a manipulator. One of the youngest Jovians, she uses her looks and charm to get close to powerful men, then either drains them of their funds or screws them over another way. She has a bounty in a dozen settlements, but always escapes. Similar to Praxi, Sinope has an uncanny ability to read people.
-- **Asset:** sinope
-- **Cosmetic Variants:** sinope_alt1 (tier2), sinope_alt2 (tier3)
+#### Sinope - Uncommon
+- Cost: 2 | Stats: 1/4 | Subtype: Biological
+- Ability: OnPlay: Disarm 2 (Random Enemy) - Set target's ATK to 0 for 2 turns
+- Lore: Praxi's "evil twin," Sinope used her charm as a weapon from a young age. She is a manipulator who knows exactly which buttons to press to get what she wants. She has refined her art, draining the bank accounts of powerful men before they even realize they've been played, her ability to read people making her a dangerous ghost in high-end clubs. With a bounty in a dozen settlements, Sinope is a legend of the underground who knows where every body is buried—she put some there herself.
+- Asset: sinope
+- Cosmetic Variants: sinope_alt1 (tier2), sinope_alt2 (tier3)
 
 #### EMPTY
 
-#### Callisto (The Gang Queen) - Uncommon
-- **Cost:** 3 | **Stats:** 1/2 | **Subtype:** Biological
-- **Ability:** OnPlay: Summon a 1/1 Thug token
-- **Lore:** Always a troublesome Jovian, she took to the streets, and is now a gang leader. A skilled brawler, nobody knows what, exactly, her Jovian abilities are, though Elara suspects she has a mild psychic persuasion effect with men. Callisto runs one of the largest crime rings on Enceladus, tolerated by the Confederacy only because she made a deal with Europa to keep Corp-backed crime out of the Confederacy's third largest city. So far she's stuck to her deal. Sneering and stand-offish, she has a soft spot for Praxi, Io, Carpo and Sinope.
-- **Asset:** callisto
-- **Cosmetic Variants:** callisto_alt1 (tier2), callisto_alt2 (tier3)
+#### Callisto - Uncommon
+- Cost: 3 | Stats: 1/2 | Subtype: Biological
+- Ability: OnPlay: Summon a 1/1 Thug token
+- Lore: Always the troublesome one, she took to the streets of Encephalus when the family couldn't hold her, a skilled brawler who learned the hard way that life is a fight. Now a gang leader, she manages one of the largest crime rings in the Outer System, keeping the corporate-backed syndicates out, but only for a price. As the Gang Queen of the moon sectors, she sneers at the law but protects her own with a hidden soft spot, a stand-offish ruler who keeps her sisters close.
+- Asset: callisto
+- Cosmetic Variants: callisto_alt1 (tier2), callisto_alt2 (tier3)
 
 #### EMPTY
 
@@ -136,53 +136,53 @@ The Confederacy cannot win a straight fight against the Republic Navy, but it ca
 
 #### EMPTY
 
-#### Io (The Drone Master) - Rare
-- **Cost:** 2 | **Stats:** 2/5 | **Subtype:** Cybernetic
-- **Ability:** OnPlay: Summon a 1/2 Drone token
-- **Lore:** The tech gremlin, always building something. A femboy and tinkerer, Io has dropped out of university more times than he's counted. Refuses a stable job, but never short of funding—builds and mods drones for fun. He has a super-human knack for mechanical parts and robotics. Closest to Praxi, though they fight like cats and dogs. One of the youngest.
-- **Asset:** io (from tier2)
-- **Cosmetic Variants:** io_alt1 (tier1), io_alt2 (tier3)
+#### Io - Rare
+- Cost: 2 | Stats: 2/5 | Subtype: Cybernetic
+- Ability: OnPlay: Summon a 1/2 Drone token
+- Lore: A university dropout who prefers the hum of a soldering iron to the drone of a lecture, Io spends his nights in cluttered workshops, building drones that the Republic would call "illegal". His mods are legendary among the outer moon racers and scavengers, as he has a super-human knack for mechanical parts, seeing the "soul" in the machines he operates. Now a master, Io commands a swarm of customized drones with the grace of a conductor and can strip an enemy mech to its frame in seconds without ever touching a wrench.
+- Asset: io (from tier2)
+- Cosmetic Variants: io_alt1 (tier1), io_alt2 (tier3)
 
-#### Pasiphae (The Ace) - Rare
-- **Cost:** 3 | **Stats:** 4/3 | **Subtype:** Biological
-- **Ability:** Rush. OnPlay: Redeploy - Return a friendly unit to hand
-- **Lore:** Giggly, a bit shy, massive gamer girl and nerd. Mech pilot for the confederacy. Has a poor self-image (the devil horns she has doesn't help). Quite soft-hearted, flies a medical and evacuation mech. Incredible reflexes.
-- **Asset:** pasiphae (from tier2)
-- **Cosmetic Variants:** pasiphae_alt1 (tier1), pasiphae_alt2 (tier3)
+#### Pasiphae - Rare
+- Cost: 3 | Stats: 4/3 | Subtype: Biological
+- Ability: Rush. OnPlay: Redeploy - Return a friendly unit to hand
+- Lore: A shy nerd who found more comfort in virtual cockpits than in the real world, her giggly nature hides the fastest reflexes ever recorded in a simulator. She took her skills to the skies of the Confederacy, flying medical and evacuation mechs into the thick of combat where her gamer instincts make her an unpredictable and daring pilot. Now known as the Ace of the Outer System, she moves her mech with a grace that defies physics, treating every flight as a high-score run where the prize is the people's safety.
+- Asset: pasiphae (from tier2)
+- Cosmetic Variants: pasiphae_alt1 (tier1), pasiphae_alt2 (tier3)
 
-#### Praxidike (The Trickster) - Rare
-- **Cost:** 3 | **Stats:** 3/2 | **Subtype:** Cybernetic
-- **Ability:** OnPlay: Decoy - Summon a 0/2 Hologram token with Guard
-- **Lore:** A storm in a package, one of the youngest Jovians. Always up to mischief, and very pretty. Has cat ears but no cat tail—very good reflexes and ability to read people's emotions. Often pranking people, or flirting. Europa (and several other older sisters) despair she'll never grow up and do anything. She and Io have the most sibling-like relationship.
-- **Asset:** praxidike (from tier2)
-- **Cosmetic Variants:** praxidike_alt1 (tier1), praxidike_alt2 (tier3)
+#### Praxidike - Rare
+- Cost: 3 | Stats: 3/2 | Subtype: Cybernetic
+- Ability: OnPlay: Decoy - Summon a 0/2 Hologram token with Guard
+- Lore: The youngest Jovian is a storm in a tiny package, always looking for the next prank. Her cat ears twitch at the slightest hint of trouble—or an opportunity for mischief. Her mischief has evolved into complex illusions that play on the emotions of her targets, as she can read a person as easily as she can pick a pocket. A master trickster who defies the older sisters by never growing up, in battle she is a blurring phantom of decoys and misdirection, laughing as her enemies chase shadows.
+- Asset: praxidike (from tier2)
+- Cosmetic Variants: praxidike_alt1 (tier1), praxidike_alt2 (tier3)
 
-#### Ganymede (The Pugilist) - Rare
-- **Cost:** 4 | **Stats:** 4/4 | **Subtype:** Biological
-- **Ability:** Rush. Rage 1 - Gain +1 ATK permanently when attacking
-- **Lore:** A tease, a joker, with a potty mouth. Loves to fight but hates to kill, loves sport. Has quite a following in the Confederacy, especially of men—known to flash people at games. Easy to get along with, but if you cross a line she'll put you on the floor. Her muscles are stronger kg-for-kg—so though slender, she has more strength than a buffed body builder.
-- **Asset:** ganymede (from tier2)
-- **Cosmetic Variants:** ganymede_alt1 (tier1), ganymede_alt2 (tier3)
+#### Ganymede - Rare
+- Cost: 4 | Stats: 4/4 | Subtype: Biological
+- Ability: Rush. Rage 1 - Gain +1 ATK permanently when attacking
+- Lore: A brawler with a foul mouth and a love for the thrill of the fight, her muscles are genetically tuned to be stronger kg-for-kg than any human bodybuilder. A rising star in the Confederacy's illegal fighting pits, she treats every battle as a game, loving the sport of it, but her strength is a sobering reminder of her Jovian blood. Now known as The Pugilist, she is a slender whirlwind of superhuman power who can put a man in a mech suit on the floor with a single, well-placed strike.
+- Asset: ganymede (from tier2)
+- Cosmetic Variants: ganymede_alt1 (tier1), ganymede_alt2 (tier3)
 
 ---
 
 ### LEGENDARY UNITS (3 Cards)
 
-#### Europa (The Mind Ocean) - Legendary
-- **Cost:** 6 | **Stats:** 4/7 | **Subtype:** Psionic
-- **Ability:** OnPlay: Stun All Enemies. Turn Start: Draw 1. Turn End: Heal all allies 3
-- **Lore:** Psychic, quite powerful. Hears the Whispers, which worries her a lot. Ganymede, who she's closest to, always says she worries too much. Diplomatic and motherly, has a bit of friction with some sisters cos she tries to look after them. Not a matriarch. Concerned at 'what's coming'. Effectively immortal when she's summoned all her powers and is going all out—or at least, nobody has figured out how to kill her. Slow to anger and quite merciful.
-- **Asset:** europa (from tier3)
-- **Cosmetic Variants:** europa_alt1 (tier1), europa_alt2 (tier2)
+#### Europa - Legendary
+- Cost: 6 | Stats: 4/7 | Subtype: Psionic
+- Ability: OnPlay: Stun All Enemies. Turn Start: Draw 1. Turn End: Heal all allies 3
+- Lore: The eldest sister, Europa uses her psychic gifts to bridge the gap between human fear and Jovian potential, carrying the weight of a dozen worlds on her shoulders while always listening to the Whispers. Diplomacy is often just another form of defense in the treacherous political waters of the Confederacy, and she ensures her family remains a step ahead of corporate interests while maintaining a motherly eye on her kin. When the Whispers grow too loud, Europa's consciousness expands to fill the void between worlds; to face her in this state is to drown in a psychic sea of infinite depth.
+- Asset: europa (from tier3)
+- Cosmetic Variants: europa_alt1 (tier1), europa_alt2 (tier2)
 
 #### EMPTY
 
-#### Thebe (The Apex) - Legendary
-- **Cost:** 6 | **Stats:** 7/7 | **Subtype:** Biological
-- **Ability:** Snipe. Loot 1 - Draw 1 card when this kills an enemy. Turn End: Regenerate 2
-- **Lore:** The wildest Jovian, Thebe explores the system, disappearing into the jungles of Mars for weeks or diving into fungal caves on Ceres. A bio-hacker, Thebe has made herself a futanari with elf ears, a stronger immune system and better metabolism. She takes jobs as a ranger, hunter and finder of rare things. Solidly loyal to her family, Thebe always shows up when needed.
-- **Asset:** thebe (from tier3)
-- **Cosmetic Variants:** thebe_alt1 (tier1), thebe_alt2 (tier2)
+#### Thebe - Legendary
+- Cost: 6 | Stats: 7/7 | Subtype: Biological
+- Ability: Snipe. Loot 1 - Draw 1 card when this kills an enemy. Turn End: Regenerate 2
+- Lore: The wildest of the sisters, Thebe is more comfortable in the fungal caves of Ceres than a city. She is a ranger of the untamed frontiers, a finder of things that don't want to be found. She has bio-hacked her own body to survive the harshest environments the system can offer, a stalker of the wastes who sees prey where others see only dust. Now the apex predator of the solar system, she has achieved a form of biological perfection, an ultimate tracker and a wild force that answers only to her family.
+- Asset: thebe (from tier3)
+- Cosmetic Variants: thebe_alt1 (tier1), thebe_alt2 (tier2)
 
 ---
 

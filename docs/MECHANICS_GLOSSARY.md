@@ -4,274 +4,168 @@ Complete reference for all card abilities and keywords in Jovian Cards.
 
 ---
 
-## Keyword Abilities (Constant)
+## Triggers
 
-These abilities are always active while the unit is on the board.
+These are conditions that cause a card's ability to activate.
 
-### **Guard**
-**Effect:** Enemies must attack this unit before other targets (unless attacker has Snipe).
-**Example:** Himalia - "Guard. 0/7 wall protector"
+### **OnPlay**
+Activates when the card is played from hand.
 
-### **Rush**
-**Effect:** Unit can attack the turn it's played (ignores summoning sickness).
-**Example:** Ganymede - "Rush. 3/1 aggressive brawler"
+### **OnAttack**
+Activates when this unit declares an attack.
 
-### **Snipe**
-**Effect:** Can attack any target, ignoring Guard units.
-**Example:** Taygete - "Snipe. Bypass enemy frontline"
+### **OnDamageTaken**
+Activates when this unit takes damage from any source.
 
-### **Lifesteal**
-**Effect:** Heal your commander for damage dealt by this unit.
-**Example:** Void Leech - "Lifesteal. Drain enemy life"
+### **OnDeath**
+Activates when this unit is destroyed and sent to the graveyard.
 
-### **Thorns X**
-**Effect:** Deal X damage to any unit that attacks this.
-**Example:** Gazing Horror - "Thorns 1. Guard."
+### **OnTurnEnd**
+Activates at the end of your turn.
 
-### **Regenerate X**
-**Effect:** Heal X HP at the end of your turn.
-**Example:** Metis - "Regenerate 2. Self-healing psychic"
+### **OnTurnStart**
+Activates at the start of your turn.
 
-### **Shield**
-**Effect:** Absorbs the next instance of damage (consumed when used).
-**Example:** Energy Barrier - "Give unit Shield"
+### **OnDraw**
+Activates when this card is drawn from your deck.
 
-### **First Strike**
-**Effect:** Deals damage before opponent counter-attacks. If opponent dies, no counter-attack.
-**Example:** Amalthea - "First Strike. 4/3 duelist"
+### **Passive**
+An effect that is always active and typically affects other cards being played or on the board.
+
+### **Constant**
+A persistent keyword ability that is always active while the unit is on the board.
+
+---
+
+## Keywords
+
+These are the specific abilities and effects found on cards.
+
+### **Add Random Tactic**
+**Effect:** Add a random Tactic card to your hand.
+
+### **Assassinate**
+**Effect:** If this unit deals damage to another unit, the target is destroyed instantly. Blocked by Shield.
+
+### **Banish**
+**Effect:** Return an enemy unit to its owner's hand.
+
+### **Bio-Optimize**
+**Effect:** An adaptive biological enhancement that varies by card.
+
+### **Breach**
+**Effect:** Remove all Shield from target unit.
+
+### **Buff X/Y**
+**Effect:** Give a target unit +X Attack and +Y Health.
+
+### **Cost Reduction**
+**Effect:** Reduce the energy cost of this card. Typically scales with board state (e.g., number of Megacorp units).
+
+### **Damage X**
+**Effect:** Deal X damage to a target.
+
+### **Debuff X**
+**Effect:** Reduce a target's Attack by X for a limited duration.
+
+### **Decoy**
+**Effect:** Summon a Hologram token with Guard. Stats vary by tier (0/3, 1/3, or 1/4 with Shield).
+
+### **Disarm**
+**Effect:** Set a target's Attack to 0 for one turn.
 
 ### **Double Attack**
 **Effect:** This unit can attack twice per turn.
-**Example:** Lysithea - "Double Attack. Strike twice"
-
-### **Slow**
-**Effect:** Can only attack every other turn.
-**Example:** Heavy Mech - "Slow. Powerful but ponderous"
-
----
-
-## OnPlay Triggers
-
-These abilities activate when the card is played.
-
-### **Damage X**
-**Effect:** Deal X damage to target.
-**Targeting:** Varies (enemy unit, all enemies, random enemy, etc.)
-**Example:** Power Shot - "Deal 5 damage to target enemy"
-
-### **Heal X**
-**Effect:** Restore X HP to target.
-**Example:** Nano Repair - "Heal target unit 3 HP"
-
-### **Buff X/Y**
-**Effect:** Give target unit +X ATK and +Y HP.
-**Example:** Reinforce - "Give unit +2/+2"
-
-### **Debuff X**
-**Effect:** Reduce target's ATK by X temporarily.
-**Example:** Tactical Hack - "Reduce enemy ATK by 2"
-
-### **Stun X**
-**Effect:** Target cannot attack for X turns.
-**Example:** EMP Burst - "Stun enemy unit for 1 turn"
-
-### **Summon X**
-**Effect:** Create X token units on your board.
-**Example:** Reality Tear - "OnDeath: Summon 2 Voidlings"
-
-### **Scout X**
-**Effect:** Draw X cards.
-**Example:** Kore - "OnPlay: Scout 1 (draw 1)"
 
 ### **Draw X**
-**Effect:** Same as Scout - draw X cards.
-**Example:** Europa - "OnPlay: Draw 1"
-
-### **Gain Energy X**
-**Effect:** Add X energy this turn (doesn't increase max).
-**Example:** Thebe - "OnPlay: Gain Energy 1"
-
-### **Silence**
-**Effect:** Remove all abilities from target unit (stats remain).
-**Example:** Disruptor - "Silence target enemy"
-
-### **Banish**
-**Effect:** Remove target from the game (doesn't go to graveyard).
-**Example:** Void Exile - "Banish target unit"
-
-### **Mind Control X**
-**Effect:** Take control of enemy unit with ATK ≤ X.
-**Example:** Europa - "Mind Control enemy with ATK ≤ 3"
-
-### **Hack X**
-**Effect:** Reduce target's ATK by X for 2 turns.
-**Example:** Corp Uplink - "Hack: Reduce ATK by 1"
-
-### **Disarm**
-**Effect:** Set target's ATK to 0 for 1 turn.
-**Example:** Security Protocol - "Disarm enemy unit"
-
-### **Add Random Tactic**
-**Effect:** Add a random tactic card to your hand.
-**Example:** Sinope - "OnPlay: Add random tactic"
-
----
-
-## OnAttack Triggers
-
-Activate when this unit attacks.
-
-### **OnAttack: Damage X**
-**Effect:** Deal extra damage when attacking.
-**Example:** Callisto - "OnAttack: Deal 1 damage to random enemy"
-
-### **OnAttack: Pollute X**
-**Effect:** Add corruption/debuff when attacking (enemy mechanic).
-**Example:** Mind Flayer - "OnAttack: Pollute 1"
-
----
-
-## OnDamageTaken Triggers
-
-Activate when this unit takes damage.
-
-### **OnDamageTaken: Heal**
-**Effect:** Heal when damaged.
-**Example:** Metis - "OnDamageTaken: Heal 1 HP"
-
-### **OnDamageTaken: Buff Self**
-**Effect:** Get stronger when hit.
-**Example:** Callisto - "OnDamageTaken: +1/+0 permanently"
-
----
-
-## OnDeath Triggers
-
-Activate when this unit dies.
-
-### **OnDeath: Summon**
-**Effect:** Spawn units when destroyed.
-**Example:** Reality Tear - "OnDeath: Summon 2 Voidlings"
-
-### **OnDeath: Damage**
-**Effect:** Deal damage to enemies when dying.
-**Example:** Volatile Drone - "OnDeath: Deal 2 damage to all enemies"
-
-### **OnDeath: Heal**
-**Effect:** Heal allies when destroyed.
-**Example:** Medic Unit - "OnDeath: Heal all allies 1 HP"
-
----
-
-## OnTurnEnd Triggers
-
-Activate at the end of your turn.
-
-### **OnTurnEnd: Damage**
-**Effect:** Deal damage at end of turn.
-**Example:** Delayed Bomb - "OnTurnEnd: Deal 1 damage to enemy"
-
-### **OnTurnEnd: Pollute**
-**Effect:** Apply corruption at turn end (enemy mechanic).
-**Example:** Whispering Polyp - "OnTurnEnd: Pollute 1"
-
----
-
-## OnTurnStart Triggers
-
-Activate at the start of your turn.
-
-### **OnTurnStart: Buff Allies**
-**Effect:** Buff friendly units each turn.
-**Example:** Commander Aura - "OnTurnStart: All allies +1/+0"
-
----
-
-## OnDraw Triggers
-
-Activate when this card is drawn.
-
-### **OnDraw: Gain Energy**
-**Effect:** Add energy when drawn.
-**Example:** Energy Cache - "OnDraw: Gain 1 energy"
-
-### **OnDraw: Scout**
-**Effect:** Draw another card when drawn.
-**Example:** Chain Scout - "OnDraw: Scout 1"
-
----
-
-## Passive Triggers
-
-Always active, affect other cards.
-
-### **Passive: Buff Faction**
-**Effect:** Give permanent buff to units of specific faction when they're played.
-**Format:** `faction:FactionName`
-**Example:** Europa - "Passive: Confederate units gain +1/+1 when played"
-
-### **Passive: Cost Reduction**
-**Effect:** Reduce cost of specific cards.
-**Example:** Europa - "Confederate units cost 1 less"
-
----
-
-## Special Mechanics
-
-### **Sacrifice**
-**Effect:** Destroy a friendly unit to gain a benefit.
-**Targeting:** `target_ally`
-**Example:** Liquidate Assets - "Destroy ally, deal its ATK to random enemy"
-
-### **Rally X**
-**Effect:** Permanently increase target's max HP and current HP by X.
-**Note:** Only applies once per unit (doesn't stack).
-**Example:** Battle Cry - "Rally: +2 max HP"
-
-### **Loot X**
-**Effect:** Draw X cards when this unit kills an enemy.
-**Example:** Scavenger - "Loot 1: Draw when killing enemy"
-
-### **Recycle X**
-**Effect:** Gain X energy when this unit dies.
-**Example:** Efficient Drone - "Recycle 1: Gain 1 energy on death"
-
-### **Assassinate**
-**Effect:** If this deals damage, target dies instantly.
-**Note:** Blocked by Shield.
-**Example:** Elite Sniper - "Assassinate: Kill damaged targets"
-
-### **Breach X**
-**Effect:** Deal X damage to enemy commander directly.
-**Example:** Artillery - "Breach 3: 3 damage to enemy commander"
-
-### **Rage X**
-**Effect:** Gain +X ATK permanently when damaged.
-**Example:** Berserker - "Rage 1: +1 ATK when hit"
+**Effect:** Draw X cards from your deck.
 
 ### **Encourage**
-**Effect:** Give ally permanent stat buffs.
-**Example:** Rally Cry - "Encourage ally: +1/+1"
+**Effect:** Give a friendly unit a permanent stat buff (e.g., +X/+Y).
 
-### **Fade X**
-**Effect:** Unit is destroyed after X turns.
-**Example:** Temporal Echo - "Fade 2: Dies after 2 turns"
+### **Fade**
+**Effect:** This card is removed from hand at end of turn. Currently used on Madness token.
 
-### **Bio-Optimize**
-**Effect:** Adaptive biological enhancement (varies by card).
-**Example:** Evolution - "Bio-Optimize: Adapt to threats"
+### **First Strike**
+**Effect:** This unit deals its combat damage before the unit it is fighting. If the defending unit is destroyed, it does not deal counter-attack damage.
 
-### **Spark**
-**Effect:** Special psychic ability (varies by card).
-**Example:** Psychic Burst - "Spark: Deal random damage"
+### **Gain Energy X**
+**Effect:** Add X temporary energy for the current turn.
 
-### **Decoy**
-**Effect:** Redirect attacks or create illusions.
-**Example:** Hologram - "Decoy: Confuse enemies"
+### **Guard**
+**Effect:** Enemy units must attack units with Guard before other targets without Guard. Bypassed by Snipe.
 
-### **Pollute** (Enemy Mechanic)
-**Effect:** Corruption that spreads or debuffs (Voidborn mechanic).
-**Example:** Void Corruption - "Pollute spreads to adjacent units"
+### **Hack X**
+**Effect:** Reduce a target's Attack by X for two turns.
+
+### **Heal X**
+**Effect:** Restore X Health to a target Biological unit.
+
+### **Lifesteal**
+**Effect:** When this unit deals damage, your commander is healed for the same amount.
+
+### **Loot X**
+**Effect:** When this unit destroys another unit, draw X cards.
+
+### **Mind Control X**
+**Effect:** Take control of an enemy unit with Attack less than or equal to X.
+
+### **Pollute**
+**Effect:** A negative keyword associated with the Voidborn faction that spreads corruption or debuffs.
+
+### **Rage X**
+**Effect:** This unit permanently gains +X Attack whenever it deals damage.
+
+### **Rally X**
+**Effect:** Permanently increase a target unit's maximum Health and current Health by X. Does not stack - each unit can only be rallied once.
+
+### **Recycle X**
+**Effect:** When this unit dies, gain X energy.
+
+### **Redeploy**
+**Effect:** Return a friendly unit to your hand.
+
+### **Regenerate X**
+**Effect:** At the end of your turn, this unit heals for X Health.
+
+### **Repair X**
+**Effect:** Restore X Health to target Cybernetic unit. Targets damaged allies when used with random_ally targeting.
+
+### **Rush**
+**Effect:** This unit can attack on the turn it is played.
+
+### **Sacrifice**
+**Effect:** Destroy a friendly unit to trigger an effect. Typically combined with damage equal to sacrificed unit's attack.
+
+### **Scout X**
+**Effect:** Look at X random cards from opponent's hand.
+
+### **Shield**
+**Effect:** Negates the next instance of damage this unit would take from any source. The Shield is consumed in the process.
+
+### **Silence**
+**Effect:** Remove all card text and abilities from a target unit. Its stats remain unchanged.
+
+### **Slow**
+**Effect:** This unit can only attack every other turn.
+
+### **Snipe**
+**Effect:** This unit can ignore the Guard keyword and attack any valid target.
+
+### **Spark X**
+**Effect:** Deal X psychic damage to target. Functions identically to Damage but with distinct visual effects.
+
+### **Stun X**
+**Effect:** A target unit cannot attack for X turns.
+
+### **Summon**
+**Effect:** Create one or more token units on your side of the board.
+
+### **Thorns X**
+**Effect:** When this unit is attacked, it deals X damage back to the attacker.
+
+### **Support**
+**Effect:** Buff allies. Functions as a variant of Buff with specific targeting conditions.
 
 ---
 
@@ -293,10 +187,11 @@ These determine what a mechanic can target:
 ## Status Effect Durations
 
 - **Stun:** Lasts for specified turns, decreases at end of turn
-- **Weak/Hack/Disarm:** Temporary ATK reduction, restored when duration expires
-- **Shield:** Lasts until consumed by damage
-- **Buffs:** Usually permanent unless stated otherwise
-- **Fade:** Countdown, unit dies when reaches 0
+- **Weak/Disarm:** Lasts 1 turn, attack restored when duration expires
+- **Hack:** Lasts 2 turns, attack reduction restored when duration expires
+- **Shield:** Lasts until consumed by damage (absorbs full damage from one source)
+- **Buffs/Rally/Encourage:** Permanent stat increases
+- **Fade:** Card removed from hand at end of turn
 
 ---
 
@@ -321,10 +216,11 @@ These determine what a mechanic can target:
 - **Disarm:** ATK set to 0 for 1 turn
 - Both can coexist (separate status effects)
 
-### Rally Stacking
-- Rally does NOT stack from multiple sources
-- First Rally applies, subsequent ones are ignored
-- Permanent buff (doesn't expire)
+### Rally/Encourage Stacking
+- Rally and Encourage each do NOT stack from multiple sources
+- First application applies, subsequent ones are ignored
+- Both are permanent buffs (don't expire)
+- Tracked via unit status flags (rallied/encouraged)
 
 ---
 
