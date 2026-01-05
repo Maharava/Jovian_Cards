@@ -74,12 +74,37 @@ export const GameBoard: React.FC = () => {
         }
     }, [attackVector, effectVector]);
 
+    // Helper: Check if unit has Snipe (including quota-based snipe)
+    const hasSnipeAbility = (unit: import('../types').UnitInstance) => {
+        // Check for constant snipe
+        if (unit.mechanics.some(m => m.type === 'snipe' && m.trigger === 'constant')) {
+            return true;
+        }
+
+        // Check for quota-based snipe
+        const snipeMechanic = unit.mechanics.find(m =>
+            m.type === 'snipe' &&
+            m.trigger === 'passive' &&
+            typeof m.payload === 'string' &&
+            m.payload.startsWith('quota:')
+        );
+
+        if (snipeMechanic && typeof snipeMechanic.payload === 'string') {
+            const parts = snipeMechanic.payload.split(':');
+            const threshold = parseInt(parts[1], 10);
+            const megacorpCount = player.board.filter(u => u.faction === 'Megacorp').length;
+            return megacorpCount >= threshold;
+        }
+
+        return false;
+    };
+
     const isValidAttackTarget = (unit: import('../types').UnitInstance) => {
         if (!selectedUnitId) return false;
         const attacker = player.board.find(u => u.uid === selectedUnitId);
         if (!attacker) return false;
 
-        const isSnipe = attacker.mechanics.some(m => m.type === 'snipe');
+        const isSnipe = hasSnipeAbility(attacker);
         const enemyGuards = enemy.board.filter(u => u.mechanics.some(m => m.type === 'guard') && u.hp > 0);
 
         if (enemyGuards.length > 0 && !isSnipe) {
@@ -93,7 +118,7 @@ export const GameBoard: React.FC = () => {
         const attacker = player.board.find(u => u.uid === selectedUnitId);
         if (!attacker) return false;
 
-        const isSnipe = attacker.mechanics.some(m => m.type === 'snipe');
+        const isSnipe = hasSnipeAbility(attacker);
         const enemyGuards = enemy.board.filter(u => u.mechanics.some(m => m.type === 'guard') && u.hp > 0);
 
         if (enemyGuards.length > 0 && !isSnipe) return false;

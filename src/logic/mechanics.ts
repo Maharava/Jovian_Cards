@@ -221,6 +221,22 @@ export class MechanicHandler {
                         } else {
                             energyGain = count;
                         }
+                    } else if (isStringPayload(mechanic.payload) && mechanic.payload.startsWith('quota:')) {
+                        // Quota mechanic: Only execute if Megacorp count >= threshold
+                        // Format: 'quota:4' (only if 4+ units) or 'quota:4:2' (use value 2 instead if 4+ units)
+                        const parts = mechanic.payload.split(':');
+                        const threshold = parseInt(parts[1]);
+                        const count = countMegacorpUnits(sourceUnit.owner);
+
+                        if (count >= threshold) {
+                            // If quota met and bonus value specified, use it instead
+                            if (parts.length > 2) {
+                                energyGain = parseInt(parts[2]);
+                            }
+                        } else {
+                            // Quota not met - skip this mechanic
+                            break;
+                        }
                     }
                 }
 
@@ -240,6 +256,56 @@ export class MechanicHandler {
                  t.atk += amount;
                  logEvent('buff', { target: t.uid, type: 'rage', amount });
                  animations.push({ from: t.uid, to: t.uid, color: 'red', duration: 300 }); // Flash red
+             });
+             break;
+
+        case 'feast':
+             // Gain permanent +X/+X when killing an enemy
+             targets.forEach(t => {
+                 const atkGain = mechanic.value || 1;
+                 const hpGain = mechanic.secondaryValue || mechanic.value || 1;
+
+                 t.atk += atkGain;
+                 t.hp += hpGain;
+                 t.maxHp += hpGain;
+
+                 logEvent('buff', { target: t.uid, type: 'feast', atk: atkGain, hp: hpGain });
+                 animations.push({ from: t.uid, to: t.uid, color: '#dc2626', duration: 300 });
+                 addNotification(`grew stronger (+${atkGain}/+${hpGain})`);
+             });
+             break;
+
+        case 'feast_thebe':
+             // Thebe's unique feast - same as feast but with custom notification
+             targets.forEach(t => {
+                 const atkGain = mechanic.value || 1;
+                 const hpGain = mechanic.secondaryValue || mechanic.value || 1;
+
+                 t.atk += atkGain;
+                 t.hp += hpGain;
+                 t.maxHp += hpGain;
+
+                 logEvent('buff', { target: t.uid, type: 'feast_thebe', atk: atkGain, hp: hpGain });
+                 animations.push({ from: t.uid, to: t.uid, color: '#f59e0b', duration: 400 });
+                 addNotification(`evolved (+${atkGain}/+${hpGain})`);
+             });
+             break;
+
+        case 'mind_ocean':
+             // Europa's unique passive - buffs Psionic allies (same as buff with passive trigger)
+             targets.forEach(t => {
+                 const atkGain = mechanic.value || 1;
+                 const hpGain = mechanic.secondaryValue || mechanic.value || 1;
+
+                 // Only buff Psionic units (excluding Europa herself)
+                 if (t.subtype === 'Psionic' && t.uid !== sourceUnit.uid) {
+                     t.atk += atkGain;
+                     t.hp += hpGain;
+                     t.maxHp += hpGain;
+
+                     logEvent('buff', { target: t.uid, type: 'mind_ocean', atk: atkGain, hp: hpGain });
+                     animations.push({ from: sourceUnit.uid, to: t.uid, color: '#06b6d4', duration: 300 });
+                 }
              });
              break;
 
@@ -356,6 +422,16 @@ export class MechanicHandler {
                 } else if (mechanic.payload && isStringPayload(mechanic.payload) && mechanic.payload.startsWith('count_other_megacorp')) {
                     const count = countMegacorpUnits(sourceUnit.owner, sourceUnit.uid);
                     rallyAmount = count;
+                } else if (isStringPayload(mechanic.payload) && mechanic.payload.startsWith('quota:')) {
+                    // Quota mechanic: Only execute if Megacorp count >= threshold
+                    const parts = mechanic.payload.split(':');
+                    const threshold = parseInt(parts[1]);
+                    const count = countMegacorpUnits(sourceUnit.owner);
+
+                    if (count < threshold) {
+                        // Quota not met - skip this mechanic
+                        break;
+                    }
                 }
 
                 if (rallyAmount > 0) {
@@ -430,6 +506,26 @@ export class MechanicHandler {
         case 'hack':
              // Hack: Reduces attack by X until end of next turn (2 turn duration)
              // FIXED: Use separate 'hacked' status to avoid conflict with disarm/weak
+             {
+                let hackAmount = mechanic.value || 1;
+
+                // Handle Quota mechanic
+                if (mechanic.payload && isStringPayload(mechanic.payload) && mechanic.payload.startsWith('quota:')) {
+                    const parts = mechanic.payload.split(':');
+                    const threshold = parseInt(parts[1]);
+                    const count = countMegacorpUnits(sourceUnit.owner);
+
+                    if (count >= threshold) {
+                        // If quota met and bonus value specified, use it instead
+                        if (parts.length > 2) {
+                            hackAmount = parseInt(parts[2]);
+                        }
+                    } else {
+                        // Quota not met - skip this mechanic
+                        break;
+                    }
+                }
+
              targets.forEach(t => {
                  if (!t.status) t.status = {};
                  // Only apply if not already hacked
@@ -443,26 +539,27 @@ export class MechanicHandler {
                      if (t.status.originalAtkBeforeHack === undefined) {
                          t.status.originalAtkBeforeHack = baseAtk;
                      }
-                     const amount = mechanic.value || 1;
+                     const amount = hackAmount;
                      t.atk = Math.max(0, t.atk - amount);
                      t.status.hacked = 2; // Lasts 2 turns (current + next)
                      logEvent('debuff', { target: t.uid, type: 'hack', amount });
                      animations.push({ from: sourceUnit.uid, to: t.uid, color: '#00ff00', duration: 300 }); // Green
                  }
              });
+             }
              break;
 
         case 'disarm':
-             // Disarm: Sets attack to 0 until end of current turn (1 turn duration)
+             // Disarm: Sets attack to 0 for X turns (duration based on value)
              targets.forEach(t => {
                  if (!t.status) t.status = { originalAtk: t.atk };
                  if (t.status.originalAtk === undefined) t.status.originalAtk = t.atk;
 
                  t.atk = 0; // Set to 0, not reduce
-                 t.status.weak = 1; // Lasts 1 turn (current only)
+                 t.status.weak = mechanic.value || 1; // Lasts X turns (value determines duration, default 1)
                  logEvent('debuff', { target: t.uid, type: 'disarm' });
                  animations.push({ from: sourceUnit.uid, to: t.uid, color: '#94a3b8', duration: 300 }); // Slate/Silver
-                 addNotification(`used Disarm on ${t.name}`);
+                 addNotification(`used Disarm ${mechanic.value} on ${t.name}`);
              });
              break;
 
@@ -483,10 +580,22 @@ export class MechanicHandler {
         case 'encourage':
         case 'support':
              targets.forEach(t => {
-                 // Faction filter
-                 if (mechanic.payload && isStringPayload(mechanic.payload) && mechanic.payload.startsWith('faction:')) {
-                     const faction = mechanic.payload.split(':')[1];
-                     if (t.faction !== faction) return;
+                 // Faction filter (handle both 'faction:X' and 'requisition:Y:faction:X')
+                 if (mechanic.payload && isStringPayload(mechanic.payload)) {
+                     const payloadParts = mechanic.payload.split(':');
+
+                     // Check if it contains faction filter
+                     const factionIndex = payloadParts.indexOf('faction');
+                     if (factionIndex !== -1 && payloadParts.length > factionIndex + 1) {
+                         const faction = payloadParts[factionIndex + 1];
+                         if (t.faction !== faction) return;
+                     }
+                 }
+
+                 // Condition: has_other_megacorp - only apply if there are other Megacorp units
+                 if (mechanic.payload === 'condition:has_other_megacorp') {
+                     const otherMegacorpCount = countMegacorpUnits(sourceUnit.owner, sourceUnit.uid);
+                     if (otherMegacorpCount === 0) return; // No other Megacorp units, skip buff
                  }
 
                  if (mechanic.payload === 'keyword:rush') {
@@ -519,6 +628,28 @@ export class MechanicHandler {
                              const count = countMegacorpUnits(sourceUnit.owner);
                              if (count >= 3) {
                                  atkBonus = parseInt(mechanic.payload.split(':')[1]);
+                             }
+                         } else if (isStringPayload(mechanic.payload) && mechanic.payload.startsWith('quota:')) {
+                             // Quota mechanic: Only execute if Megacorp count >= threshold
+                             // Format: 'quota:4' or 'quota:4:2:2' (threshold:atk:hp) or 'quota:4:faction:Megacorp'
+                             const parts = mechanic.payload.split(':');
+                             const threshold = parseInt(parts[1]);
+                             const count = countMegacorpUnits(sourceUnit.owner);
+
+                             if (count >= threshold) {
+                                 // Check for faction filter in quota payload (e.g., 'quota:4:faction:Megacorp')
+                                 if (parts.length > 3 && parts[2] === 'faction') {
+                                     const factionFilter = parts[3];
+                                     if (t.faction !== factionFilter) return;
+                                 }
+                                 // If quota met and bonus values specified, use them instead
+                                 if (parts.length > 2 && parts[2] !== 'faction') {
+                                     atkBonus = parseInt(parts[2]);
+                                     hpBonus = parts.length > 3 ? parseInt(parts[3]) : atkBonus;
+                                 }
+                             } else {
+                                 // Quota not met - skip this buff
+                                 return;
                              }
                          }
                      }
@@ -597,6 +728,16 @@ export class MechanicHandler {
             
         case 'draw':
              if (sourceUnit.owner === 'player') {
+                 // Check for subtype conditional (e.g., "subtype:Cybernetic")
+                 if (mechanic.payload && isStringPayload(mechanic.payload) && mechanic.payload.startsWith('subtype:')) {
+                     const requiredSubtype = mechanic.payload.split(':')[1];
+                     const hasSubtype = player.board.some(u => u.subtype === requiredSubtype);
+                     if (!hasSubtype) {
+                         addNotification(`needs a ${requiredSubtype} unit`);
+                         break; // Don't draw if condition not met
+                     }
+                 }
+
                  const count = mechanic.value || 1;
                  for (let i = 0; i < count; i++) {
                     if (player.deck.length > 0) {
@@ -604,7 +745,8 @@ export class MechanicHandler {
                         if (player.hand.length < 10) player.hand.push(c);
                     }
                  }
-                 return { stateUpdates: { player: { ...player } }, animations, damagedUnits, notifications: notifications.length > 0 ? notifications : undefined }; 
+                 addNotification(`drew ${count} card${count > 1 ? 's' : ''}`);
+                 return { stateUpdates: { player: { ...player } }, animations, damagedUnits, notifications: notifications.length > 0 ? notifications : undefined };
              }
              break;
 
@@ -711,10 +853,16 @@ export class MechanicHandler {
                      rarity: 'Common'
                  };
              } else if (payload) {
-                 // Handle scaling summons (e.g., 'neutral_drone:count_megacorp')
+                 // Handle scaling summons and requisition prefixes
                  let basePayload = payload;
-                 if (isStringPayload(payload) && payload.includes(':count_megacorp')) {
-                     basePayload = payload.split(':')[0];
+                 if (isStringPayload(payload)) {
+                     // Strip requisition prefix (e.g., 'requisition:5:senate_guard' -> 'senate_guard')
+                     if (payload.startsWith('requisition:')) {
+                         const parts = payload.split(':');
+                         basePayload = parts[parts.length - 1]; // Get last part as card ID
+                     } else if (payload.includes(':count_megacorp')) {
+                         basePayload = payload.split(':')[0];
+                     }
                  }
 
                  if (isStringPayload(basePayload) && basePayload.includes('hologram')) {
@@ -787,16 +935,40 @@ export class MechanicHandler {
 
         case 'add_random_tactic':
             if (sourceUnit.owner === 'player') {
-                const availableTactics = TACTIC_CARDS.filter(c => c.id !== 'madness'); 
+                const availableTactics = TACTIC_CARDS.filter(c => c.id !== 'madness');
                 if (availableTactics.length > 0) {
                     const randomTactic = availableTactics[Math.floor(Math.random() * availableTactics.length)];
                     if (player.hand.length < 10) {
-                        player.hand.push({ ...randomTactic, id: `${randomTactic.id}_${generateId()}` }); 
+                        player.hand.push({ ...randomTactic, id: `${randomTactic.id}_${generateId()}` });
                         logEvent('add_card_to_hand', { card: randomTactic.name });
                     }
                 }
             }
             break;
+
+        case 'add_card': {
+            // Add a specific card based on payload (used by requisition mechanics)
+            if (sourceUnit.owner === 'player' && mechanic.payload && isStringPayload(mechanic.payload)) {
+                // Extract card ID from payload (format: "requisition:X:card_id" or just "card_id")
+                let cardId = mechanic.payload;
+                if (cardId.includes(':')) {
+                    const parts = cardId.split(':');
+                    cardId = parts[parts.length - 1]; // Get last part as card ID
+                }
+
+                // Search for the card in all available cards
+                let cardDef = ALL_CARDS.find(c => c.id === cardId) ||
+                              TOKEN_CARDS.find(c => c.id === cardId) ||
+                              TACTIC_CARDS.find(c => c.id === cardId);
+
+                if (cardDef && player.hand.length < 10) {
+                    player.hand.push({ ...cardDef, id: `${cardDef.id}_${generateId()}` });
+                    logEvent('add_card_to_hand', { card: cardDef.name });
+                    addNotification(`added ${cardDef.name} to hand`);
+                }
+            }
+            break;
+        }
 
         case 'pollute': {
              if (sourceUnit.owner === 'enemy') {

@@ -78,49 +78,49 @@ The Republic plays the long game. They don't need to be fast; they just need to 
 - **Ability:** Guard - Must be attacked before other units
 - **Lore:** Maya Torres survived basic training through sheer stubbornness. She holds the line because the regulations say so, and Torres always follows regulations.
 - **Asset:** torres
-- **Cosmetic Variants:** torres_alt1 (tier2), torres_alt2 (tier3)
+- **Cosmetic Variants:** torres_alt1, torres_alt2
 
 #### Lira Chen (Cadet) - Common
 - **Cost:** 2 | **Stats:** 2/2 | **Subtype:** Psionic
-- **Ability:** OnPlay: Spark 2 (random enemy) - Deal 2 damage to random enemy unit
+- **Ability:** OnPlay: Spark 2 (random enemy) - Deal 2 damage to random enemy unit. Turn End: Refresh 1 (self) - Psychic healing, restore 1 HP to self
 - **Lore:** Lira Chen tested positive for psychic potential at age six. Now sixteen, she's still learning to control the fire that burns in her mind.
 - **Asset:** lira_chen
-- **Cosmetic Variants:** lira_chen_alt1 (tier2), lira_chen_alt2 (tier3)
+- **Cosmetic Variants:** lira_chen_alt1, lira_chen_alt2
 
 #### Protocol Droid (P-Series Droid) - Common
 - **Cost:** 2 | **Stats:** 0/4 | **Subtype:** Cybernetic
 - **Ability:** Turn End: Heal 1 (random ally)
 - **Lore:** Programmed with 47,000 regulations and emergency medical protocols. It cites the relevant statute before applying bandages.
 - **Asset:** protocol_droid
-- **Cosmetic Variants:** protocol_droid_alt1 (tier2), protocol_droid_alt2 (tier3)
+- **Cosmetic Variants:** protocol_droid_alt1, protocol_droid_alt2
 
 #### James Park (Logistics Clerk) - Common
 - **Cost:** 3 | **Stats:** 1/4 | **Subtype:** Biological
 - **Ability:** OnPlay: Scout 1 - Reveal 1 random card from enemy hand
 - **Lore:** James Park manages inventory with obsessive precision. Every bullet is accounted for, in triplicate. He knows where everything is—eventually.
 - **Asset:** james_park
-- **Cosmetic Variants:** james_park_alt1 (tier2), james_park_alt2 (tier3)
+- **Cosmetic Variants:** james_park_alt1, james_park_alt2
 
 #### Officer Volkov (Security Personnel) - Common
-- **Cost:** 3 | **Stats:** 2/5 | **Subtype:** Biological
+- **Cost:** 3 | **Stats:** 2/4 | **Subtype:** Biological
 - **Ability:** Guard - Must be attacked before other units
 - **Lore:** Sarah Volkov is authorized to use non-lethal force to maintain civil order, pending review by the Use of Force Committee.
 - **Asset:** officer_volkov
-- **Cosmetic Variants:** officer_volkov_alt1 (tier2), officer_volkov_alt2 (tier3)
+- **Cosmetic Variants:** officer_volkov_alt1, officer_volkov_alt2
 
 #### Advocate Cross (Junior Advocate) - Common
 - **Cost:** 2 | **Stats:** 1/2 | **Subtype:** Biological
 - **Ability:** OnPlay: Disarm random enemy - Set target's ATK to 0 for 2 turns
 - **Lore:** Helena Cross is armed with preliminary injunctions and temporary restraining orders. The paperwork alone is overwhelming.
 - **Asset:** advocate_cross
-- **Cosmetic Variants:** advocate_cross_alt1 (tier2), advocate_cross_alt2 (tier3)
+- **Cosmetic Variants:** advocate_cross_alt1, advocate_cross_alt2
 
 #### Republic Drone (Sentinel Drone) - Common
 - **Cost:** 1 | **Stats:** 1/1 | **Subtype:** Cybernetic
-- **Ability:** (None - vanilla unit)
-- **Lore:** Mass-produced automated defense units. Cheap, reliable, and utterly replaceable.
+- **Ability:** Requisition 3: Gain +1/+1 permanently (activates when you have 3+ energy at turn end)
+- **Lore:** Mass-produced automated defense units. Cheap, reliable, and utterly replaceable. When authorization protocols activate, defense systems engage.
 - **Asset:** republic_drone
-- **Cosmetic Variants:** republic_drone_alt1 (tier2), republic_drone_alt2 (tier3)
+- **Cosmetic Variants:** republic_drone_alt1, republic_drone_alt2
 
 ---
 
@@ -131,35 +131,35 @@ The Republic plays the long game. They don't need to be fast; they just need to 
 - **Ability:** Turn End: Rally 1 (random ally) - Give random ally +1 HP/MaxHP permanently
 - **Lore:** Marcus Reeves knows that keeping troops alive means more paperwork. So Reeves keeps them alive. Simple as that.
 - **Asset:** marcus_reeves
-- **Cosmetic Variants:** marcus_reeves_alt1 (tier2), marcus_reeves_alt2 (tier3)
+- **Cosmetic Variants:** marcus_reeves_alt1, marcus_reeves_alt2
 
 #### Elvie Webb (Mind Warden) - Uncommon
 - **Cost:** 3 | **Stats:** 2/3 | **Subtype:** Psionic
 - **Ability:** OnPlay: Stun target enemy - Disable unit for 1 turn
 - **Lore:** Elvie Webb projects psychic force that overwhelms the nervous system. She's authorized for crowd control operations and doesn't enjoy it.
 - **Asset:** elvie_webb
-- **Cosmetic Variants:** elvie_webb_alt1 (tier2), elvie_webb_alt2 (tier3)
+- **Cosmetic Variants:** elvie_webb_alt1, elvie_webb_alt2
 
 #### Councilor Zhang (Committee Member) - Uncommon
 - **Cost:** 2 | **Stats:** 0/3 | **Subtype:** Biological
 - **Ability:** Requisition 3: Draw 1 - If you have 3+ energy at turn end, draw 1 card
 - **Lore:** Li Zhang spent twelve years drafting the current Energy Allocation Act. The paperwork finally paid off with a committee seat.
 - **Asset:** councilor_zhang
-- **Cosmetic Variants:** councilor_zhang_alt1 (tier2), councilor_zhang_alt2 (tier3)
+- **Cosmetic Variants:** councilor_zhang_alt1, councilor_zhang_alt2
 
 #### Dr. Singh (Field Surgeon) - Uncommon
 - **Cost:** 3 | **Stats:** 1/4 | **Subtype:** Biological
 - **Ability:** OnPlay: Heal 3 (target ally) - Restore 3 HP to target ally
 - **Lore:** Amara Singh was trained in emergency medicine and authorized to perform triage without prior approval. A rare exception in the Republic.
 - **Asset:** dr_singh
-- **Cosmetic Variants:** dr_singh_alt1 (tier2), dr_singh_alt2 (tier3)
+- **Cosmetic Variants:** dr_singh_alt1, dr_singh_alt2
 
 #### Chief Engineer Kozlov (Repair Tech) - Uncommon
 - **Cost:** 3 | **Stats:** 2/3 | **Subtype:** Cybernetic
-- **Ability:** Turn End: Heal 1 (random Cybernetic ally)
+- **Ability:** Turn End: Repair 2 (random damaged Cybernetic ally) - Restore 2 HP to a damaged Cybernetic unit
 - **Lore:** Sofia Kozlov keeps the machines running with standard-issue tools and regulation maintenance procedures. Nothing fancy, just reliable.
 - **Asset:** chief_engineer_kozlov
-- **Cosmetic Variants:** chief_engineer_kozlov_alt1 (tier2), chief_engineer_kozlov_alt2 (tier3)
+- **Cosmetic Variants:** chief_engineer_kozlov_alt1, chief_engineer_kozlov_alt2
 
 ---
 
@@ -169,47 +169,47 @@ The Republic plays the long game. They don't need to be fast; they just need to 
 - **Cost:** 5 | **Stats:** 5/4 | **Subtype:** Biological
 - **Ability:** OnPlay: Deal 3 damage to the enemy Commander. Requisition 4: Add an Aerial Strike Tactic to your hand
 - **Lore:** Victoria Drake rose through the ranks on merit and an obsessive attention to proper procedure. She's earned every promotion. Commander Drake is authorized to make tactical decisions without prior committee review—a privilege few officers possess. She doesn't waste it.
-- **Asset:** commander_drake (from tier2)
-- **Cosmetic Variants:** commander_drake_alt1 (tier1), commander_drake_alt2 (tier3)
+- **Asset:** commander_drake
+- **Cosmetic Variants:** commander_drake_alt1, commander_drake_alt2
 
 #### Vera Frost (Thought Executioner) - Rare
 - **Cost:** 5 | **Stats:** 4/4 | **Subtype:** Psionic
 - **Ability:** OnPlay: Spark 2 (all enemies). WhenAttacked: Spark 2 (attacker)
 - **Lore:** Vera Frost is the Republic's most dangerous psychic weapon. When unleashed, minds shatter like glass under her assault. Protected by a psychic feedback loop, Inquisitor Frost punishes anyone foolish enough to strike her. The pain is... instructive.
-- **Asset:** vera_frost (from tier2)
-- **Cosmetic Variants:** vera_frost_alt1 (tier1), vera_frost_alt2 (tier3)
+- **Asset:** vera_frost
+- **Cosmetic Variants:** vera_frost_alt1, vera_frost_alt2
 
 #### Senator Okoye (Senior Senator) - Rare
 - **Cost:** 5 | **Stats:** 0/6 | **Subtype:** Biological
 - **Ability:** Shield. Turn Start: Gain 1 Energy. Requisition 7: All other Republic units gain +1/+1 permanently
 - **Lore:** Amaka Okoye represents twelve billion constituents and holds the power to allocate vast resources. Eventually. The wheels turn slowly. Senator Okoye has spent decades building political capital. When she spends it, things happen. Mountains move, committees convene, policies shift.
-- **Asset:** senator_okoye (from tier2)
-- **Cosmetic Variants:** senator_okoye_alt1 (tier1), senator_okoye_alt2 (tier3)
+- **Asset:** senator_okoye
+- **Cosmetic Variants:** senator_okoye_alt1, senator_okoye_alt2
 
 #### Commander Voss (Presidential Guard) - Rare
 - **Cost:** 5 | **Stats:** 4/5 | **Subtype:** Biological
 - **Ability:** Guard. Shield. Requisition 5: Spawn a 2/2 Senate Guard token
 - **Lore:** Lucia Voss was selected from the finest soldiers in the Republic. Her armor is pristine, her discipline absolute, her loyalty unquestioned. Commander Voss protects the highest offices of the Republic with unwavering loyalty and cutting-edge equipment. She's never failed a protection detail.
-- **Asset:** commander_voss (from tier2)
-- **Cosmetic Variants:** commander_voss_alt1 (tier1), commander_voss_alt2 (tier3)
+- **Asset:** commander_voss
+- **Cosmetic Variants:** commander_voss_alt1, commander_voss_alt2
 
 ---
 
 ### LEGENDARY UNITS (2 Cards)
 
 #### Admiral Chen (Fleet Admiral) - Legendary
-- **Cost:** 6 | **Stats:** 4/12 | **Subtype:** Biological
-- **Ability:** Guard. Shield. Turn End: Rally 2 (all allies). Requisition 5: All allies gain Shield
-- **Lore:** Sorita Chen commands the Third Fleet with tactical brilliance, hampered only by the need for Senate approval on every engagement. She wins despite the bureaucracy. When the fleet is fully authorized, Vice Admiral Chen's strategic genius transforms the battlefield. She sees ten moves ahead. Fleet Admiral Chen is the Supreme Commander of Republic Naval Forces. When her orders are executed, star systems fall in line. No exceptions.
-- **Asset:** admiral_chen (from tier3)
-- **Cosmetic Variants:** admiral_chen_alt1 (tier1), admiral_chen_alt2 (tier2)
+- **Cost:** 6 | **Stats:** 5/8 | **Subtype:** Biological
+- **Ability:** Guard. Shield. Requisition 6: At end of turn, deal 2 damage to all enemies
+- **Lore:** Sorita Chen commands the Third Fleet with tactical brilliance, hampered only by the need for Senate approval on every engagement. She wins despite the bureaucracy. When the fleet is fully authorized, Vice Admiral Chen's strategic genius transforms the battlefield. She sees ten moves ahead. Fleet Admiral Chen is the Supreme Commander of Republic Naval Forces. When her orders are executed, star systems fall in line. No exceptions. When authorization codes finally clear, the fleet opens fire with devastating precision.
+- **Asset:** admiral_chen
+- **Cosmetic Variants:** admiral_chen_alt1, admiral_chen_alt2
 
 #### Captain Aria Kane (Sentinel Prime) - Legendary
 - **Cost:** 6 | **Stats:** 8/6 | **Subtype:** Biological
-- **Ability:** Rush. Double Attack. OnKill: Rally 2 (all allies)
-- **Lore:** The youngest captain ever assigned to Senate Guard. Aria Kane earned her position through lethal precision, not politics. She's never missed. When threats arise, Captain Kane is the blade that cuts through them. Fast, deadly, and utterly loyal to the Republic. She doesn't hesitate. The living embodiment of Republic justice. Every kill sends a message: the Republic protects its own. Captain Kane is that message, written in blood.
-- **Asset:** captain_aria_kane (from tier3)
-- **Cosmetic Variants:** captain_aria_kane_alt1 (tier1), captain_aria_kane_alt2 (tier2)
+- **Ability:** Rush. Snipe. Requisition 5: First Strike
+- **Lore:** The youngest captain ever assigned to Senate Guard. Aria Kane earned her position through lethal precision, not politics. She's never missed. When threats arise, Captain Kane is the blade that cuts through them. Fast, deadly, and utterly loyal to the Republic. She doesn't hesitate. The living embodiment of Republic justice. Every kill sends a message: the Republic protects its own. Captain Kane is that message, written in blood. When authorization for lethal force is granted, her strikes become unstoppable—she eliminates targets before they can even respond.
+- **Asset:** captain_aria_kane
+- **Cosmetic Variants:** captain_aria_kane_alt1, captain_aria_kane_alt2
 
 ---
 
@@ -245,36 +245,6 @@ Requisition X represents the Republic's bureaucratic nature and late-game power.
 - **Logistical Superiority:** Card draw, energy gain, healing - endless resources
 - **Bureaucratic Flavor:** Every ability references forms, committees, and authorization
 - **Psychic Corps:** The Republic has significant psychic presence (unlike Megacorp)
-
----
-
-## Asset Migration Map
-
-### Common Cards (Use Tier 1 as primary):
-- **Torres:** torres_tier1.png → torres.png
-- **Lira Chen:** lira_chen_tier1.png → lira_chen.png
-- **Protocol Droid:** protocol_droid_tier1.png → protocol_droid.png
-- **James Park:** james_park_tier1.png → james_park.png
-- **Officer Volkov:** officer_volkov_tier1.png → officer_volkov.png
-- **Advocate Cross:** advocate_cross_tier1.png → advocate_cross.png
-- **Republic Drone:** republic_drone_tier1.png → republic_drone.png
-
-### Uncommon Cards (Use Tier 1 as primary):
-- **Marcus Reeves:** marcus_reeves_tier1.png → marcus_reeves.png
-- **Elvie Webb:** elvie_webb_tier1.png → elvie_webb.png
-- **Councilor Zhang:** councilor_zhang_tier1.png → councilor_zhang.png
-- **Dr. Singh:** dr_singh_tier1.png → dr_singh.png
-- **Chief Engineer Kozlov:** chief_engineer_kozlov_tier1.png → chief_engineer_kozlov.png
-
-### Rare Cards (Use Tier 2 as primary):
-- **Commander Drake:** commander_drake_tier2.png → commander_drake.png
-- **Vera Frost:** vera_frost_tier2.png → vera_frost.png
-- **Senator Okoye:** senator_okoye_tier2.png → senator_okoye.png
-- **Commander Voss:** commander_voss_tier2.png → commander_voss.png
-
-### Legendary Cards (Use Tier 3 as primary):
-- **Admiral Chen:** admiral_chen_tier3.png → admiral_chen.png
-- **Captain Aria Kane:** captain_aria_kane_tier3.png → captain_aria_kane.png
 
 ---
 

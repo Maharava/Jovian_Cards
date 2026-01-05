@@ -5,8 +5,15 @@ export const TOKEN_CARDS: Card[] = [
   {
     id: 'republic_guard', name: 'Republic Guard', type: 'unit', cost: 2,
     stats: { atk: 2, hp: 2, maxHp: 2 }, subtype: 'Cybernetic', rarity: 'Common',
-    text: '', faction: 'Republic', baseAsset: 'republic_guard', 
+    text: '', faction: 'Republic', baseAsset: 'republic_guard',
     lore: "Standard Republic military unit.",
+    mechanics: []
+  },
+  {
+    id: 'senate_guard', name: 'Senate Guard', type: 'unit', cost: 2,
+    stats: { atk: 2, hp: 2, maxHp: 2 }, subtype: 'Biological', rarity: 'Common',
+    text: '', faction: 'Republic', baseAsset: 'republic_guard',
+    lore: "Elite guard protecting Republic senators.",
     mechanics: []
   },
   {
@@ -17,17 +24,17 @@ export const TOKEN_CARDS: Card[] = [
     mechanics: [m('damage', 'onPlay', 2, 'random_enemy')]
   },
   {
-    id: 'neutral_drone', name: 'Drone', type: 'unit', cost: 1,
+    id: 'neutral_drone', name: 'Worker Drone', type: 'unit', cost: 1,
     stats: { atk: 1, hp: 1, maxHp: 1 }, subtype: 'Cybernetic', rarity: 'Common',
-    text: '', faction: 'Neutral', baseAsset: 'drone', 
-    lore: "Standard automated unit.",
+    text: '', faction: 'Neutral', baseAsset: 'drone',
+    lore: "Standard worker unit.",
     mechanics: []
   },
   {
-    id: 'neutral_drone_2', name: 'Drone', type: 'unit', cost: 1,
+    id: 'neutral_drone_2', name: 'Combat Drone', type: 'unit', cost: 1,
     stats: { atk: 1, hp: 2, maxHp: 2 }, subtype: 'Cybernetic', rarity: 'Common',
-    text: '', faction: 'Neutral', baseAsset: 'drone', 
-    lore: "Upgraded automated unit.",
+    text: '', faction: 'Neutral', baseAsset: 'drone',
+    lore: "Upgraded combat model.",
     mechanics: []
   },
   {

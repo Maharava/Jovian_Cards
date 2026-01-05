@@ -1,71 +1,61 @@
-# Voidborn Faction File
+# The Voidborn (The Static / The Moths)
 
 ## Overview
-**The Voidborn** are an enigmatic and ancient race that predates humanity's expansion into the stars. They are creatures of pure energy and psionic force, existing in the cold, dark emptiness between star systems. Driven by motivations utterly alien to human comprehension, they perceive the material universe as a fleeting illusion, a canvas upon which to impose their will. Their incursions into populated space are rare but catastrophic, manifesting as sudden, inexplicable phenomena: systems falling silent, stars flickering out, and entire fleets disappearing without a trace.
+**The Voidborn** (colloquially known as "The Static" due to sensor interference, or "Moths" by those who understand their nature) are a primal, cosmic horror species. They are not invaders with a flag; they are a biological imperative. They are an ancient species that evolved on lightless, rogue worlds between stars, drawn across the galaxy by the "light" of psychic awakenings.
 
-They are not driven by conquest or resources, but by a profound, cosmic agenda that sees organic life as either an interesting anomaly to study or a chaotic disruption to be excised. Their presence always heralds a shift in the fabric of reality itself.
-
-*   **Archetype:** Control / Psionic Damage / Disruption
-*   **Motto:** "Silence. Order. The Void Consumes."
-*   **Visual Style:** **Cosmic Horror / Eldritch.** Shimmering, translucent forms, impossible geometries, shifting colors of deep space, black holes, and nebulae. Units seem to distort perception, appearing and disappearing at will. Think ethereal, terrifying, and profoundly unnatural.
+*   **Archetype:** Primal Swarm / Anti-Psychic / Denial
+*   **Motto:** *Silence. Hunger. The Light Burns.*
+*   **Visual Style:** **Bioluminescent Deep-Sea Horror meets Insectoid.** Vantablack carapaces (to absorb all light), twitching sensory antennae, phasing/glitching movement (biological teleportation), and blindingly bright "lures."
 
 ---
 
-## The Manifestations of the Void
+## Origins: The Great Migration
+**Evolution in the Dark:**
+The Voidborn evolved on rogue planets drifting in the deep void, far from any sun. In the absolute cold and dark, they developed two key traits:
+1.  **Psychic Sensitivity:** They "see" psychic energy as light/heat.
+2.  **The Blink:** A mutation allowed some to use their own psychic potential to "hop" through space (short-range teleportation). These individuals survived to breed, dominating the species.
 
-### 1. The Harbingers (The Whispers)
-These are the least physical of the Voidborn, manifestations that influence minds, sow discord, and drain vital energies. They are the initial probes, testing the defenses and sanity of new targets.
-*   **Specialty:** Mind control, energy drain, debuffs, indirect damage.
-
-### 2. The Constructs (The Shards)
-More tangible forms, these Voidborn are crystalline or geometric entities that project immense psionic force. They are the instruments of destruction and spatial manipulation.
-*   **Specialty:** Direct psionic damage, board clear, environmental manipulation, barrier creation.
-
-### 3. The Guardians (The Maw)
-The largest and most terrifying of the Voidborn manifestations, these entities warp reality around them. Their presence alone can unravel fleets and shatter worlds.
-*   **Specialty:** Massive psionic attacks, extreme disruption, altering game rules.
+**The Moth and the Flame:**
+When a civilization develops psychic potential, it lights up in the void like a flare. The Voidborn are drawn to it instinctively.
+*   **The Tragedy:** They are phototactic (drawn to psychic light) but photophobic (hateful of physical starlight). They are drawn to systems they cannot survive in, driven by hunger for psychic brains.
+*   **The Cycle:** They arrive, they consume the psychics (which makes them stronger and more fertile), and their collective psychic presence eventually "dims" the local star, killing the system. Then they drift to the next beacon.
 
 ---
 
-## Strategic Doctrine
-The Voidborn playstyle is about **controlling the enemy's options**, **draining their resources**, and **unleashing devastating psionic attacks**. They win by slowly dismantling the opponent's ability to act, then delivering a decisive, overwhelming blow.
+## Biology & Behavior
 
-### Core Pillars:
-1.  **Psionic Assault:** Direct damage to units and the enemy commander that bypasses conventional defenses.
-2.  **Resource Depletion:** Forcing discards, destroying energy, and delaying enemy plays.
-3.  **Reality Warping:** Disrupting the enemy board state, returning units to hand, silencing abilities, or even changing card costs.
-4.  **Evasion & Resilience:** Many units have ways to avoid direct combat, such as phasing out, or possess inherent damage reduction.
+### 1. The Carapace
+Evolved to survive the vacuum of space and the impacts of micro-meteorites.
+*   **Resilience:** Their armor is incredibly dense and refractive. While not immune to modern railguns, it is effectively bulletproof against small arms.
+*   **Appearance:** Matte black, absorbing 99% of light. They look like holes in reality until they strike.
 
-### Strengths:
-*   Excellent against heavily armored or high-health units.
-*   Strong hand and board disruption capabilities.
-*   Can bypass Guard and Shield effects with direct damage.
-*   Unpredictable and difficult to counter for traditional factions.
+### 2. The Blink (Movement)
+They do not use ships. They travel individually, "blinking" through the void in short hops.
+*   **Swarm Mechanics:** They follow **Psychic Resonance trails**. When one finds a path, it leaves a "scent" in the void. Millions follow, appearing one by one in a terrifying, staccato rhythm.
 
-### Weaknesses:
-*   Units are often fragile in direct combat.
-*   Slow to establish a strong board presence.
-*   Reliance on specific combinations can make them vulnerable if key cards are disrupted.
-*   Can be out-tempoed by aggressive swarm strategies if they can't establish control.
+### 3. Diet: The Psychic Feast
+They ignore non-psychic life forms unless threatened.
+*   **The Horror:** They specifically target settlements with high psychic populations.
+*   **The Human Response:** Some settlements have realized this. They have begun **expelling or executing psychics** to make themselves "invisible" to the swarm. It works... for now. But eventually, the sun will die regardless.
 
 ---
 
-## Available Assets (Cards)
+## Gameplay Archetypes (Planned)
 
-### Units
+### Core Mechanics
+1.  **Silence / Nullify:** Shutting down enemy abilities (The Static interference).
+2.  **Phase / Elusive:** Hard to target (The Blink).
+3.  **Anti-Psychic:** Bonuses against Psionic units.
 
-*   **Void Leech** (Common)
-    *   T1 (2 Cost, 2/1): **Lifesteal.**
-*   **Voidling** (Common)
-    *   T1 (1 Cost, 1/1): **Rush.**
-*   **Whispering Polyp** (Uncommon)
-    *   T1 (2 Cost, 0/3): Turn End: **Pollute 1.**
-*   **Gazing Horror** (Rare)
-    *   T1 (3 Cost, 1/5): **Guard.** **Thorns 1.**
-*   **Reality Tear** (Uncommon)
-    *   T2 (3 Cost, 3/3): OnDeath: Summon 2 Voidlings.
-*   **Mind Flayer** (Rare)
-    *   T2 (4 Cost, 2/4): OnAttack: **Pollute 1.**
+### Unit Concepts
+*   **Void-Moth:** Fast, fragile, huge damage against Psychics.
+*   **Null-Weaver:** Creates "Dead Zones" where abilities don't work.
+*   **Star-Eater (Legendary):** A massive entity that dims the board, reducing all enemy stats.
 
-### Tokens
-*   **Madness:** Unplayable. OnDraw: Deal 2 damage to your commander. Fades at end of turn.
+---
+
+## Current Status in Lore
+*   **Location:** Currently infesting the Oort Cloud and Kuiper Belt.
+*   **The Feed:** Viral clips show "Dead Pixels" or "Static" moving in the dark.
+*   **The Republic Stance:** Denies their existence as a unified threat, blaming "Pirate Signal Jammers" or "Mass Hallucinations."
+*   **The Shadow War:** The sudden need for the Megacorps to secure "Psychic Assets" (Jovians) might be because they *know* what's coming and need weapons—or bait.

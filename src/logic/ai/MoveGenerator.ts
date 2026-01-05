@@ -103,6 +103,34 @@ export class MoveGenerator {
   }
 
   /**
+   * Check if unit has Snipe ability (including quota-based snipe)
+   */
+  private static hasSnipeAbility(unit: UnitInstance, state: GameState, owner: 'player' | 'enemy'): boolean {
+    // Check for constant snipe
+    if (unit.mechanics.some(m => m.type === 'snipe' && m.trigger === 'constant')) {
+      return true;
+    }
+
+    // Check for quota-based snipe
+    const snipeMechanic = unit.mechanics.find(m =>
+      m.type === 'snipe' &&
+      m.trigger === 'passive' &&
+      typeof m.payload === 'string' &&
+      m.payload.startsWith('quota:')
+    );
+
+    if (snipeMechanic && typeof snipeMechanic.payload === 'string') {
+      const parts = snipeMechanic.payload.split(':');
+      const threshold = parseInt(parts[1], 10);
+      const board = owner === 'player' ? state.player.board : state.enemy.board;
+      const megacorpCount = board.filter(u => u.faction === 'Megacorp').length;
+      return megacorpCount >= threshold;
+    }
+
+    return false;
+  }
+
+  /**
    * Get valid attack targets for a unit
    */
   private static getValidAttackTargets(
@@ -118,8 +146,8 @@ export class MoveGenerator {
       u.mechanics.some(m => m.type === 'guard') && u.hp > 0
     );
 
-    // Snipe units can bypass guards
-    const hasSnipe = unit.mechanics.some(m => m.type === 'snipe');
+    // Snipe units can bypass guards (including quota-based snipe)
+    const hasSnipe = this.hasSnipeAbility(unit, state, owner);
 
     if (guards.length > 0 && !hasSnipe) {
       // Must attack guards

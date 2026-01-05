@@ -8,35 +8,33 @@ import { m } from './cardUtils';
  * control, and profit above all else.
  *
  * Card Count: 18 unique cards
- * - Common: 6 cards (use T1 stats)
- * - Uncommon: 5 cards (use T1 stats)
- * - Rare: 4 cards (use T2 stats)
- * - Legendary: 3 cards (use T3 stats)
+ * - Common: 6 cards
+ * - Uncommon: 4 cards
+ * - Rare: 5 cards
+ * - Legendary: 3 cards
  */
 
 export const MEGACORP_CARDS: Card[] = [
   // ==================== COMMON CARDS (6) ====================
 
-  // Mining Drone - Common (T1 stats)
+  // Mining Drone - Common
   {
     id: 'corp_drone',
     name: 'Mining Drone',
-    title: 'Automated Miner',
     type: 'unit',
     rarity: 'Common',
     cost: 1,
     stats: { atk: 1, hp: 1, maxHp: 1 },
     subtype: 'Cybernetic',
-    text: '',
+    text: 'Recycle 1 (When this dies, gain 1 energy).',
     faction: 'Megacorp',
-    baseAsset: 'corp_drone',
-    lore: "Mass-produced automated labor.",
+    baseAsset: 'mining_drone',
+    lore: "Solarin Industries' most reliable asset, designed for the zero-g of the Asteroid Belt, it is cheap, expendable, and entirely replaceable. Upgraded with high-torque servos for maximum throughput, it works until the gears melt or the battery dies, whichever comes first. When a drone is too damaged for repair, the \"Catastrophic Failure Protocol\" ensures it leaves nothing behind for the competition.",
     cosmetics: [
-      { id: 'corp_drone_alt1', name: 'Alt Appearance 1', asset: 'corp_drone_alt1', unlockCost: { currency: 'platinum', amount: 50 } },
-      { id: 'corp_drone_alt2', name: 'Alt Appearance 2', asset: 'corp_drone_alt2', unlockCost: { currency: 'platinum', amount: 50 } },
-      { id: 'corp_drone_alt3', name: 'Alt Appearance 3', asset: 'corp_drone_alt3', unlockCost: { currency: 'platinum', amount: 50 } }
+      { id: 'mining_drone_alt1', name: 'Alt Appearance 1', asset: 'mining_drone_alt1', unlockCost: { currency: 'platinum', amount: 50 } },
+      { id: 'mining_drone_alt2', name: 'Alt Appearance 2', asset: 'mining_drone_alt2', unlockCost: { currency: 'platinum', amount: 50 } }
     ],
-    mechanics: []
+    mechanics: [m('recycle', 'onDeath', 1, 'self')]
   },
 
   // Security Bot - Common (T1 stats)
@@ -48,7 +46,7 @@ export const MEGACORP_CARDS: Card[] = [
     cost: 2,
     stats: { atk: 1, hp: 2, maxHp: 2 },
     subtype: 'Cybernetic',
-    text: 'Guard.',
+    text: 'Guard. OnPlay: If you control another Megacorp unit, gain +1/+1.',
     faction: 'Megacorp',
     baseAsset: 'corp_bot',
     lore: "Standard perimeter defense unit.",
@@ -57,50 +55,53 @@ export const MEGACORP_CARDS: Card[] = [
       { id: 'corp_bot_alt2', name: 'Alt Appearance 2', asset: 'corp_bot_alt2', unlockCost: { currency: 'platinum', amount: 50 } },
       { id: 'corp_bot_alt3', name: 'Alt Appearance 3', asset: 'corp_bot_alt3', unlockCost: { currency: 'platinum', amount: 50 } }
     ],
-    mechanics: [m('guard', 'constant')]
+    mechanics: [
+      m('guard', 'constant'),
+      m('buff', 'onPlay', 1, 'self', 'condition:has_other_megacorp', 1)
+    ]
   },
 
-  // Corp Guard - Common (T1 stats)
+  // Corp Guard - Common
   {
     id: 'corp_guard',
-    name: 'Security Enforcer',
+    name: 'Corp Guard',
     type: 'unit',
     rarity: 'Common',
     cost: 2,
-    stats: { atk: 1, hp: 2, maxHp: 2 },
+    stats: { atk: 2, hp: 2, maxHp: 2 },
     subtype: 'Biological',
-    text: 'Guard.',
+    text: 'Quota 3: Guard',
     faction: 'Megacorp',
     baseAsset: 'corp_guard',
-    lore: "Minimum wage, maximum risk.",
+    lore: "Minimum wage and maximum risk are the standard terms of a corporate contract, and these guards are the first line of defense against hostile acquisitions and takeovers. As veterans of the boardroom skirmishes who have survived more than a year, they are equipped with better armor and a cynicism that only combat can provide. The Site Warden oversees facility security with an iron grip, responsible for ensuring that productivity never dips, even under fire.",
     cosmetics: [
       { id: 'corp_guard_alt1', name: 'Alt Appearance 1', asset: 'corp_guard_alt1', unlockCost: { currency: 'platinum', amount: 50 } },
-      { id: 'corp_guard_alt2', name: 'Alt Appearance 2', asset: 'corp_guard_alt2', unlockCost: { currency: 'platinum', amount: 50 } },
-      { id: 'corp_guard_alt3', name: 'Alt Appearance 3', asset: 'corp_guard_alt3', unlockCost: { currency: 'platinum', amount: 50 } }
+      { id: 'corp_guard_alt2', name: 'Alt Appearance 2', asset: 'corp_guard_alt2', unlockCost: { currency: 'platinum', amount: 50 } }
     ],
-    mechanics: [m('guard', 'constant')]
+    mechanics: [m('guard', 'passive', 0, 'self', 'quota:3')]
   },
 
-  // Cyber-Hound - Common (T1 stats)
+  // K9X Unit - Common
   {
     id: 'corp_hound',
     name: 'K9X Unit',
-    title: 'Cyber-Hound',
     type: 'unit',
     rarity: 'Common',
     cost: 2,
     stats: { atk: 2, hp: 1, maxHp: 1 },
     subtype: 'Cybernetic',
-    text: 'Rush.',
+    text: 'Rush. Quota 4: Snipe',
     faction: 'Megacorp',
-    baseAsset: 'corp_hound',
-    lore: "Canine bio-frame.",
+    baseAsset: 'k9x_unit',
+    lore: "A canine robot encased in high-impact composites, it is a loyal hunter that never tires and never loses the scent of a debtor. Upgraded with thermal sensors and a predatory algorithm that mimics the wolves of ancient Earth, it can track a target through a vacuum-sealed station. The pack leader of the corporate kennel, the Alpha runs on a swarm-mind algorithm; when it barks, every drone in the sector joins the hunt.",
     cosmetics: [
-      { id: 'corp_hound_alt1', name: 'Alt Appearance 1', asset: 'corp_hound_alt1', unlockCost: { currency: 'platinum', amount: 50 } },
-      { id: 'corp_hound_alt2', name: 'Alt Appearance 2', asset: 'corp_hound_alt2', unlockCost: { currency: 'platinum', amount: 50 } },
-      { id: 'corp_hound_alt3', name: 'Alt Appearance 3', asset: 'corp_hound_alt3', unlockCost: { currency: 'platinum', amount: 50 } }
+      { id: 'k9x_unit_alt1', name: 'Alt Appearance 1', asset: 'k9x_unit_alt1', unlockCost: { currency: 'platinum', amount: 50 } },
+      { id: 'k9x_unit_alt2', name: 'Alt Appearance 2', asset: 'k9x_unit_alt2', unlockCost: { currency: 'platinum', amount: 50 } }
     ],
-    mechanics: [m('rush', 'constant')]
+    mechanics: [
+      m('rush', 'constant'),
+      m('snipe', 'passive', 0, 'self', 'quota:4')
+    ]
   },
 
   // Heavy Loader - Common (T1 stats)
@@ -147,53 +148,52 @@ export const MEGACORP_CARDS: Card[] = [
     mechanics: [m('heal', 'onTurnEnd', 1, 'random_ally')]
   },
 
-  // ==================== UNCOMMON CARDS (5) ====================
+  // ==================== UNCOMMON CARDS (4) ====================
 
-  // Manager - Uncommon (T1 stats)
+  // Alexandrea - Uncommon
   {
     id: 'corp_manager',
     name: 'Alexandrea',
-    title: 'Supervisor',
     type: 'unit',
     rarity: 'Uncommon',
     cost: 3,
-    stats: { atk: 0, hp: 2, maxHp: 2 },
+    stats: { atk: 0, hp: 3, maxHp: 3 },
     subtype: 'Biological',
-    text: 'Turn End: Encourage 1.',
+    text: 'Turn End: Encourage 1 - Give a random ally +1 ATK. Quota 4: TurnEnd: Rally 1 (random ally)',
     faction: 'Megacorp',
-    baseAsset: 'corp_manager',
-    lore: "Get back to work!",
+    baseAsset: 'alexandrea',
+    lore: "\"Get back to work!\" is the only command that matters, and the supervisor is there to ensure that every second of company time is accounted for. As a manager, productivity metrics are monitored in real-time, and if the numbers dip, Alexandrea is authorized to apply motivational measures to the workforce. In the eyes of the board, all are replaceable line items; as an executive, Alexandrea doesn't see people, she sees resources to be optimized or liquidated.",
     cosmetics: [
-      { id: 'corp_manager_alt1', name: 'Alt Appearance 1', asset: 'corp_manager_alt1', unlockCost: { currency: 'platinum', amount: 100 } },
-      { id: 'corp_manager_alt2', name: 'Alt Appearance 2', asset: 'corp_manager_alt2', unlockCost: { currency: 'platinum', amount: 100 } },
-      { id: 'corp_manager_alt3', name: 'Alt Appearance 3', asset: 'corp_manager_alt3', unlockCost: { currency: 'platinum', amount: 100 } }
+      { id: 'alexandrea_alt1', name: 'Alt Appearance 1', asset: 'alexandrea_alt1', unlockCost: { currency: 'platinum', amount: 100 } },
+      { id: 'alexandrea_alt2', name: 'Alt Appearance 2', asset: 'alexandrea_alt2', unlockCost: { currency: 'platinum', amount: 100 } }
     ],
-    mechanics: [m('encourage', 'onTurnEnd', 1, 'random_ally')]
+    mechanics: [
+      m('encourage', 'onTurnEnd', 1, 'random_ally'),
+      m('rally', 'onTurnEnd', 1, 'random_ally', 'quota:4')
+    ]
   },
 
-  // Liquidator - Uncommon (T1 stats)
+  // Ximena - Uncommon
   {
     id: 'corp_liquidator',
     name: 'Ximena',
-    title: 'Asset Liquidator',
     type: 'unit',
     rarity: 'Uncommon',
     cost: 4,
     stats: { atk: 4, hp: 2, maxHp: 2 },
     subtype: 'Biological',
-    text: '',
+    text: 'Quota 4: +2/+2 while Quota is met.',
     faction: 'Megacorp',
-    baseAsset: 'corp_liquidator',
-    lore: "Sent when a branch is closing down.",
+    baseAsset: 'ximena',
+    lore: "Sent when a branch is underperforming or a settlement is in default, Ximena is the herald of a hostile takeover, arriving with a briefcase and a gun. As the Clean-Up Crew, they leave no witnesses and no paper trail; when they arrive, the past is erased to make room for the new quarterly report. As a Black Ops Agent, they don't exist on any payroll and answer only to the Board, the unseen hand of corporate power executing orders that never officially happened.",
     cosmetics: [
-      { id: 'corp_liquidator_alt1', name: 'Alt Appearance 1', asset: 'corp_liquidator_alt1', unlockCost: { currency: 'platinum', amount: 100 } },
-      { id: 'corp_liquidator_alt2', name: 'Alt Appearance 2', asset: 'corp_liquidator_alt2', unlockCost: { currency: 'platinum', amount: 100 } },
-      { id: 'corp_liquidator_alt3', name: 'Alt Appearance 3', asset: 'corp_liquidator_alt3', unlockCost: { currency: 'platinum', amount: 100 } }
+      { id: 'ximena_alt1', name: 'Alt Appearance 1', asset: 'ximena_alt1', unlockCost: { currency: 'platinum', amount: 100 } },
+      { id: 'ximena_alt2', name: 'Alt Appearance 2', asset: 'ximena_alt2', unlockCost: { currency: 'platinum', amount: 100 } }
     ],
-    mechanics: []
+    mechanics: [m('buff', 'constant', 2, 'self', 'quota:4', 2)]
   },
 
-  // Uplink - Uncommon (T1 stats)
+  // Hacking Uplink - Uncommon
   {
     id: 'enemy_uplink',
     name: 'Hacking Uplink',
@@ -202,16 +202,15 @@ export const MEGACORP_CARDS: Card[] = [
     cost: 3,
     stats: { atk: 0, hp: 4, maxHp: 4 },
     subtype: 'Cybernetic',
-    text: 'Turn End: Hack 1.',
+    text: 'Turn End: Hack 1 (random enemy) - Reduce ATK by 1 for 2 turns. Quota 4: Hack 2 instead.',
     faction: 'Megacorp',
-    baseAsset: 'corp_uplink',
-    lore: "Broadcasting malware.",
+    baseAsset: 'black_betty',
+    lore: "Broadcasting malware across unsecured channels to disrupt local infrastructure, it is a digital parasite that feeds on the enemy's sensors. As a specialized node, it can flood the frequency with white noise and logic bombs, rendering enemy drones blind and their masters helpless. The central hub for a local drone control, it can override a station's security with a single packet, a poltergeist in the machine.",
     cosmetics: [
-      { id: 'corp_uplink_alt1', name: 'Alt Appearance 1', asset: 'corp_uplink_alt1', unlockCost: { currency: 'platinum', amount: 100 } },
-      { id: 'corp_uplink_alt2', name: 'Alt Appearance 2', asset: 'corp_uplink_alt2', unlockCost: { currency: 'platinum', amount: 100 } },
-      { id: 'corp_uplink_alt3', name: 'Alt Appearance 3', asset: 'corp_uplink_alt3', unlockCost: { currency: 'platinum', amount: 100 } }
+      { id: 'black_betty_alt1', name: 'Alt Appearance 1', asset: 'black_betty_alt1', unlockCost: { currency: 'platinum', amount: 100 } },
+      { id: 'black_betty_alt2', name: 'Alt Appearance 2', asset: 'black_betty_alt2', unlockCost: { currency: 'platinum', amount: 100 } }
     ],
-    mechanics: [m('hack', 'onTurnEnd', 1, 'random_enemy')]
+    mechanics: [m('hack', 'onTurnEnd', 1, 'random_enemy', 'quota:4:2')]
   },
 
   // Technician - Uncommon (T1 stats)
@@ -224,7 +223,7 @@ export const MEGACORP_CARDS: Card[] = [
     cost: 3,
     stats: { atk: 2, hp: 2, maxHp: 2 },
     subtype: 'Biological',
-    text: 'OnPlay: Summon Drone.',
+    text: 'OnPlay: Summon Worker Drone.',
     faction: 'Megacorp',
     baseAsset: 'corp_technician',
     lore: "Keeps the swarm operational.",
@@ -236,71 +235,67 @@ export const MEGACORP_CARDS: Card[] = [
     mechanics: [m('summon', 'onPlay', 1, 'self', 'neutral_drone')]
   },
 
-  // Slaver - Uncommon (T1 stats)
+  // ==================== RARE CARDS (5) ====================
+
+  // Mr. Harrison - Rare
   {
     id: 'corp_slaver',
-    name: 'Mr. Harrison, Debt Collector',
+    name: 'Mr. Harrison',
     type: 'unit',
-    rarity: 'Uncommon',
-    cost: 4,
-    stats: { atk: 2, hp: 3, maxHp: 3 },
+    rarity: 'Rare',
+    cost: 5,
+    stats: { atk: 4, hp: 4, maxHp: 4 },
     subtype: 'Biological',
-    text: '',
+    text: 'OnPlay: Mind Control 3 (Take control of enemy unit with ATK ≤ 3)',
     faction: 'Megacorp',
-    baseAsset: 'corp_slaver',
-    lore: "You're late on your payments.",
+    baseAsset: 'mr_harrison',
+    lore: "\"There's a clause in your contract...\" By the time you've read it, Harrison owns you. A debt collector turned hostile acquisitions specialist, he doesn't just seize assets—he seizes people. His neural control collars turn debtors into corporate property, their minds rewritten to serve Ira Corp until their contracts are paid in full. Which, of course, they never are.",
     cosmetics: [
-      { id: 'corp_slaver_alt1', name: 'Alt Appearance 1', asset: 'corp_slaver_alt1', unlockCost: { currency: 'platinum', amount: 100 } },
-      { id: 'corp_slaver_alt2', name: 'Alt Appearance 2', asset: 'corp_slaver_alt2', unlockCost: { currency: 'platinum', amount: 100 } },
-      { id: 'corp_slaver_alt3', name: 'Alt Appearance 3', asset: 'corp_slaver_alt3', unlockCost: { currency: 'platinum', amount: 100 } }
+      { id: 'mr_harrison_alt1', name: 'Alt Appearance 1', asset: 'mr_harrison_alt1', unlockCost: { currency: 'platinum', amount: 250 } },
+      { id: 'mr_harrison_alt2', name: 'Alt Appearance 2', asset: 'mr_harrison_alt2', unlockCost: { currency: 'platinum', amount: 250 } }
     ],
-    mechanics: []
+    mechanics: [m('mind_control', 'onPlay', 3, 'target_enemy')]
   },
 
-  // ==================== RARE CARDS (4) ====================
-
-  // Solarin Control - Rare (T2 stats)
+  // Solarin Control - Rare
   {
     id: 'solarin_control',
-    name: 'Process Manager',
+    name: 'Solarin Control',
     type: 'unit',
     rarity: 'Rare',
     cost: 3,
     stats: { atk: 0, hp: 6, maxHp: 6 },
     subtype: 'Cybernetic',
-    text: 'Turn Start: Gain 1 Energy for each Megacorp unit (max 4). Turn End: Repair 1 Cybernetic.',
+    text: 'Turn Start: Gain 1 Energy. Turn End: Repair 1 Cybernetic. Quota 4: Gain 2 energy instead.',
     faction: 'Megacorp',
     baseAsset: 'solarin_control',
-    lore: "Managing the flow of power.",
+    lore: "Managing the flow of power through the local grid, it is the invisible pulse of the corporate machine, ensuring the lights stay on. As a Process Manager, it optimizes energy distribution across the entire sector, able to reroute power from life support to weapon systems in a heartbeat. The Swarm Manager is a massive AI core that coordinates the energy needs of a thousand units, the brain that keeps the corporate swarm hungry and lethal.",
     cosmetics: [
       { id: 'solarin_control_alt1', name: 'Alt Appearance 1', asset: 'solarin_control_alt1', unlockCost: { currency: 'platinum', amount: 250 } },
-      { id: 'solarin_control_alt2', name: 'Alt Appearance 2', asset: 'solarin_control_alt2', unlockCost: { currency: 'platinum', amount: 250 } },
-      { id: 'solarin_control_alt3', name: 'Alt Appearance 3', asset: 'solarin_control_alt3', unlockCost: { currency: 'platinum', amount: 250 } }
+      { id: 'solarin_control_alt2', name: 'Alt Appearance 2', asset: 'solarin_control_alt2', unlockCost: { currency: 'platinum', amount: 250 } }
     ],
     mechanics: [
-      m('gain_energy', 'onTurnStart', 0, 'self', 'count_megacorp:max_4'),
+      m('gain_energy', 'onTurnStart', 1, 'self', 'quota:4:2'),
       m('repair', 'onTurnEnd', 1, 'random_ally', 'subtype:Cybernetic')
     ]
   },
 
-  // Director Kiz - Rare (T2 stats)
+  // Director Kiz - Rare
   {
     id: 'director_kiz',
-    name: 'Kiz',
-    title: 'Director: Earth',
+    name: 'Director Kiz',
     type: 'unit',
     rarity: 'Rare',
     cost: 4,
     stats: { atk: 3, hp: 4, maxHp: 4 },
     subtype: 'Biological',
-    text: 'OnPlay: Buff Megacorp +1/+1 & Rush.',
+    text: 'OnPlay: Give all other Megacorp units +1/+1 and Rush',
     faction: 'Megacorp',
     baseAsset: 'director_kiz',
-    lore: "Head of Regional Operations.",
+    lore: "The head of regional operations for the Red Planet, Kiz ensures that the mines are productive and the workers are sufficiently 'encouraged'. Promoted to the heart of the Republic, he now navigates the treacherous waters of the Senate, bribing, lobbying and bullying with equal skill to ensure lucrative government contracts flow. When hostile acquisitions become the only option, Kiz takes the helm, viewing the entire system as a spreadsheet to be balanced with blood.",
     cosmetics: [
       { id: 'director_kiz_alt1', name: 'Alt Appearance 1', asset: 'director_kiz_alt1', unlockCost: { currency: 'platinum', amount: 250 } },
-      { id: 'director_kiz_alt2', name: 'Alt Appearance 2', asset: 'director_kiz_alt2', unlockCost: { currency: 'platinum', amount: 250 } },
-      { id: 'director_kiz_alt3', name: 'Alt Appearance 3', asset: 'director_kiz_alt3', unlockCost: { currency: 'platinum', amount: 250 } }
+      { id: 'director_kiz_alt2', name: 'Alt Appearance 2', asset: 'director_kiz_alt2', unlockCost: { currency: 'platinum', amount: 250 } }
     ],
     mechanics: [
       m('buff', 'onPlay', 1, 'all_allies', 'faction:Megacorp', 1),
@@ -361,61 +356,59 @@ export const MEGACORP_CARDS: Card[] = [
 
   // ==================== LEGENDARY CARDS (3) ====================
 
-  // Director Vance - Legendary (T3 stats)
+  // Director Vance - Legendary
   {
     id: 'director_vance',
-    name: 'Vance',
-    title: 'Director: Acquisitions',
+    name: 'Director Vance',
     type: 'unit',
     rarity: 'Legendary',
     cost: 6,
-    stats: { atk: 0, hp: 10, maxHp: 10 },
-    subtype: 'Cybernetic',
-    text: 'Shield. Recycle 2. Passive: Played Megacorp units +2/+2.',
+    stats: { atk: 2, hp: 8, maxHp: 8 },
+    subtype: 'Biological',
+    text: 'Shield. Passive: When you play a Megacorp unit, give it +1/+1. Quota 4: Give it +2/+2 instead.',
     faction: 'Megacorp',
     baseAsset: 'director_vance',
-    lore: "The CEO. The Board. The Law.",
+    lore: "Vance oversees the credit flow of the entire corporation, knowing that the Board and the Law are just tools to be used for profit. Controlling the psychic investments and assets of Ira Corp, she is no slouch in power herself. Arguably the most powerful Director in Ira Corp, Vance orchestrates the acquisition of the Jovian sisters itself. But in the dark of the night, she hears the Whispers, and is afraid.",
     cosmetics: [
       { id: 'director_vance_alt1', name: 'Alt Appearance 1', asset: 'director_vance_alt1', unlockCost: { currency: 'platinum', amount: 500 } },
-      { id: 'director_vance_alt2', name: 'Alt Appearance 2', asset: 'director_vance_alt2', unlockCost: { currency: 'platinum', amount: 500 } },
-      { id: 'director_vance_alt3', name: 'Alt Appearance 3', asset: 'director_vance_alt3', unlockCost: { currency: 'platinum', amount: 500 } }
+      { id: 'director_vance_alt2', name: 'Alt Appearance 2', asset: 'director_vance_alt2', unlockCost: { currency: 'platinum', amount: 500 } }
     ],
     mechanics: [
       m('shield', 'constant'),
-      m('recycle', 'constant', 2),
-      m('buff', 'passive', 2, 'all_allies', 'faction:Megacorp', 2)
+      m('buff', 'passive', 1, 'all_allies', 'faction:Megacorp', 1),
+      m('buff', 'passive', 1, 'all_allies', 'quota:4:faction:Megacorp', 1)
     ]
   },
 
-  // The Auditor - Legendary (T3 stats)
+  // The Auditor - Legendary
   {
     id: 'the_auditor',
-    name: 'Unknown',
+    name: 'The Auditor',
     type: 'unit',
     rarity: 'Legendary',
     cost: 5,
     stats: { atk: 5, hp: 4, maxHp: 4 },
     subtype: 'Biological',
-    text: 'Snipe. Assassinate.',
+    text: 'Snipe. OnPlay: Disarm 2 (target enemy). OnAttack: If target has 0 ATK, destroy it.',
     faction: 'Megacorp',
     baseAsset: 'the_auditor',
-    lore: "You have been found wanting.",
+    lore: "You have been found wanting, and the Auditor is here to deliver the notice. She moves through the shadows of the high-sec stations, an invisible judge of corporate performance; when the Shadow is seen, the trial is already over. With no name, no face, and no records, the Auditor is the final firing notice for those who have failed the Board, a ghost that executes without a word.",
     cosmetics: [
       { id: 'the_auditor_alt1', name: 'Alt Appearance 1', asset: 'the_auditor_alt1', unlockCost: { currency: 'platinum', amount: 500 } },
-      { id: 'the_auditor_alt2', name: 'Alt Appearance 2', asset: 'the_auditor_alt2', unlockCost: { currency: 'platinum', amount: 500 } },
-      { id: 'the_auditor_alt3', name: 'Alt Appearance 3', asset: 'the_auditor_alt3', unlockCost: { currency: 'platinum', amount: 500 } }
+      { id: 'the_auditor_alt2', name: 'Alt Appearance 2', asset: 'the_auditor_alt2', unlockCost: { currency: 'platinum', amount: 500 } }
     ],
     mechanics: [
       m('snipe', 'constant'),
-      m('assassinate', 'constant')
+      m('disarm', 'onPlay', 2, 'target_enemy'),
+      m('assassinate', 'onAttack', 1, 'target_enemy', 'condition:zero_atk')
     ]
   },
 
   // Unit 734 - Legendary (T3 stats)
   {
     id: 'unit_734',
-    name: 'Unit 736',
-    title: 'Unit 736',
+    name: 'Unit 734',
+    title: 'Unit 734',
     type: 'unit',
     rarity: 'Legendary',
     cost: 7,

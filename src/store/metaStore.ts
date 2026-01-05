@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { getDefaultStarterDeck } from '../data/starterDecks';
 
 export interface SavedDeck {
   id: string;
@@ -40,24 +41,12 @@ interface MetaState {
   setActiveCosmetic: (cardId: string, cosmeticId: string) => void;
 }
 
-// Initial unlocks: Strictly match the starting deck (no tiers)
-const DEFAULT_DECK_CARDS = [
-    'lysithea', 'lysithea',
-    'himalia', 'himalia',
-    'leda', 'leda',
-    'amalthea', 'amalthea',
-    'kore', 'kore',
-    'tactic_nano_repair', 'tactic_nano_repair',
-    'tactic_reinforce', 'tactic_reinforce',
-    'euporie',
-    'callisto',
-    'tactic_power_shot', 'tactic_power_shot',
-    'tactic_scramble',
-    'tactic_outsource'
-];
+// Get the default starter deck configuration
+const DEFAULT_STARTER = getDefaultStarterDeck();
 
+// Build initial collection from starter deck
 const INITIAL_COLLECTION: Record<string, number> = {};
-DEFAULT_DECK_CARDS.forEach(id => {
+DEFAULT_STARTER.cardIds.forEach(id => {
     INITIAL_COLLECTION[id] = (INITIAL_COLLECTION[id] || 0) + 1;
 }); 
 
@@ -66,14 +55,14 @@ export const useMetaStore = create<MetaState>()(
     (set, get) => ({
       collection: INITIAL_COLLECTION,
       savedDecks: [
-          { 
-              id: 'default_vanguard', 
-              name: 'Vanguard Standard', 
-              cardIds: DEFAULT_DECK_CARDS 
+          {
+              id: `default_${DEFAULT_STARTER.faction.toLowerCase()}`,
+              name: DEFAULT_STARTER.name,
+              cardIds: DEFAULT_STARTER.cardIds
           }
       ],
-      activeDeckId: 'default_vanguard',
-      marketRotationFaction: 'Confederate',
+      activeDeckId: `default_${DEFAULT_STARTER.faction.toLowerCase()}`,
+      marketRotationFaction: DEFAULT_STARTER.faction,
 
       credits: 1000, // Starter credits
       platinum: 0,
@@ -188,12 +177,12 @@ export const useMetaStore = create<MetaState>()(
       resetProgress: () => set({
           collection: INITIAL_COLLECTION,
           savedDecks: [{
-              id: 'default_vanguard',
-              name: 'Vanguard Standard',
-              cardIds: DEFAULT_DECK_CARDS
+              id: `default_${DEFAULT_STARTER.faction.toLowerCase()}`,
+              name: DEFAULT_STARTER.name,
+              cardIds: DEFAULT_STARTER.cardIds
           }],
-          activeDeckId: 'default_vanguard',
-          marketRotationFaction: 'Confederate',
+          activeDeckId: `default_${DEFAULT_STARTER.faction.toLowerCase()}`,
+          marketRotationFaction: DEFAULT_STARTER.faction,
           credits: 1000,
           platinum: 0,
           mossan: 0,

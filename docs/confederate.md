@@ -1,28 +1,35 @@
 # The Outer Confederacy Faction File (CONSOLIDATED - RARITY-BASED)
 
 ## Overview
-**The Outer Confederacy** is a loose alliance of independent settlements, moons, and stations beyond the Asteroid Belt. Born from necessity and forged in the vacuum of the Outer System, they represent humanity's frontier spirit: rugged, independent, and unwilling to bow to the distant bureaucracy of Earth.
+**The Outer Confederacy** is a volatile alliance of over a hundred independent settlements, moons, and stations beyond the Asteroid Belt. Ranging from single-family prospector habitats to gleaming domed cities of ten million souls, they represent a society born from the realization that they were more than just the Republic's resource depot.
 
 They are the newest "faction" on the galactic stage. To the Republic, they are a legal headache; to the Megacorps, they are a market to be exploited; to the Jovian Sisters, they are home.
 
 *   **Archetype:** Midrange / Synergy / Guerrilla / Hero-Centric
-*   **Visual Style:** **Chaotic (lots of different cultures/designs) / Industrial + Bio-Punk.** 
+*   **Visual Style:** **A Hodge-Podge of conflicting cultures.** High-tech metropolises sit next to rusted industrial rigs. Architectural styles clash violently, reflecting the dozen different cultures and designs that have banded together for survival. 
 
 ---
 
-## Origins
-The Confederacy did not start as a nation. It began as a disparate group of settlements scattered across the Belt, the Jovian and Saturn moons.
-*   **The Catalyst:** The emergence of the Jovian sisters. Already, many settlements were banding together to form regional federations, and the moon of Callisto was approaching the status of being a united world. When the first Sisters appeared, there was a bounty put out by Corporations as the Republic dithered about what the children of Jupiter were. Cities that shielded the sisters found they were gifted advanced technologies, cutting edge research, and money from the elusive Jupiter. These cities became targets of other, jealous cities, and so they banded together. More sisters appeared, enw cities gave them shelter and citizenship and received the gifts of Jupiter, and they joined this union for mutual defence.
-By the time Europa Jovia, eldest daughter of Jupiter, was in her tenties, the Confederacy was official. Not all the settlements in the outer system joined the Confederacy
-*   **Independence:** They consider themselves a sovereign state. The Republic is still debating what they are.
+## Origins (The City-State & The Frontier)
+The Confederacy is a political miracle that might fall apart at any moment. It is often mistaken for a "ragtag" alliance, but its core is built upon massive, industrialized foundations.
+
+*   **The Dual Nature:** The Confederacy is formed from two distinct groups:
+    1.  **The City-States:** Former Republic strongholds (like the massive cities of Europa) that seceded. These are high-tech, populous (millions of citizens), and wealthy. They function like Greek City-States—powerful, independent, and proud.
+    2.  **The Frontier:** Hundreds of smaller, independent settlements, mining rigs, and stations that joined for protection. These provide the "ragtag" element—smugglers, prospectors, and pioneers.
+*   **The Catalyst:** The appearance of the Jovian Sisters. While the Republic dithered and Corporations issued bounties to "reacquire" them, the powerful City-States chose to offer them sanctuary, viewing the Republic's demand to hand them over as a violation of their sovereignty.
+*   **The Power Shift:** These "Sanctuary Cities" were gifted advanced technologies, cutting-edge research, and resources from the mysterious **Jupiter**. This sudden injection of power allowed them to resist—and eventually dominate—rival pro-Republic, pro-Corporate, or pirate-aligned settlements that sought to capture the children.
+*   **Formation:** To protect their newfound independence and the Jovian family, these cities formed a defensive union with the Frontier settlements.
+*   **The Modern Reality:** It is an absolute mishmash of competing cultures. The union is strained by massive disparities: three cities on Europa hold 35% of the total population, while a prospector on a moonlet might not see another human for months.
 
 ---
 
 ## The Jovian Sisters
 
-**The Jovian Sisters** (often called "The Family") are the genetically engineered children of **Jupiter**, the most brilliant geneticist to ever grace humanity. They are the first—and only—non-human sentient beings in the system. Though their baseline DNA is human, they were grown with radical genetic alterations that have matured into stable, functional post-human physiology—something regular humans can only approximate with crude surgery.
+**The Jovian Sisters** (often called "The Family") are the genetically engineered children of **Jupiter**, the most brilliant geneticist to ever grace humanity. They are a single, specific family of post-humans, not a demographic.
 
-They are not a government. They are refugees, mercenaries, and celebrities living under the protection of the Outer Confederacy. 
+*   **The Distinction:** They are NOT the same as the "Psychic" population (which arose from the Ceres Incident 30 years prior). The Sisters are vat-grown, perfected beings created by Jupiter years later using refined versions of that same genetic research.
+*   **The Family:** There are only a handful of them (less than 20). Each is unique, grown with radical genetic alterations that have matured into stable, functional post-human physiology.
+*   **Role:** They are the symbolic heart of the Confederacy. They are not a government, but living symbols of the potential for human evolution.
 
 While some Sisters work directly for the Confederacy military (like **Amalthea**) or local governments, most operate independently.
 
@@ -78,20 +85,30 @@ The Confederacy cannot win a straight fight against the Republic Navy, but it ca
 
 ---
 
-## Card Roster (20 Unique Cards)
+## Card Roster (24 Unique Cards)
 
 ### COMMON UNITS (7 Cards)
 
-#### EMPTY
+#### Callisto Militia - Common
+- Cost: 1 | Stats: 1/2 | Subtype: Biological
+- Ability: OnPlay: Scout 1 (Reveal 1 random card from opponent's hand)
+- Lore: Local defense forces from the moon Callisto. Every settlement in the Outer System trains its own militia, and Callisto's are among the best-drilled. Quick to mobilize and experts at scouting enemy positions, they form the first line of defense against Corporate incursions.
+- Asset: callisto_militia
+- Cosmetic Variants: callisto_militia_alt1 (tier2), callisto_militia_alt2 (tier3)
 
 #### Amalthea - Common
-- Cost: 3 | Stats: 3/4 | Subtype: Biological
+- Cost: 3 | Stats: 3/3 | Subtype: Biological
 - Ability: (None - vanilla unit)
 - Lore: A proud recruit of the new Confederate Forces, eager to protect the only home she's known. She might lack the raw strength of some sisters, but her heart is unmatched. A veteran of a dozen skirmishes against pirates and Corporate mercs, her boosted reflexes and rapid healing have made her a legend on the front lines, the first in and the last out of every engagement. Now the embarrassed mascot of the Confederacy, The Soldier is a symbol of hope for a free Outer System who fights for her sisters and her nation with a loyalty that cannot be broken.
 - Asset: amalthea
 - Cosmetic Variants: amalthea_alt1 (tier2), amalthea_alt2 (tier3)
 
-#### EMPTY
+#### Belt Prospector - Common
+- Cost: 2 | Stats: 2/2 | Subtype: Biological
+- Ability: Recycle 1 (When this dies, gain 1 energy)
+- Lore: Asteroid miners who strike it rich... or die trying. Their salvage fuels the Confederacy's war machine. Every prospector carries a beacon—when they fall, their gear gets recycled into the next generation's equipment. In the Belt, nothing goes to waste.
+- Asset: belt_prospector
+- Cosmetic Variants: belt_prospector_alt1 (tier2), belt_prospector_alt2 (tier3)
 
 #### Lysithea - Common
 - Cost: 3 | Stats: 2/2 | Subtype: Psionic
@@ -100,15 +117,37 @@ The Confederacy cannot win a straight fight against the Republic Navy, but it ca
 - Asset: lysithea
 - Cosmetic Variants: lysithea_alt1 (tier2), lysithea_alt2 (tier3)
 
-#### EMPTY
+#### Jury-Rigged Bot - Common
+- Cost: 2 | Stats: 1/3 | Subtype: Cybernetic
+- Ability: Turn End: Regenerate 1 (Heal this unit for 1 HP)
+- Lore: Cobbled together from scrap metal and surplus parts. Held together with duct tape, solder, and prayers to whatever god watches over machines. It breaks down constantly, but its self-repair protocols—jury-rigged from stolen Corporate code—keep it functional just long enough to matter.
+- Asset: jury_rigged_bot
+- Cosmetic Variants: jury_rigged_bot_alt1 (tier2), jury_rigged_bot_alt2 (tier3)
 
-#### EMPTY
+#### Confederate Mechanic - Common
+- Cost: 3 | Stats: 2/4 | Subtype: Cybernetic
+- Ability: Turn End: Repair 1 (Restore 1 HP to a random damaged Cybernetic ally)
+- Lore: "Not one step closer to our home." Volunteers who signed up to protect their families when the Corporations came knocking. They're not professional soldiers, but they know every inch of their station, every access tunnel, every hiding spot. The mechanics keep the defenses running, repairing battle damage between skirmishes.
+- Asset: confederate_mechanic
+- Cosmetic Variants: confederate_mechanic_alt1 (tier2), confederate_mechanic_alt2 (tier3)
 
-#### EMPTY
+#### Scrapyard Scavenger - Common
+- Cost: 2 | Stats: 2/1 | Subtype: Biological
+- Ability: OnPlay: Draw 1 if you control a Cybernetic unit
+- Lore: Salvagers who pick through Corporate battlefields for tech to repurpose. They're experts at identifying valuable components among the wreckage. A good scavenger can turn yesterday's debris into tomorrow's advantage—as long as they can dodge the automated cleanup drones.
+- Asset: scrapyard_scavenger
+- Cosmetic Variants: scrapyard_scavenger_alt1 (tier2), scrapyard_scavenger_alt2 (tier3)
 
 ---
 
-### UNCOMMON UNITS (5 Cards)
+### UNCOMMON UNITS (7 Cards)
+
+#### Enceladus Shocktroop - Uncommon
+- Cost: 3 | Stats: 3/3 | Subtype: Biological
+- Ability: Rush
+- Lore: Pirates turned freedom fighters. Veterans of a hundred raids against Corporate convoys, they know how to hit fast and disappear into the ice fields of Enceladus. When the Confederacy called, they answered—but they kept their preferred tactics: strike hard, strike fast, and be gone before the enemy knows what hit them.
+- Asset: enceladus_shocktroop
+- Cosmetic Variants: enceladus_shocktroop_alt1 (tier2), enceladus_shocktroop_alt2 (tier3)
 
 #### Sinope - Uncommon
 - Cost: 2 | Stats: 1/4 | Subtype: Biological
@@ -117,7 +156,19 @@ The Confederacy cannot win a straight fight against the Republic Navy, but it ca
 - Asset: sinope
 - Cosmetic Variants: sinope_alt1 (tier2), sinope_alt2 (tier3)
 
-#### EMPTY
+#### Madwoman - Uncommon
+- Cost: 3 | Stats: 2/3 | Subtype: Psionic
+- Ability: OnPlay: Spark 2 (Deal 2 psychic damage to random enemy). Turn End: Refresh 2 (Psychic healing - restore 2 HP to this unit)
+- Lore: Minor psychics awakened by exposure to the Jovian Sisters. Unstable, unpredictable, and incredibly dangerous. The Whispers drove her mad, but they also made her powerful. She hears voices from the void and answers with raw psychic fury. The Confederacy doesn't control her—they just point her at the enemy and get out of the way.
+- Asset: madwoman
+- Cosmetic Variants: madwoman_alt1 (tier2), madwoman_alt2 (tier3)
+
+#### Titan Breacher - Uncommon
+- Cost: 4 | Stats: 4/3 | Subtype: Cybernetic
+- Ability: First Strike. Breach (When attacking, remove Shield from target before dealing damage)
+- Lore: Assault mechs designed to crack Corporate defensive lines. Armed with electromagnetic pulse weapons that short out shields and heavy armor plating to survive the counterattack. They're the first through the breach, the tip of the spear that opens the way for everyone else. Once a Breacher locks on, there's nowhere to hide.
+- Asset: titan_breacher
+- Cosmetic Variants: titan_breacher_alt1 (tier2), titan_breacher_alt2 (tier3)
 
 #### Callisto - Uncommon
 - Cost: 3 | Stats: 1/2 | Subtype: Biological
@@ -126,19 +177,34 @@ The Confederacy cannot win a straight fight against the Republic Navy, but it ca
 - Asset: callisto
 - Cosmetic Variants: callisto_alt1 (tier2), callisto_alt2 (tier3)
 
-#### EMPTY
+#### Confederate Medic - Uncommon
+- Cost: 3 | Stats: 1/4 | Subtype: Biological
+- Ability: Turn End: Heal 2 (random damaged ally)
+- Lore: Field doctors who patch up soldiers between skirmishes. Overworked, underpaid, and running on recycled stims, they're the reason the Confederacy's forces can keep fighting despite being outnumbered. Every medic carries gene-tailored nanites that can stabilize even the worst injuries—at least long enough to get back to a proper clinic.
+- Asset: confederate_medic
+- Cosmetic Variants: confederate_medic_alt1 (tier2), confederate_medic_alt2 (tier3)
 
-#### EMPTY
+#### Titan Smuggler - Uncommon
+- Cost: 4 | Stats: 3/3 | Subtype: Biological
+- Ability: OnPlay: Add Random Tactic to hand
+- Lore: Smugglers who run blockades to deliver "goods" to the Outer System. They know every back route through the asteroid fields, every customs official who can be bribed, and every trick in the book. They always have something useful up their sleeve—whether it's black market weapons, stolen intel, or just a clever escape plan.
+- Asset: titan_smuggler
+- Cosmetic Variants: titan_smuggler_alt1 (tier2), titan_smuggler_alt2 (tier3)
 
 ---
 
-### RARE UNITS (5 Cards)
+### RARE UNITS (7 Cards)
 
-#### EMPTY
+#### Station Commander - Rare
+- Cost: 4 | Stats: 3/5 | Subtype: Biological
+- Ability: OnPlay: Rally 2 (Permanently increase target ally's max HP and current HP by 2). Guard.
+- Lore: Veteran station defense coordinators who've held the line against impossible odds. They know how to inspire their troops, fortify positions, and make every bullet count. When a Commander takes the field, morale surges—and the enemy learns what it means to fight soldiers who are defending their home.
+- Asset: station_commander
+- Cosmetic Variants: station_commander_alt1 (tier2), station_commander_alt2 (tier3)
 
 #### Io - Rare
-- Cost: 2 | Stats: 2/5 | Subtype: Cybernetic
-- Ability: OnPlay: Summon a 1/2 Drone token
+- Cost: 2 | Stats: 2/3 | Subtype: Cybernetic
+- Ability: OnPlay: Summon Combat Drone (1/2 token). Turn End: Refresh 1 (self) - Psychic healing, restore 1 HP to self
 - Lore: A university dropout who prefers the hum of a soldering iron to the drone of a lecture, Io spends his nights in cluttered workshops, building drones that the Republic would call "illegal". His mods are legendary among the outer moon racers and scavengers, as he has a super-human knack for mechanical parts, seeing the "soul" in the machines he operates. Now a master, Io commands a swarm of customized drones with the grace of a conductor and can strip an enemy mech to its frame in seconds without ever touching a wrench.
 - Asset: io (from tier2)
 - Cosmetic Variants: io_alt1 (tier1), io_alt2 (tier3)
@@ -157,6 +223,20 @@ The Confederacy cannot win a straight fight against the Republic Navy, but it ca
 - Asset: praxidike (from tier2)
 - Cosmetic Variants: praxidike_alt1 (tier1), praxidike_alt2 (tier3)
 
+#### Rebel Engineer - Rare
+- Cost: 3 | Stats: 2/4 | Subtype: Cybernetic
+- Ability: Turn End: Repair 2 (random Cybernetic ally). OnPlay: Summon Worker Drone (1/1 Cybernetic token)
+- Lore: Confederate techs who keep the ramshackle fleet operational through sheer ingenuity and spite. They can rebuild a reactor from salvage, hot-wire a weapons system, and deploy repair drones—all while under fire. The Corporations have better equipment, but the Engineers have something money can't buy: the will to make it work.
+- Asset: rebel_engineer
+- Cosmetic Variants: rebel_engineer_alt1 (tier2), rebel_engineer_alt2 (tier3)
+
+#### Guerrilla Fighter - Rare
+- Cost: 3 | Stats: 4/2 | Subtype: Biological
+- Ability: Rush. OnKill: Redeploy (Return this unit to your hand)
+- Lore: Hit-and-run specialists who strike hard and vanish into the Belt before reinforcements arrive. They move through the battlefield like ghosts, striking weak points and fading before the enemy can retaliate. Every guerrilla knows: you don't need to win every fight—you just need to make sure the enemy bleeds more than you do.
+- Asset: guerrilla_fighter
+- Cosmetic Variants: guerrilla_fighter_alt1 (tier2), guerrilla_fighter_alt2 (tier3)
+
 #### Ganymede - Rare
 - Cost: 4 | Stats: 4/4 | Subtype: Biological
 - Ability: Rush. Rage 1 - Gain +1 ATK permanently when attacking
@@ -170,16 +250,21 @@ The Confederacy cannot win a straight fight against the Republic Navy, but it ca
 
 #### Europa - Legendary
 - Cost: 6 | Stats: 4/7 | Subtype: Psionic
-- Ability: OnPlay: Stun All Enemies. Turn Start: Draw 1. Turn End: Heal all allies 3
+- Ability: OnPlay: Stun All Enemies. Constant: Your other Psionic units have +1/+1.
 - Lore: The eldest sister, Europa uses her psychic gifts to bridge the gap between human fear and Jovian potential, carrying the weight of a dozen worlds on her shoulders while always listening to the Whispers. Diplomacy is often just another form of defense in the treacherous political waters of the Confederacy, and she ensures her family remains a step ahead of corporate interests while maintaining a motherly eye on her kin. When the Whispers grow too loud, Europa's consciousness expands to fill the void between worlds; to face her in this state is to drown in a psychic sea of infinite depth.
 - Asset: europa (from tier3)
 - Cosmetic Variants: europa_alt1 (tier1), europa_alt2 (tier2)
 
-#### EMPTY
+#### Metis - Legendary
+- Cost: 6 | Stats: 6/6 | Subtype: Psionic
+- Ability: OnPlay: Destroy target enemy. WhenAttacked: Spark 3 (attacker).
+- Lore: Hunts for clues about the Whispers. Unlike Europa, mercy isn't in Metis' nature. A dangerous psychic with little restraint, she uses her power to obliterate her foes. When threatened, her psychic fury lashes out at anyone who dares attack her, making her a terrifying defensive threat.
+- Asset: metis (from tier3)
+- Cosmetic Variants: metis_alt1 (tier1), metis_alt2 (tier2)
 
 #### Thebe - Legendary
-- Cost: 6 | Stats: 7/7 | Subtype: Biological
-- Ability: Snipe. Loot 1 - Draw 1 card when this kills an enemy. Turn End: Regenerate 2
+- Cost: 6 | Stats: 6/6 | Subtype: Biological
+- Ability: Snipe. Turn End: Regenerate 2. When this kills an enemy, gain +1/+1 permanently.
 - Lore: The wildest of the sisters, Thebe is more comfortable in the fungal caves of Ceres than a city. She is a ranger of the untamed frontiers, a finder of things that don't want to be found. She has bio-hacked her own body to survive the harshest environments the system can offer, a stalker of the wastes who sees prey where others see only dust. Now the apex predator of the solar system, she has achieved a form of biological perfection, an ultimate tracker and a wild force that answers only to her family.
 - Asset: thebe (from tier3)
 - Cosmetic Variants: thebe_alt1 (tier1), thebe_alt2 (tier2)

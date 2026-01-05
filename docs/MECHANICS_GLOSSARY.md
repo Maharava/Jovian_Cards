@@ -29,6 +29,9 @@ Activates at the start of your turn.
 ### **OnDraw**
 Activates when this card is drawn from your deck.
 
+### **OnKill**
+Activates when this unit kills an enemy unit (reduces enemy HP to 0 or below).
+
 ### **Passive**
 An effect that is always active and typically affects other cards being played or on the board.
 
@@ -71,20 +74,23 @@ These are the specific abilities and effects found on cards.
 ### **Decoy**
 **Effect:** Summon a Hologram token with Guard. Stats vary by tier (0/3, 1/3, or 1/4 with Shield).
 
-### **Disarm**
-**Effect:** Set a target's Attack to 0 for one turn.
+### **Disarm X**
+**Effect:** Set a target's Attack to 0 for X turns. The value specifies duration.
 
 ### **Double Attack**
 **Effect:** This unit can attack twice per turn.
 
 ### **Draw X**
-**Effect:** Draw X cards from your deck.
+**Effect:** Draw X cards from your deck. Can be conditional (e.g., "if you control a Cybernetic unit").
 
 ### **Encourage**
 **Effect:** Give a friendly unit a permanent stat buff (e.g., +X/+Y).
 
 ### **Fade**
 **Effect:** This card is removed from hand at end of turn. Currently used on Madness token.
+
+### **Feast X**
+**Effect:** When this unit kills another unit, permanently gain +X/+X. This stacks infinitely - each kill makes the unit stronger.
 
 ### **First Strike**
 **Effect:** This unit deals its combat damage before the unit it is fighting. If the defending unit is destroyed, it does not deal counter-attack damage.
@@ -105,7 +111,7 @@ These are the specific abilities and effects found on cards.
 **Effect:** When this unit deals damage, your commander is healed for the same amount.
 
 ### **Loot X**
-**Effect:** When this unit destroys another unit, draw X cards.
+**Effect:** When this unit kills another unit, draw X cards. (Note: Loot triggers during combat resolution, not via the standard OnKill trigger system.)
 
 ### **Mind Control X**
 **Effect:** Take control of an enemy unit with Attack less than or equal to X.
@@ -114,7 +120,7 @@ These are the specific abilities and effects found on cards.
 **Effect:** A negative keyword associated with the Voidborn faction that spreads corruption or debuffs.
 
 ### **Rage X**
-**Effect:** This unit permanently gains +X Attack whenever it deals damage.
+**Effect:** This unit permanently gains +X Attack whenever it attacks. Stacks infinitely.
 
 ### **Rally X**
 **Effect:** Permanently increase a target unit's maximum Health and current Health by X. Does not stack - each unit can only be rallied once.
@@ -123,7 +129,7 @@ These are the specific abilities and effects found on cards.
 **Effect:** When this unit dies, gain X energy.
 
 ### **Redeploy**
-**Effect:** Return a friendly unit to your hand.
+**Effect:** Return a friendly unit to your hand. Can trigger OnPlay (return another unit) or OnKill (return this unit).
 
 ### **Regenerate X**
 **Effect:** At the end of your turn, this unit heals for X Health.
@@ -141,7 +147,7 @@ These are the specific abilities and effects found on cards.
 **Effect:** Look at X random cards from opponent's hand.
 
 ### **Shield**
-**Effect:** Negates the next instance of damage this unit would take from any source. The Shield is consumed in the process.
+**Effect:** Prevents the first instance of damage this unit would take each turn. Shield regenerates at the start of your next turn.
 
 ### **Silence**
 **Effect:** Remove all card text and abilities from a target unit. Its stats remain unchanged.
@@ -187,9 +193,10 @@ These determine what a mechanic can target:
 ## Status Effect Durations
 
 - **Stun:** Lasts for specified turns, decreases at end of turn
-- **Weak/Disarm:** Lasts 1 turn, attack restored when duration expires
+- **Weak:** Lasts 1 turn, attack restored when duration expires
+- **Disarm:** Lasts for specified turns (value determines duration), attack restored when duration expires
 - **Hack:** Lasts 2 turns, attack reduction restored when duration expires
-- **Shield:** Lasts until consumed by damage (absorbs full damage from one source)
+- **Shield:** Prevents the first damage instance each turn, regenerates at start of your next turn
 - **Buffs/Rally/Encourage:** Permanent stat increases
 - **Fade:** Card removed from hand at end of turn
 
@@ -203,17 +210,17 @@ These determine what a mechanic can target:
 - If defender survives, they counter-attack normally
 
 ### Shield + Damage
-- Shield absorbs ALL damage from one source
-- Shield is consumed even if it prevents more damage than was dealt
-- Multiple instances of damage consume multiple shields
+- Shield prevents ALL damage from the first instance each turn
+- Shield regenerates at the start of your next turn
+- Only the first damage source each turn is blocked
 
 ### Assassinate + Shield
-- Shield blocks damage → Assassinate doesn't trigger
-- If damage is dealt → Target dies instantly
+- If Shield blocks the damage → Assassinate doesn't trigger
+- If damage is dealt (Shield already used this turn) → Target dies instantly
 
 ### Hack vs Disarm
 - **Hack:** ATK reduced by value for 2 turns
-- **Disarm:** ATK set to 0 for 1 turn
+- **Disarm:** ATK set to 0 for X turns (duration based on value)
 - Both can coexist (separate status effects)
 
 ### Rally/Encourage Stacking
@@ -222,18 +229,23 @@ These determine what a mechanic can target:
 - Both are permanent buffs (don't expire)
 - Tracked via unit status flags (rallied/encouraged)
 
+### Feast + Regenerate Synergy
+- Feast gains permanent stats when killing enemies
+- Combined with Regenerate, creates a snowballing unit that grows stronger and self-heals
+- No cap on Feast stacking - each kill increases stats permanently
+
+### OnKill Trigger Order
+1. Combat damage is dealt
+2. Loot checks (if attacker has Loot and target dies)
+3. OnKill mechanics resolve (Feast, Redeploy, etc.)
+4. OnDamageTaken triggers
+5. Dead units are removed (OnDeath triggers)
+
+### Conditional Mechanics
+- Some mechanics require conditions to activate (e.g., Draw if you control a Cybernetic unit)
+- Conditions are checked when the mechanic would resolve
+- If the condition isn't met, the mechanic doesn't activate and a notification is shown
+- Examples: "subtype:Cybernetic", "faction:Megacorp"
+
 ---
 
-## Tips
-
-- **Guard** is essential for protecting valuable units
-- **Rush** enables aggressive tempo plays
-- **Lifesteal** helps you stabilize against aggressive decks
-- **First Strike** is excellent on high-ATK units
-- **Scout** effects thin your deck and find answers
-- **Summon** on death creates value trades
-- **Stun** can delay dangerous threats for a turn
-
----
-
-**For more details, see [GAMEPLAY.md](GAMEPLAY.md)**

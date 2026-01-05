@@ -14,6 +14,7 @@ import { createDeckSlice, type DeckSlice } from './slices/deckSlice';
 import { createCombatSlice, type CombatSlice } from './slices/combatSlice';
 import { createDevSlice, type DevSlice } from './slices/devSlice';
 import { createNavigationSlice, type NavigationSlice } from './slices/navigationSlice';
+import { getDefaultStarterDeck } from '../data/starterDecks';
 
 // Fisher-Yates shuffle algorithm for proper uniform distribution
 function shuffleArray<T>(array: T[]): T[] {
@@ -111,16 +112,10 @@ export const useGameStore = create<GameState & GameActions & AnimationSlice & De
     }
 
     if (!deckToUse || deckToUse.length === 0) {
-      // Fallback to basic Confederate deck if nothing in store
-      const cardIds = [
-        'lysithea', 'lysithea', 'himalia', 'himalia',
-        'leda', 'leda', 'amalthea', 'amalthea',
-        'kore', 'kore', 'tactic_nano_repair', 'tactic_nano_repair',
-        'tactic_reinforce', 'tactic_reinforce', 'euporie', 'callisto',
-        'tactic_power_shot', 'tactic_power_shot', 'tactic_scramble', 'tactic_outsource'
-      ];
+      // Fallback to default starter deck if nothing in store
+      const defaultStarter = getDefaultStarterDeck();
       // FIXED: Use proper type guard instead of unsafe 'as Card[]' assertion
-      deckToUse = cardIds.map(id => CARD_MAP.get(id)).filter((c): c is Card => c !== undefined);
+      deckToUse = defaultStarter.cardIds.map(id => CARD_MAP.get(id)).filter((c): c is Card => c !== undefined);
     }
     const shuffledDeck = shuffleArray(deckToUse);
 
@@ -568,6 +563,51 @@ export const useGameStore = create<GameState & GameActions & AnimationSlice & De
             });
         });
 
+        // Process passive mechanics with Requisition (check energy threshold)
+        intermediateState.player.board.forEach(unit => {
+            unit.mechanics.forEach(m => {
+                if (m.trigger === 'passive' && typeof m.payload === 'string' && m.payload.startsWith('requisition:')) {
+                    // Parse requisition threshold from payload (format: "requisition:X:...")
+                    const parts = m.payload.split(':');
+                    const threshold = parseInt(parts[1], 10);
+
+                    // Check if player has enough energy
+                    if (intermediateState.player.energy >= threshold) {
+                        const { stateUpdates } = MechanicHandler.resolve(m, unit, intermediateState, () => {});
+                        intermediateState = { ...intermediateState, ...stateUpdates };
+
+                        // Show ability notification
+                        const cardDef = ALL_CARDS.find(c => c.id === unit.cardId);
+                        const abilityText = getMechanicDescription(m, cardDef);
+                        if (abilityText && cardDef) {
+                            get().addAbilityNotification(cardDef.name, abilityText);
+                        }
+                    }
+                }
+            });
+        });
+
+        // Process dynamic Guard granting based on Quota (for opponent's turn)
+        intermediateState.player.board.forEach(unit => {
+            const guardMechanic = unit.mechanics.find(m => m.type === 'guard' && m.trigger === 'passive' && typeof m.payload === 'string' && m.payload.startsWith('quota:'));
+            if (guardMechanic && typeof guardMechanic.payload === 'string') {
+                const parts = guardMechanic.payload.split(':');
+                const threshold = parseInt(parts[1], 10);
+                const megacorpCount = intermediateState.player.board.filter(u => u.faction === 'Megacorp').length;
+
+                // Check if quota is met
+                const hasQuotaGuard = unit.mechanics.some(m => m.type === 'guard' && m.trigger === 'constant' && (m.payload as any) === 'quota_granted');
+
+                if (megacorpCount >= threshold && !hasQuotaGuard) {
+                    // Grant Guard
+                    unit.mechanics.push({ type: 'guard', trigger: 'constant', payload: 'quota_granted' as any });
+                } else if (megacorpCount < threshold && hasQuotaGuard) {
+                    // Remove Guard
+                    unit.mechanics = unit.mechanics.filter(m => !(m.type === 'guard' && (m.payload as any) === 'quota_granted'));
+                }
+            }
+        });
+
         const enemyMaxEnergy = Math.min(MAX_ENERGY_CAP, intermediateState.enemy.maxEnergy + 1);
         intermediateState.enemy.maxEnergy = enemyMaxEnergy;
         intermediateState.enemy.energy = enemyMaxEnergy;
@@ -817,16 +857,40 @@ export const useGameStore = create<GameState & GameActions & AnimationSlice & De
                   }
 
                   // Assassinate: If attacker has assassinate and dealt damage, target dies instantly
-                  if (damage > 0 && att.mechanics.some(m => m.type === 'assassinate')) {
-                      target.hp = 0;
-                      target.dying = true;
+                  const assassinateMech = att.mechanics.find(m => m.type === 'assassinate');
+                  if (damage > 0 && assassinateMech) {
+                      // Check for conditional assassinate (e.g., 'condition:zero_atk')
+                      let shouldAssassinate = true;
+                      if (assassinateMech.payload && typeof assassinateMech.payload === 'string') {
+                          if (assassinateMech.payload === 'condition:zero_atk') {
+                              shouldAssassinate = target.atk === 0;
+                          }
+                      }
+
+                      if (shouldAssassinate) {
+                          target.hp = 0;
+                          target.dying = true;
+                      }
                   }
 
                   // Counter-attack (only if not stunned and target is alive)
                   // Fixed: Stun > 0 means stunned, <= 0 means not stunned
                   // First Strike: If attacker has first_strike, target doesn't counter-attack if it dies
                   const isStunned = (target.status?.stun || 0) > 0;
-                  const hasFirstStrike = att.mechanics.some(m => m.type === 'first_strike');
+                  const hasFirstStrike = att.mechanics.some(m => {
+                      if (m.type !== 'first_strike') return false;
+                      if (m.trigger === 'constant') return true;
+
+                      // Check requisition condition for passive first_strike
+                      if (m.trigger === 'passive' && typeof m.payload === 'string' && m.payload.startsWith('requisition:')) {
+                          const threshold = parseInt(m.payload.split(':')[1], 10);
+                          const currentState = get();
+                          const ownerBoard = att.owner === 'player' ? currentState.player : currentState.enemy;
+                          return ownerBoard.energy >= threshold;
+                      }
+
+                      return false;
+                  });
 
                   // Counter-attack only happens if target is not stunned
                   // Dead units only counter if attacker lacks first strike (simultaneous damage)
@@ -907,7 +971,47 @@ export const useGameStore = create<GameState & GameActions & AnimationSlice & De
 
           return { ...newState, phase };
       });
-      
+
+      // OnKill triggers - Process mechanics that trigger when attacker kills a unit
+      const postKillState = get();
+      const postKillAttackerBoard = isPlayerAttacker ? postKillState.player.board : postKillState.enemy.board;
+      const postKillDefenderBoard = isPlayerAttacker ? postKillState.enemy.board : postKillState.player.board;
+      const postKillAttacker = postKillAttackerBoard.find(u => u.uid === attackerUid);
+      const targetStillExists = postKillDefenderBoard.some(u => u.uid === targetUid);
+
+      if (targetType === 'unit' && postKillAttacker && !targetStillExists) {
+          for (const m of postKillAttacker.mechanics) {
+              if (m.trigger === 'onKill') {
+                  const currentState = get();
+                  const { stateUpdates, animations, notifications } = MechanicHandler.resolve(
+                      m,
+                      postKillAttacker,
+                      currentState,
+                      () => {}
+                  );
+
+                  // Play animations
+                  for (const anim of animations) {
+                      set({ effectVector: { from: anim.from, to: anim.to, color: anim.color } });
+                      await new Promise(r => setTimeout(r, DELAYS.ANIMATION_QUICK || 150));
+                  }
+                  if (animations.length > 0) {
+                      set({ effectVector: null });
+                  }
+
+                  // Apply state updates
+                  set(stateUpdates);
+
+                  // Add notifications
+                  if (notifications && notifications.length > 0) {
+                      set(state => ({
+                          abilityNotifications: [...state.abilityNotifications, ...notifications]
+                      }));
+                  }
+              }
+          }
+      }
+
       // OnDamageTaken triggers (Post-combat) - specifically for Defender
       // FIXED: Only trigger if defender actually took damage (damageTakenByDefender > 0)
       const postCombatState = get();
@@ -966,9 +1070,29 @@ export const useGameStore = create<GameState & GameActions & AnimationSlice & De
                }
                // Weak status is decremented at END of turn, not start
                // This is handled in endPlayerTurn now
+
+               // Re-check dynamic Guard based on Quota at start of turn
+               const guardMechanic = unit.mechanics.find(m => m.type === 'guard' && m.trigger === 'passive' && typeof m.payload === 'string' && m.payload.startsWith('quota:'));
+               if (guardMechanic && typeof guardMechanic.payload === 'string') {
+                   const parts = guardMechanic.payload.split(':');
+                   const threshold = parseInt(parts[1], 10);
+                   const megacorpCount = state.player.board.filter(u => u.faction === 'Megacorp').length;
+
+                   // Check if quota is met
+                   const hasQuotaGuard = unit.mechanics.some(m => m.type === 'guard' && m.trigger === 'constant' && (m.payload as any) === 'quota_granted');
+
+                   if (megacorpCount >= threshold && !hasQuotaGuard) {
+                       // Grant Guard
+                       unit.mechanics.push({ type: 'guard', trigger: 'constant', payload: 'quota_granted' as any });
+                   } else if (megacorpCount < threshold && hasQuotaGuard) {
+                       // Remove Guard
+                       unit.mechanics = unit.mechanics.filter(m => !(m.type === 'guard' && (m.payload as any) === 'quota_granted'));
+                   }
+               }
+
               return unit;
           });
-          
+
           const newMax = Math.min(MAX_ENERGY_CAP, state.player.maxEnergy + 1);
           return {
               player: { ...state.player, board: playerBoard, maxEnergy: newMax, energy: newMax },

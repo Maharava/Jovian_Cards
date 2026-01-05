@@ -33,18 +33,22 @@ export type MechanicType =
   | 'encourage'
   | 'recycle'
   | 'loot'
+  | 'feast' // Gain +X/+Y permanently when killing an enemy
+  | 'feast_thebe' // Thebe's unique version of feast
+  | 'mind_ocean' // Europa's unique passive Psionic buff
   | 'first_strike'
   | 'assassinate'
   | 'regenerate'
   | 'shield'
   | 'add_random_tactic' // Leda T1 ability // Return to hand
+  | 'add_card' // Add specific card to hand (used by requisition)
   | 'breach'
   | 'mind_control'
   | 'gain_energy'
   | 'silence'
   | 'cost_reduction';
 
-export type TriggerType = 'onPlay' | 'onDeath' | 'onTurnEnd' | 'onTurnStart' | 'passive' | 'constant' | 'onDraw' | 'onAttack' | 'onDamageTaken';
+export type TriggerType = 'onPlay' | 'onDeath' | 'onTurnEnd' | 'onTurnStart' | 'passive' | 'constant' | 'onDraw' | 'onAttack' | 'onDamageTaken' | 'onKill';
 
 export type Faction = 'Confederate' | 'Republic' | 'Megacorp' | 'Voidborn' | 'Bio-horror' | 'Neutral';
 export type Rarity = 'Common' | 'Uncommon' | 'Rare' | 'Legendary' | 'NA';

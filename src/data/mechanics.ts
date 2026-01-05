@@ -1,7 +1,7 @@
 export const MECHANICS_DEFINITIONS: Record<string, { title: string; desc: string; icon: string; color: string }> = {
   scout: {
     title: 'Scout',
-    desc: 'Look at X random card(s) from opponent\'s hand.',
+    desc: 'Reveal X random cards from opponent\'s hand.',
     icon: '👁️',
     color: 'bg-indigo-400 text-white'
   },
@@ -32,7 +32,7 @@ export const MECHANICS_DEFINITIONS: Record<string, { title: string; desc: string
   },
   disarm: {
     title: 'Disarm',
-    desc: 'Set target enemy\'s attack to 0 until end of current turn.',
+    desc: 'Set target\'s attack to 0 for X turns.',
     icon: '📉',
     color: 'bg-orange-500 text-black'
   },
@@ -44,25 +44,25 @@ export const MECHANICS_DEFINITIONS: Record<string, { title: string; desc: string
   },
   spark: {
     title: 'Spark',
-    desc: 'Deal X damage to a random enemy.',
+    desc: 'Deal X psychic damage to target.',
     icon: '⚡',
     color: 'bg-yellow-400 text-black'
   },
   rally: {
     title: 'Rally',
-    desc: 'Give target +X HP. Each unit can only be rallied once.',
+    desc: 'Permanently increase target\'s max HP and current HP by X. Does not stack.',
     icon: '➕',
     color: 'bg-green-500 text-white'
   },
   encourage: {
     title: 'Encourage',
-    desc: 'Give target +X Attack. Each unit can only be encouraged once.',
+    desc: 'Permanently increase target\'s ATK by X. Does not stack.',
     icon: '📣',
     color: 'bg-amber-500 text-black'
   },
   stun: {
     title: 'Stun',
-    desc: 'Target unit cannot attack until the end of their next turn.',
+    desc: 'Target unit cannot attack for X turns.',
     icon: '💫',
     color: 'bg-blue-400 text-black'
   },
@@ -74,19 +74,19 @@ export const MECHANICS_DEFINITIONS: Record<string, { title: string; desc: string
   },
   guard: {
     title: 'Guard',
-    desc: 'Enemies must attack this unit before others.',
+    desc: 'Enemies must attack units with Guard before other targets. Bypassed by Snipe.',
     icon: '🛡️',
     color: 'bg-slate-300 text-black'
   },
   hack: {
     title: 'Hack',
-    desc: 'Reduce random enemy Attack by X until the end of their next turn.',
+    desc: 'Reduce target\'s Attack by X for 2 turns.',
     icon: '💻',
     color: 'bg-emerald-400 text-black'
   },
   rage: {
     title: 'Rage',
-    desc: 'When you attack, gain +X Attack permanently.',
+    desc: 'Permanently gain +X Attack when attacking.',
     icon: '😡',
     color: 'bg-red-700 text-white'
   },
@@ -110,9 +110,9 @@ export const MECHANICS_DEFINITIONS: Record<string, { title: string; desc: string
   },
   bio_optimize: {
     title: 'Bio-Optimize',
-    desc: 'Give target +X/+X.',
-    icon: '🌱', // New icon
-    color: 'bg-lime-500 text-black' // New color
+    desc: 'An adaptive biological enhancement. Give target +X/+X.',
+    icon: '🌱',
+    color: 'bg-lime-500 text-black'
   },
   damage: {
     title: 'Damage',
@@ -122,31 +122,31 @@ export const MECHANICS_DEFINITIONS: Record<string, { title: string; desc: string
   },
   heal: {
     title: 'Heal',
-    desc: 'Restore X HP to target.',
+    desc: 'Restore X HP to target Biological unit.',
     icon: '❤️',
     color: 'bg-pink-400 text-white'
   },
   repair: {
     title: 'Repair',
-    desc: 'Restore X HP to target cybernetic.',
+    desc: 'Restore X HP to target Cybernetic unit.',
     icon: '🔧',
     color: 'bg-slate-400 text-black'
   },
   regenerate: {
     title: 'Regenerate',
-    desc: 'Restore X HP to self.',
+    desc: 'At end of turn, heal this unit for X HP.',
     icon: '💚',
     color: 'bg-green-600 text-white'
   },
   summon: {
     title: 'Summon',
-    desc: 'Summon X units.',
+    desc: 'Create one or more token units on your side of the board.',
     icon: '✨',
     color: 'bg-purple-400 text-white'
   },
   snipe: {
     title: 'Snipe',
-    desc: 'Can attack any enemy, ignoring Guard.',
+    desc: 'Can ignore Guard keyword and attack any valid target.',
     icon: '🎯',
     color: 'bg-yellow-600 text-white'
   },
@@ -164,37 +164,37 @@ export const MECHANICS_DEFINITIONS: Record<string, { title: string; desc: string
   },
   shield: {
     title: 'Shield',
-    desc: 'Prevent the first instance of damage each turn.',
+    desc: 'Prevents the first instance of damage each turn. Regenerates at start of your next turn.',
     icon: '🛡️',
     color: 'bg-blue-300 text-black'
   },
   thorns: {
     title: 'Thorns',
-    desc: 'Deal X damage to attackers.',
+    desc: 'When attacked, deal X damage back to the attacker.',
     icon: '🌵',
     color: 'bg-green-700 text-white'
   },
   breach: {
     title: 'Breach',
-    desc: 'Remove target\'s shield.',
+    desc: 'Remove all Shield from target unit.',
     icon: '💢',
     color: 'bg-red-400 text-black'
   },
   silence: {
     title: 'Silence',
-    desc: 'Remove all abilities from target.',
+    desc: 'Remove all card text and abilities from target. Stats remain unchanged.',
     icon: '🔇',
     color: 'bg-slate-500 text-white'
   },
   mind_control: {
     title: 'Mind Control',
-    desc: 'Take control of enemy with ATK < X.',
+    desc: 'Take control of enemy unit with ATK ≤ X.',
     icon: '🧠',
     color: 'bg-purple-600 text-white'
   },
   recycle: {
     title: 'Recycle',
-    desc: 'Gain X energy when this dies.',
+    desc: 'When this unit dies, gain X energy.',
     icon: '♻️',
     color: 'bg-green-500 text-black'
   },
@@ -206,20 +206,38 @@ export const MECHANICS_DEFINITIONS: Record<string, { title: string; desc: string
   },
   first_strike: {
     title: 'First Strike',
-    desc: 'When attacking, deals damage before taking damage in combat.',
+    desc: 'Deals combat damage before the unit it is fighting. If defender dies, no counter-attack.',
     icon: '⚡',
     color: 'bg-yellow-600 text-white'
   },
   assassinate: {
     title: 'Assassinate',
-    desc: 'Destroys any unit damaged by this unit.',
+    desc: 'If this unit deals damage to another unit, target is destroyed instantly. Blocked by Shield.',
     icon: '💀',
     color: 'bg-slate-950 text-red-500'
   },
   loot: {
     title: 'Loot',
-    desc: 'Draw X cards when this unit kills an enemy.',
+    desc: 'When this unit destroys another unit, draw X cards.',
     icon: '💰',
     color: 'bg-yellow-500 text-black'
+  },
+  feast: {
+    title: 'Feast',
+    desc: 'When this unit kills another unit, gain +X/+X permanently.',
+    icon: '🍖',
+    color: 'bg-red-600 text-white'
+  },
+  feast_thebe: {
+    title: 'Apex Predator',
+    desc: 'When Thebe kills an enemy, she permanently gains +1/+1. The apex predator grows stronger with each kill.',
+    icon: '🦅',
+    color: 'bg-amber-600 text-white'
+  },
+  mind_ocean: {
+    title: 'Mind Ocean',
+    desc: 'Europa\'s psychic presence empowers other Psionic units, granting them +1/+1.',
+    icon: '🌊',
+    color: 'bg-cyan-500 text-white'
   }
 };

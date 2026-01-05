@@ -13,7 +13,10 @@ Outside of the Core Worlds, they are the law. **Ira Corp** and its subsidiaries 
 ## The Corporate-Republic Dynamic
 The CEOs of the major corps possess a dangerous arrogance. They believe they have outgrown the Republic.
 *   **The Reality:** They exist only because the Republic is too slow to regulate them. They exploit legal loopholes, bribe the right committees, and operate in the "grey zones" where Republic law takes years to arrive.
-*   **The Risk:** Should the Republic ever formulate a unified policy to break Corporate power, the Corps would be dismantled overnight. The Corps survive by ensuring that policy remains trapped in committee forever.
+*   **The Loophole (Chartered vs. Unchartered):**
+    *   **Unchartered Settlements:** Settlements that haven't completed the 15-year Republic Charter process have **no legal protection**. Raiding them is technically just "asset recovery" or "industrial dispute resolution."
+    *   **Chartered Settlements:** When Corps raid nominally Republic-protected worlds, they pick the weak ones. They create "incidents," plead guilty to minor infractions ("navigational error," "rogue commander"), pay a massive fine, and keep the stolen assets. It's cheaper than paying taxes.
+*   **The Risk:** Should the Republic ever actually *finish* a committee meeting and authorize total war, the Corps would be dismantled overnight. The Corps survive by ensuring that policy remains trapped in committee forever.
 
 ---
 
@@ -22,7 +25,6 @@ The CEOs of the major corps possess a dangerous arrogance. They believe they hav
 ### 1. Ira Corp ("The Hand")
 The primary antagonist force in the sector. Ira Corp specializes in "Hostile Acquisitions"—a euphemism for military raids to secure technology, personnel, and resources. They are currently hunting the Jovian Sisters to reverse-engineer the genetic modifications that make them unique.
 *   **Specialty:** Cybernetics, Drones, Private Military Contracting.
-*   **Leader:** Director Kaelen Vance (a brain in a jar, though few know this).
 
 ### 2. Solarin Industries
 A subsidiary focusing on mining and heavy infrastructure. Their "Mining Drones" are easily repurposed into shrapnel bombs.
@@ -60,19 +62,23 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 ---
 
 ## Card Roster (18 Unique Cards)
+- Common: 6 cards
+- Uncommon: 4 cards
+- Rare: 5 cards
+- Legendary: 3 cards
 
 ### COMMON UNITS (6 Cards)
 
 #### Mining Drone - Common
 - Cost: 1 | Stats: 1/1 | Subtype: Cybernetic
-- Ability: (None - vanilla unit)
+- Ability: Recycle 1 (When this dies, gain 1 energy)
 - Lore: Solarin Industries' most reliable asset, designed for the zero-g of the Asteroid Belt, it is cheap, expendable, and entirely replaceable. Upgraded with high-torque servos for maximum throughput, it works until the gears melt or the battery dies, whichever comes first. When a drone is too damaged for repair, the "Catastrophic Failure Protocol" ensures it leaves nothing behind for the competition.
 - Asset: mining_drone
 - Cosmetic Variants: mining_drone_alt1 (tier2), mining_drone_alt2 (tier3)
 
 #### Security Bot - Common
-- Cost: 2 | Stats: 3/1 | Subtype: Cybernetic
-- Ability: 
+- Cost: 2 | Stats: 1/2 | Subtype: Cybernetic
+- Ability: Guard. OnPlay: If you control another Megacorp unit, gain +1/+1.
 - Lore: A faceless sentinel designed for perimeter defense and asset protection, it follows its programming with a chilling, mechanical lack of empathy. It can be equipped with non-lethal but excruciating tear gas dispensers to disperse "unauthorized gatherings" with maximum efficiency. As a Pacifier Unit, compliance is mandatory, and it is the final word in enforcement, with stun batons tuned to the exact frequency of the human nervous system.
 - Asset: security_bot
 - Cosmetic Variants: security_bot_alt1 (tier2), security_bot_alt2 (tier3)
@@ -107,7 +113,7 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 
 ---
 
-### UNCOMMON UNITS (5 Cards)
+### UNCOMMON UNITS (4 Cards)
 
 #### Alexandrea - Uncommon
 - Cost: 3 | Stats: 0/3 | Subtype: Biological
@@ -137,16 +143,17 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 - Asset: t4m3k0
 - Cosmetic Variants: t4m3k0_alt1 (tier2), t4m3k0_alt2 (tier3)
 
-#### Mr Harrison - Uncommon
-- Cost: 4 | Stats: 2/3 | Subtype: Biological
-- Ability: (None - vanilla unit)
-- Lore: "You're late on your payments," and Mr. Harrison is here to collect; he doesn't accept excuses, only credits or collateral. As an Indentured Enforcer, he confiscates unauthorized equipment and reacquires company property, the physical manifestation of a predatory loan. As the Contract Binder, he'll say "There's a clause in your contract..." and by the time you've read it, he's already taken control of your future... and you.
-- Asset: mr_harrison
-- Cosmetic Variants: mr_harrison_alt1 (tier2), mr_harrison_alt2 (tier3)
 
 ---
 
-### RARE UNITS (4 Cards)
+### RARE UNITS (5 Cards)
+
+#### Mr. Harrison - Rare
+- Cost: 5 | Stats: 4/4 | Subtype: Biological
+- Ability: OnPlay: Mind Control 3 (Take control of enemy unit with ATK ≤ 3)
+- Lore: "There's a clause in your contract..." By the time you've read it, Harrison owns you. A debt collector turned hostile acquisitions specialist, he doesn't just seize assets—he seizes people. His neural control collars turn debtors into corporate property, their minds rewritten to serve Ira Corp until their contracts are paid in full. Which, of course, they never are.
+- Asset: mr_harrison (from tier2)
+- Cosmetic Variants: mr_harrison_alt1 (tier1), mr_harrison_alt2 (tier3)
 
 #### Solarin Control - Rare
 - Cost: 3 | Stats: 0/6 | Subtype: Cybernetic
@@ -158,7 +165,7 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 #### Director Kiz - Rare
 - Cost: 4 | Stats: 3/4 | Subtype: Biological
 - Ability: OnPlay: Give all other Megacorp units +1/+1 and Rush
-- Lore: The head of regional operations for the Red Planet, Kiz ensures that the mines are productive and the workers are sufficiently 'encouraged'. Promoted to the heart of the Republic, he now navigates the treacherous waters of the Senate, bribing, lobbying and bullying with equal skill to ensure lucrative government contracts flow. When hostile acquisitions become the only option, Kiz takes the helm, viewing the entire system as a spreadsheet to be balanced with blood.
+- Lore: Former head of regional operations for the Red Planet, Kiz ensures that the mines are productive and the workers are sufficiently 'encouraged'. Now promoted to the heart of the Republic, he now navigates the treacherous waters of the Senate, bribing, lobbying and bullying with equal skill to ensure lucrative government contracts flow. When hostile acquisitions become the only option, Kiz takes the helm, viewing the entire system as a spreadsheet to be balanced with blood.
 - Asset: director_kiz (from tier2)
 - Cosmetic Variants: director_kiz_alt1 (tier1), director_kiz_alt2 (tier3)
 
@@ -181,22 +188,22 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 ### LEGENDARY UNITS (3 Cards)
 
 #### Director Vance - Legendary
-- Cost: 6 | Stats: 0/10 | Subtype: Biological/Cybernetic
-- Ability: Shield. Passive: When you play a Megacorp unit, give it +2/+2. Quota 5: All Megacorp units you control gain +1/+1.
-- Lore: Vance oversees the credit flow of the entire corporation, knowing that the Board and the Law are just tools to be used for profit. Controlling the psychic investments and assets of Ira Corp, she is no slouch in power herself. Arguably the most powerful Director in Ira Corp, Vance orchestrates the acquisition of the Jovian sisters itself. But in the dark of the night, she hears the Whispers, and is afraid.
+- Cost: 6 | Stats: 2/8 | Subtype: Biological/Cybernetic
+- Ability: Shield. Passive: When you play a Megacorp unit, give it +1/+1. Quota 4: Give it +2/+2 instead.
+- Lore: Vance oversees the credit flow of the entire corporation, knowing that the Board and the Law are just tools to be used for profit. Controlling the psychic investments and assets of Ira Corp, she is no slouch in power herself. Arguably the most powerful Director in Ira Corp, Vance orchestrates the acquisition of the Jovian sisters herself. But in the dark of the night, she hears the Whispers, and is afraid.
 - Asset: director_vance (from tier3)
 - Cosmetic Variants: director_vance_alt1 (tier1), director_vance_alt2 (tier2)
 
 #### The Auditor - Legendary
 - Cost: 5 | Stats: 5/4 | Subtype: Biological
-- Ability: Snipe - Bypass guards. Assassinate - Destroy target when attacking. Quota 4: First Strike.
+- Ability: Snipe. OnPlay: Disarm 2 (target enemy). OnAttack: If target has 0 ATK, destroy it.
 - Lore: You have been found wanting, and the Auditor is here to deliver the notice. She moves through the shadows of the high-sec stations, an invisible judge of corporate performance; when the Shadow is seen, the trial is already over. With no name, no face, and no records, the Auditor is the final firing notice for those who have failed the Board, a ghost that executes without a word.
 - Asset: the_auditor (from tier3)
 - Cosmetic Variants: the_auditor_alt1 (tier1), the_auditor_alt2 (tier2)
 
-#### Unit 734 - Legendary
+#### Unit 736 - Legendary
 - Cost: 7 | Stats: 6/6 | Subtype: Cybernetic
-- Ability: OnPlay: Deal 3 damage to all Non-Megacorp units
+- Ability: Shield. OnPlay: Deal 4 damage to all Non-Megacorp units.
 - Lore: A new design, the ultimate expression of AI-powered combat mechs, Unit 734 sees more use intimidating than fighting. Upgraded to Unit 735 with more modern ordinance and a refined target-tracking system, it is a mountain of metal that can turn a battlefield into a crater. The final iteration, Unit 736, is a war-mech designed for a future war with the Confederacy, protected by a high-output shield. It is the walking end of worlds, a mechanical god of the Megacorp army.
 - Asset: unit_734 (from tier3)
 - Cosmetic Variants: unit_734_alt1 (tier1), unit_734_alt2 (tier2)
@@ -235,9 +242,9 @@ The Megacorp playstyle is defined by **expendability** and **momentum**. They do
 - **Ximena:** ximena_tier1.png → ximena.png
 - **Black Betty:** black_betty_tier1.png → black_betty.png
 - **T4M3K0:** t4m3k0_tier1.png → t4m3k0.png
-- **Mr Harrison:** mr_harrison_tier1.png → mr_harrison.png
 
 ### Rare Cards (Use Tier 2 as primary):
+- **Mr. Harrison:** mr_harrison_tier2.png → mr_harrison.png
 - **Solarin Control:** solarin_control_tier2.png → solarin_control.png
 - **Director Kiz:** director_kiz_tier2.png → director_kiz.png
 - **Enforcer Lee:** enforcer_lee_tier2.png → enforcer_lee.png
